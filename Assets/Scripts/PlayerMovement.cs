@@ -14,7 +14,8 @@ public class PlayerMovement : MonoBehaviour
         // Get instant input
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
-
+            
+ 
         // Get camera directions
         Vector3 camForward = Camera.main.transform.forward;
         Vector3 camRight = Camera.main.transform.right;
