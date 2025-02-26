@@ -3,8 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(MeshCollider))]
 public class CustomPolygonMesh : MonoBehaviour
 {
-    // Define the vertices of the mesh
-    public Vector3[] vertices = new Vector3[]
+    // Define the base vertices of the mesh (for a unit cube)
+    private Vector3[] baseVertices = new Vector3[]
     {
         new Vector3(-0.5f, -0.5f, -0.5f), // 0
         new Vector3(0.5f, -0.5f, -0.5f),  // 1
@@ -55,9 +55,20 @@ public class CustomPolygonMesh : MonoBehaviour
     // Public field to assign a material
     public Material meshMaterial;
 
-    // Public field to control the size of each face
-    [Range(0.1f, 10f)]
-    public float faceSize = 1f;
+    // Public fields to control the size of each edge
+    [Header("Edge Sizes")]
+    [Range(1f, 50f)] public float frontBottomEdge = 1f;  // Edge between vertex 0 and 1
+    [Range(1f, 50f)] public float frontRightEdge = 1f;   // Edge between vertex 1 and 2
+    [Range(1f, 50f)] public float frontTopEdge = 1f;     // Edge between vertex 2 and 3
+    [Range(1f, 50f)] public float frontLeftEdge = 1f;    // Edge between vertex 3 and 0
+    [Range(1f, 50f)] public float backBottomEdge = 1f;   // Edge between vertex 4 and 5
+    [Range(1f, 50f)] public float backRightEdge = 1f;    // Edge between vertex 5 and 6
+    [Range(1f, 50f)] public float backTopEdge = 1f;      // Edge between vertex 6 and 7
+    [Range(1f, 50f)] public float backLeftEdge = 1f;     // Edge between vertex 7 and 4
+    [Range(1f, 50f)] public float bottomLeftEdge = 1f;   // Edge between vertex 0 and 4
+    [Range(1f, 50f)] public float bottomRightEdge = 1f;  // Edge between vertex 1 and 5
+    [Range(1f, 50f)] public float topRightEdge = 1f;     // Edge between vertex 2 and 6
+    [Range(1f, 50f)] public float topLeftEdge = 1f;      // Edge between vertex 3 and 7
 
     private Mesh mesh;
 
@@ -85,12 +96,23 @@ public class CustomPolygonMesh : MonoBehaviour
         // Clear the mesh
         mesh.Clear();
 
-        // Scale vertices based on faceSize
-        Vector3[] scaledVertices = new Vector3[vertices.Length];
-        for (int i = 0; i < vertices.Length; i++)
-        {
-            scaledVertices[i] = vertices[i] * faceSize;
-        }
+        // Create a copy of the base vertices
+        Vector3[] scaledVertices = new Vector3[baseVertices.Length];
+        System.Array.Copy(baseVertices, scaledVertices, baseVertices.Length);
+
+        // Scale vertices for each edge
+        ScaleEdge(scaledVertices, 0, 1, frontBottomEdge);  // Front bottom edge
+        ScaleEdge(scaledVertices, 1, 2, frontRightEdge);   // Front right edge
+        ScaleEdge(scaledVertices, 2, 3, frontTopEdge);     // Front top edge
+        ScaleEdge(scaledVertices, 3, 0, frontLeftEdge);    // Front left edge
+        ScaleEdge(scaledVertices, 4, 5, backBottomEdge);   // Back bottom edge
+        ScaleEdge(scaledVertices, 5, 6, backRightEdge);   // Back right edge
+        ScaleEdge(scaledVertices, 6, 7, backTopEdge);     // Back top edge
+        ScaleEdge(scaledVertices, 7, 4, backLeftEdge);    // Back left edge
+        ScaleEdge(scaledVertices, 0, 4, bottomLeftEdge);  // Bottom left edge
+        ScaleEdge(scaledVertices, 1, 5, bottomRightEdge); // Bottom right edge
+        ScaleEdge(scaledVertices, 2, 6, topRightEdge);    // Top right edge
+        ScaleEdge(scaledVertices, 3, 7, topLeftEdge);     // Top left edge
 
         // Assign scaled vertices, triangles, and UVs
         mesh.vertices = scaledVertices;
@@ -99,6 +121,16 @@ public class CustomPolygonMesh : MonoBehaviour
 
         // Recalculate normals for lighting
         mesh.RecalculateNormals();
+    }
+
+    void ScaleEdge(Vector3[] vertices, int indexA, int indexB, float scale)
+    {
+        // Calculate the midpoint of the edge
+        Vector3 midpoint = (vertices[indexA] + vertices[indexB]) * 0.5f;
+
+        // Scale each vertex relative to the midpoint
+        vertices[indexA] = midpoint + (vertices[indexA] - midpoint) * scale;
+        vertices[indexB] = midpoint + (vertices[indexB] - midpoint) * scale;
     }
 
     void AddMeshCollider()
@@ -115,7 +147,7 @@ public class CustomPolygonMesh : MonoBehaviour
 
     void OnValidate()
     {
-        // Update the mesh in the editor when vertices or faceSize are modified
+        // Update the mesh in the editor when edge sizes are modified
         if (mesh != null)
         {
             UpdateMesh();
