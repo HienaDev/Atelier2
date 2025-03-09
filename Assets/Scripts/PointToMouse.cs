@@ -13,6 +13,7 @@ public class PointToMouse : MonoBehaviour
         Vector3 direction = Mouse3D.GetMouseObjectPosition() - topHalf.transform.position;
 
         direction.y = 0f;
+        
         if (direction != Vector3.zero)
         {
             // Create target rotation
