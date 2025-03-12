@@ -133,6 +133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bottomHalf: {fileID: 6605667912589767585}
   topHalf: {fileID: 3343757072927067586}
+  bobbingScript: {fileID: 0}
   rotationSpeed: 10
   movSpeed: 5
   jumpForce: 5
@@ -156,10 +157,13 @@ MonoBehaviour:
   bulletPrefab: {fileID: 3061902347931598462, guid: 2c93060c57978fa408d8422f90be5bb9, type: 3}
   leftArmFirePoint: {fileID: 6906752598772349947}
   rightArmFirePoint: {fileID: 3897990426993566007}
-  leftArmRecoil: {fileID: 190918021007095120}
-  rightArmRecoil: {fileID: 8478053187224658297}
+  leftArm: {fileID: 0}
+  rightArm: {fileID: 0}
+  model: {fileID: 0}
+  mainCamera: {fileID: 0}
   shootingCooldown: 0.15
   bulletSpeed: 10
+  armRotationSpeed: 15
 --- !u!1 &2224503119914891301
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,6 +284,38 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &2774895280339348716
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3207599982717256390}
+  m_Layer: 2
+  m_Name: RotatePoint Right
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3207599982717256390
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2774895280339348716}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.11200011, y: 0.07300006, z: 0.04400013}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.2}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1713491256170656024}
+  m_Father: {fileID: 2149995248865937525}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2876938893118882397
 GameObject:
   m_ObjectHideFlags: 0
@@ -525,13 +561,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3083413474936323044}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.11200011, y: 0.07300006, z: 0.12400013}
-  m_LocalScale: {x: 0.05, y: 0.05, z: 0.2}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.39999962}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3897990426993566007}
-  m_Father: {fileID: 2149995248865937525}
+  m_Father: {fileID: 3207599982717256390}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7500926208870319641
 MeshFilter:
@@ -651,8 +687,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4064717090330041584}
-  - {fileID: 1713491256170656024}
+  - {fileID: 4614962282286782919}
+  - {fileID: 3207599982717256390}
   - {fileID: 3020041381154918705}
   m_Father: {fileID: 1584095261345323439}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -684,13 +720,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3483077319056916747}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.112, y: 0.07300006, z: 0.124000184}
-  m_LocalScale: {x: 0.05, y: 0.05, z: 0.2}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.39999962}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6906752598772349947}
-  m_Father: {fileID: 2149995248865937525}
+  m_Father: {fileID: 4614962282286782919}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7693015732474040966
 MeshFilter:
@@ -897,6 +933,38 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4064717090330041584}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5048507037633279423
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4614962282286782919}
+  m_Layer: 2
+  m_Name: RotatePoint Left
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4614962282286782919
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5048507037633279423}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.112, y: 0.07300006, z: 0.044000167}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.2}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4064717090330041584}
+  m_Father: {fileID: 2149995248865937525}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6605667912589767585
 GameObject:
