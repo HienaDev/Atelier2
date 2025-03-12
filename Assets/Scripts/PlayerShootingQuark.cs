@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerShooting2D : MonoBehaviour
+public class PlayerShootingQuark : MonoBehaviour
 {
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform leftArmFirePoint;

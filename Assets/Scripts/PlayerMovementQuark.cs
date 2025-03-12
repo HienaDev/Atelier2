@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerMovement2D : MonoBehaviour
+public class PlayerMovementQuark : MonoBehaviour
 {
     [SerializeField] private GameObject bottomHalf; 
     [SerializeField] private GameObject topHalf;    

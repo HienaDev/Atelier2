@@ -7,7 +7,7 @@ public class ScorpionBoss : MonoBehaviour
     private BossState currentState = BossState.Idle;
 
     [Header("General Settings")]
-    [SerializeField] private Transform player;
+    private Transform player;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float attackCooldown = 2f;
     [SerializeField] private LayerMask groundLayer;
@@ -34,6 +34,7 @@ public class ScorpionBoss : MonoBehaviour
 
     void Start()
     {
+        player = FindAnyObjectByType<PlayerMovementQuark>().transform;
         StartCoroutine(BossAI());
     }
 

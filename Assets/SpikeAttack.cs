@@ -41,7 +41,7 @@ public class SpikeAttack : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        targetObject = FindAnyObjectByType<PlayerMovement>().transform;
+        targetObject = FindAnyObjectByType<PlayerMovementMonkeyHell>().transform;
         currentSpikePosition = 0;
         spikeDistanceIterator = fullSpikeLaneLength / spikeNumber;
 

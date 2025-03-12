@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovementMonkeyHell : MonoBehaviour
 {
     [SerializeField] private GameObject bottomHalf;
     [SerializeField] private float rotationSpeed = 10f;
-    [SerializeField] private float movSpeed = 5f;
+    [SerializeField] private float movSpeed = 7f;
     [SerializeField] private float jumpForce = 5f; // Added jump force
     [SerializeField] private Rigidbody rb;
     [SerializeField] private LayerMask groundLayer; // LayerMask to detect ground

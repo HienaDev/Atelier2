@@ -31,7 +31,7 @@ public class MinotaurAttacks : MonoBehaviour
     private float justShot = 0f;
     [SerializeField] private GameObject spikePrefab;
     [SerializeField] private Transform firePoint;
-    private PlayerMovement playerMovementScript;
+    private PlayerMovementMonkeyHell playerMovementScript;
 
     [Header("Minotaur Spike Row")]
     [SerializeField] private Vector2 splineTimeRangeSpikeRows = new Vector2(0.33f, 0.66f);
@@ -46,7 +46,7 @@ public class MinotaurAttacks : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        playerMovementScript = FindAnyObjectByType<PlayerMovement>();
+        playerMovementScript = FindAnyObjectByType<PlayerMovementMonkeyHell>();
 
         if(numberOfRows > spikeRowFirePoint.Length)
         {
