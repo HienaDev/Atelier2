@@ -154,12 +154,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spike: {fileID: 8562156156235812664, guid: 12f122c0ed0dcc14b84a99f9e6227888, type: 3}
-  fullSpikeLaneLength: 10
-  spikeNumber: 10
+  fullSpikeLaneLength: 15
+  spikeNumber: 15
   timeBetweenSpikeSpawn: 0.1
   spikeComeUpDuration: 0.1
   spikeMoveDistance: 2.5
-  gapSize: 2
+  gapSize: 3
   targetObject: {fileID: 0}
   rotationDuration: 0.5
   movementSpeed: 5

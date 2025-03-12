@@ -118,11 +118,13 @@ public class SpikeAttack : MonoBehaviour
         if (angleToTarget > 0)
         {
             // Rotate right (clockwise)
+            Debug.Log(gameObject.name + " is rotating right.");
             targetAngle = Mathf.Min(angleToTarget, 90f); // Limit to 90 degrees
         }
         else
         {
             // Rotate left (counterclockwise)
+            Debug.Log(gameObject.name + " is rotating left.");
             targetAngle = Mathf.Max(angleToTarget, -90f); // Limit to -90 degrees
         }
 
