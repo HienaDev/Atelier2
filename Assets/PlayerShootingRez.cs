@@ -4,7 +4,6 @@ public class PlayerShootingRez : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform model; // The entire player model that rotates
-    [SerializeField] private Transform target; // The GameObject used as the aiming reference
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform leftArmFirePoint;
     [SerializeField] private Transform rightArmFirePoint;
@@ -30,9 +29,10 @@ public class PlayerShootingRez : MonoBehaviour
 
     private void RotateModelToMouse()
     {
-        Vector3 mouseWorldPosition = GetMouseWorldPosition(); // Always get a valid position
+        Vector3 mouseWorldPosition = GetMouseWorldPosition();
+        if (mouseWorldPosition == Vector3.zero) return;
 
-        // Compute direction toward the mouse position on the target or fallback
+        // Compute direction toward the mouse position in 3D space
         Vector3 lookDirection = (mouseWorldPosition - model.position).normalized;
 
         // Apply rotation
@@ -45,9 +45,10 @@ public class PlayerShootingRez : MonoBehaviour
 
     private void Shoot()
     {
-        Vector3 mouseWorldPosition = GetMouseWorldPosition(); // Always get a valid position
+        Vector3 mouseWorldPosition = GetMouseWorldPosition();
+        if (mouseWorldPosition == Vector3.zero) return;
 
-        // Compute shooting direction toward the target or fallback
+        // Compute shooting direction
         Vector3 shootDirection = (mouseWorldPosition - GetFirePoint().position).normalized;
 
         // Instantiate and fire the bullet
@@ -65,19 +66,14 @@ public class PlayerShootingRez : MonoBehaviour
 
     private Vector3 GetMouseWorldPosition()
     {
-        // Create a ray from the mouse cursor into world space
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        // Raycast against the target's collider
-        if (target != null && target.TryGetComponent<Collider>(out Collider targetCollider))
+        if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            if (targetCollider.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
-            {
-                return hit.point; // Get the exact 3D world position on the target GameObject
-            }
+            return hit.point; // Get exact 3D world position where the mouse is pointing
         }
 
-        // If no valid hit, fallback to shooting in the general direction of the target
-        return ray.GetPoint(100); // Project ray 100 units forward
+        // If no collider is hit, project forward into the world
+        return ray.GetPoint(100); // Adjust depth if necessary
     }
 }
