@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
+using static PhaseManager;
 
 public class BossMorphing : MonoBehaviour
 {
@@ -41,7 +42,10 @@ public class BossMorphing : MonoBehaviour
 
     private void Start()
     {
-        ToggleMeshes(false);
+        foreach (BossPhase phase in boss.bossPhases)
+        {
+            ToggleMeshes(false, phase.numberOfPhase);
+        }
 
         // Create a new SplineContainer if one doesn't exist
         CreateSplineContainer();
@@ -49,48 +53,11 @@ public class BossMorphing : MonoBehaviour
         Morpinhg = false;
     }
 
-    void Update()
+    private void ToggleMeshes(bool toggle, int numberOfPhase)
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        if (numberOfPhase == -1)
         {
-            if (currentCoroutine != null)
-            {
-                StopCoroutine(currentCoroutine);
-            }
-            currentCoroutine = StartCoroutine(PhaseMorphSpline(boss, boss.bossPhases[1]));
-        }
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            if (currentCoroutine != null)
-            {
-                StopCoroutine(currentCoroutine);
-            }
-            currentCoroutine = StartCoroutine(PhaseMorphSpline(boss, boss.bossPhases[0]));
-        }
-
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            if (currentCoroutine != null)
-            {
-                StopCoroutine(currentCoroutine);
-            }
-            currentCoroutine = StartCoroutine(PhaseMorphLerp(boss, boss.bossPhases[1]));
-        }
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            if (currentCoroutine != null)
-            {
-                StopCoroutine(currentCoroutine);
-            }
-            currentCoroutine = StartCoroutine(PhaseMorphLerp(boss, boss.bossPhases[0]));
-        }
-    }
-
-    private void ToggleMeshes(bool toggle)
-    {
-        foreach (BossPhase phase in boss.bossPhases)
-        {
-            foreach (Transform part in phase.bossParts)
+            foreach (Transform part in boss.parts)
             {
                 Renderer renderer = part.gameObject.GetComponent<Renderer>();
                 if (renderer != null)
@@ -98,7 +65,27 @@ public class BossMorphing : MonoBehaviour
                     renderer.enabled = toggle;
                 }
             }
+
         }
+        else
+        {
+            foreach (BossPhase phase in boss.bossPhases)
+            {
+                if (phase.numberOfPhase == numberOfPhase)
+                {
+                    foreach (Transform part in phase.bossParts)
+                    {
+                        Renderer renderer = part.gameObject.GetComponent<Renderer>();
+                        if (renderer != null)
+                        {
+                            renderer.enabled = toggle;
+                        }
+                    }
+                }
+
+            }
+        }
+
     }
 
     private void ToggleColliders(bool toggle)
@@ -135,8 +122,9 @@ public class BossMorphing : MonoBehaviour
 
     public IEnumerator PhaseMorphLerp(Boss boss, BossPhase toPhase)
     {
-
         ToggleColliders(false);
+        ToggleMeshes(true, -1);
+        ToggleMeshes(false, toPhase.numberOfPhase);
 
         Morpinhg = true;
         float lerpValue = 0f;
@@ -144,22 +132,46 @@ public class BossMorphing : MonoBehaviour
         List<Vector3> originalPositions = new List<Vector3>();
         List<Quaternion> originalRotations = new List<Quaternion>();
         List<Vector3> originalScales = new List<Vector3>();
+
         for (int i = 0; i < boss.parts.Length; i++)
         {
             originalPositions.Add(boss.parts[i].position);
             originalRotations.Add(boss.parts[i].rotation);
-            originalScales.Add(boss.parts[i].localScale);
+            originalScales.Add(boss.parts[i].lossyScale); // Use lossyScale to get world scale
         }
 
         while (lerpValue < 0.999f)
         {
             lerpValue += Time.deltaTime * transformationSpeedLerp;
             lerpValue = Mathf.Clamp(lerpValue, 0, 0.999f);
+
             for (int i = 0; i < boss.parts.Length; i++)
             {
-                boss.parts[i].position = Vector3.Lerp(originalPositions[i], toPhase.bossParts[i].position, lerpValue);
-                boss.parts[i].rotation = Quaternion.Lerp(originalRotations[i], toPhase.bossParts[i].rotation, lerpValue);
-                boss.parts[i].localScale = Vector3.Lerp(originalScales[i], toPhase.bossParts[i].localScale, lerpValue);
+                // Get target values in world space
+                Vector3 targetPosition = toPhase.bossParts[i].position;
+                Quaternion targetRotation = toPhase.bossParts[i].rotation;
+                Vector3 targetScale = toPhase.bossParts[i].lossyScale;
+
+                // Apply position and rotation
+                boss.parts[i].position = Vector3.Lerp(originalPositions[i], targetPosition, lerpValue);
+                boss.parts[i].rotation = Quaternion.Lerp(originalRotations[i], targetRotation, lerpValue);
+
+                // Handle scale more carefully - convert from world to local scale
+                Vector3 currentWorldScale = Vector3.Lerp(originalScales[i], targetScale, lerpValue);
+                // Convert world scale to local scale if there's a parent
+                if (boss.parts[i].parent != null)
+                {
+                    Vector3 parentWorldScale = boss.parts[i].parent.lossyScale;
+                    boss.parts[i].localScale = new Vector3(
+                        currentWorldScale.x / parentWorldScale.x,
+                        currentWorldScale.y / parentWorldScale.y,
+                        currentWorldScale.z / parentWorldScale.z
+                    );
+                }
+                else
+                {
+                    boss.parts[i].localScale = currentWorldScale;
+                }
             }
 
             yield return null;
@@ -167,21 +179,26 @@ public class BossMorphing : MonoBehaviour
 
         Morpinhg = false;
 
+        ToggleMeshes(false, -1);
+        ToggleMeshes(true, toPhase.numberOfPhase);
         ToggleColliders(true);
     }
 
     public IEnumerator PhaseMorphSpline(Boss boss, BossPhase toPhase)
     {
-
         ToggleColliders(false);
 
         Morpinhg = true;
         float lerpValue = 0f;
 
-        // Collect original transformations
+        // Collect original transformations in world space
         List<Vector3> originalPositions = new List<Vector3>();
         List<Quaternion> originalRotations = new List<Quaternion>();
         List<Vector3> originalScales = new List<Vector3>();
+
+        // Get the parent transform of the destination phase
+        Transform phaseParent = toPhase.bossParts[0].parent;
+
         for (int i = 0; i < boss.parts.Length; i++)
         {
             originalPositions.Add(boss.parts[i].position);
@@ -192,20 +209,15 @@ public class BossMorphing : MonoBehaviour
         // Generate splines
         for (int i = 0; i < boss.parts.Length; i++)
         {
-            // Start position is the current position of the part
-            // End position is the target position from the toPhase
-            if (useArchedPath)
-            {
-                GenerateArchedSpline(boss.parts[i].position, toPhase.bossParts[i].position, splineContainerList[i]);
-            }
-            else
-            {
-                GenerateRandomLinearSpline(boss.parts[i].position, toPhase.bossParts[i].position, splineContainerList[i]);
-            }
+            // Get the target position in world space
+            Vector3 targetPosition = toPhase.bossParts[i].position;
 
-            // Set the SplineAnimate component to use the current position as the starting point
+            // Generate spline from current position to target position
+            GenerateRandomLinearSpline(boss.parts[i].position, targetPosition, splineContainerList[i]);
+
+            // Set the SplineAnimate component
             splineAnimateList[i].Container = splineContainerList[i];
-            splineAnimateList[i].Duration = 1f; // Match with our normalized time
+            splineAnimateList[i].Duration = 1f;
             splineAnimateList[i].ElapsedTime = 0f;
         }
 
@@ -219,16 +231,35 @@ public class BossMorphing : MonoBehaviour
                 // Update spline position
                 splineAnimateList[i].ElapsedTime = lerpValue;
 
-                // Rotation and scale are still handled with Lerp
-                boss.parts[i].rotation = Quaternion.Lerp(originalRotations[i], toPhase.bossParts[i].rotation, lerpValue);
-                boss.parts[i].localScale = Vector3.Lerp(originalScales[i], toPhase.bossParts[i].localScale, lerpValue);
+                // Get the target rotation and scale in world space
+                Quaternion targetRotation = toPhase.bossParts[i].rotation;
+                Vector3 targetScale = toPhase.bossParts[i].lossyScale; // Use lossyScale to get world scale
+
+                // Apply rotation and scale
+                boss.parts[i].rotation = Quaternion.Lerp(originalRotations[i], targetRotation, lerpValue);
+
+                // Handle scale more carefully - convert from world to local scale
+                Vector3 currentWorldScale = Vector3.Lerp(originalScales[i], targetScale, lerpValue);
+                // Convert world scale to local scale if there's a parent
+                if (boss.parts[i].parent != null)
+                {
+                    Vector3 parentWorldScale = boss.parts[i].parent.lossyScale;
+                    boss.parts[i].localScale = new Vector3(
+                        currentWorldScale.x / parentWorldScale.x,
+                        currentWorldScale.y / parentWorldScale.y,
+                        currentWorldScale.z / parentWorldScale.z
+                    );
+                }
+                else
+                {
+                    boss.parts[i].localScale = currentWorldScale;
+                }
             }
 
             yield return null;
         }
 
         Morpinhg = false;
-
         ToggleColliders(true);
     }
 
@@ -319,62 +350,4 @@ public class BossMorphing : MonoBehaviour
         Debug.Log($"Random semi-linear spline generated from {startPosition} to {endPosition}");
     }
 
-    public void GenerateArchedSpline(Vector3 startPosition, Vector3 endPosition, SplineContainer splineContainer)
-    {
-        if (splineContainer == null)
-        {
-            Debug.LogError("SplineContainer is missing.");
-            return;
-        }
-
-        // Calculate the main direction vector
-        Vector3 mainDirection = (endPosition - startPosition).normalized;
-        Vector3 totalDistance = endPosition - startPosition;
-        float pathLength = totalDistance.magnitude;
-
-        // Find perpendicular vectors for creating the arch
-        Vector3 up = Vector3.up;
-        Vector3 right = Vector3.Cross(mainDirection, up).normalized;
-        if (right.magnitude < 0.1f) // If mainDirection is parallel to up
-        {
-            right = Vector3.Cross(mainDirection, Vector3.right).normalized;
-        }
-        Vector3 upVector = Vector3.Cross(right, mainDirection).normalized;
-
-        // Clear any existing spline data
-        splineContainer.Spline.Clear();
-
-        // Add the start point
-        BezierKnot startKnot = new BezierKnot(startPosition);
-        float tangentLength = pathLength * 0.25f; // Slightly longer tangents for arch
-        startKnot.TangentOut = new float3(mainDirection * tangentLength + upVector * (archHeight * pathLength * 0.2f));
-        splineContainer.Spline.Add(startKnot);
-
-        // Calculate the mid point with an arch
-        Vector3 midPoint = Vector3.Lerp(startPosition, endPosition, 0.5f);
-        // Add the arch height in the upVector direction
-        Vector3 archedMidPoint = midPoint + (upVector * (archHeight * pathLength * 0.5f));
-
-        // Add the mid control point for the arch
-        BezierKnot midKnot = new BezierKnot(archedMidPoint);
-
-        // Calculate tangent directions that create a smooth arch
-        Vector3 toStartTangent = (startPosition - archedMidPoint).normalized;
-        Vector3 toEndTangent = (endPosition - archedMidPoint).normalized;
-
-        midKnot.TangentIn = new float3(toStartTangent * tangentLength);
-        midKnot.TangentOut = new float3(toEndTangent * tangentLength);
-
-        splineContainer.Spline.Add(midKnot);
-
-        // Add the end point
-        BezierKnot endKnot = new BezierKnot(endPosition);
-        endKnot.TangentIn = new float3(-mainDirection * tangentLength + upVector * (archHeight * pathLength * 0.2f));
-        splineContainer.Spline.Add(endKnot);
-
-        // Ensure the spline is not closed
-        splineContainer.Spline.Closed = false;
-
-        Debug.Log($"Arched spline generated from {startPosition} to {endPosition} with arch height {archHeight}");
-    }
 }
