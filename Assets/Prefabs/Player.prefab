@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7410817813311717151}
+  - component: {fileID: 8377950777459884386}
   - component: {fileID: 8427903151118772888}
   - component: {fileID: 8156704611051244190}
-  - component: {fileID: 8377950777459884386}
   - component: {fileID: 7393047101856437148}
   - component: {fileID: 926096131667842086}
   - component: {fileID: 3079806356452332426}
@@ -38,6 +38,33 @@ Transform:
   - {fileID: 1584095261345323439}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -66.261, z: 0}
+--- !u!54 &8377950777459884386
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981795298378305370}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 1
 --- !u!114 &8427903151118772888
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,33 +100,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   groundCheckDistance: 0.1
---- !u!54 &8377950777459884386
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 981795298378305370}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 1
 --- !u!114 &7393047101856437148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,6 +119,8 @@ MonoBehaviour:
   rightArmFirePoint: {fileID: 3897990426993566007}
   shootingCooldown: 0.15
   bulletSpeed: 10
+  topHalf: {fileID: 0}
+  rotationSpeed: 10
 --- !u!114 &926096131667842086
 MonoBehaviour:
   m_ObjectHideFlags: 0

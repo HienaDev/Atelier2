@@ -16,6 +16,8 @@ public class PlayerShootingMonkeyHell : MonoBehaviour
 
     [SerializeField] private float bulletSpeed = 20f;
 
+    [SerializeField] private GameObject topHalf;
+    [SerializeField] private float rotationSpeed = 10f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,7 +28,22 @@ public class PlayerShootingMonkeyHell : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButton("Fire1") && Time.time - justShot >= shootingCooldown)
+
+        // Get direction from object to the hit point, but only on the X-Z plane
+        Vector3 direction = Mouse3D.GetMouseObjectPosition() - topHalf.transform.position;
+
+        direction.y = 0f;
+
+        if (direction != Vector3.zero)
+        {
+            // Create target rotation
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+            // Smoothly rotate towards the target
+            topHalf.transform.rotation = Quaternion.Slerp(topHalf.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+        }
+
+        if (Input.GetButton("Fire1") && Time.time - justShot >= shootingCooldown)
         {
             Shoot();
             justShot = Time.time;

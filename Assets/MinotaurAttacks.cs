@@ -88,28 +88,28 @@ public class MinotaurAttacks : MonoBehaviour
                 spikeShotScript.Initialize(spikeSpeed, spikeMaxDistance);
             }
 
-            if (currentSplineTime < splineTimeRangeSpikeShots.y && splineSpeed > 0 || currentSplineTime > splineTimeRangeSpikeShots.x && splineSpeed < 0)
-            {
-                Vector3 directionToPlayer = transform.position - playerMovementScript.transform.position;
-                directionToPlayer.y = 0;
+            //if (currentSplineTime < splineTimeRangeSpikeShots.y && splineSpeed > 0 || currentSplineTime > splineTimeRangeSpikeShots.x && splineSpeed < 0)
+            //{
+            //    Vector3 directionToPlayer = transform.position - playerMovementScript.transform.position;
+            //    directionToPlayer.y = 0;
 
 
-                if (directionToPlayer != Vector3.zero)
-                {
-                    Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+            //    if (directionToPlayer != Vector3.zero)
+            //    {
+            //        Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
 
 
-                    transform.rotation = Quaternion.Euler(0, targetRotation.eulerAngles.y, 0);
-                }
+            //        transform.rotation = Quaternion.Euler(0, targetRotation.eulerAngles.y, 0);
+            //    }
 
-                currentSplineTime += Time.deltaTime * splineSpeed;
-                currentSplineTime = Mathf.Clamp(currentSplineTime, splineTimeRangeSpikeShots.x, splineTimeRangeSpikeShots.y);
-                splineAnimateScript.ElapsedTime = currentSplineTime;
-            }
-            else
-            {
-                splineSpeed *= -1;
-            }
+            //    currentSplineTime += Time.deltaTime * splineSpeed;
+            //    currentSplineTime = Mathf.Clamp(currentSplineTime, splineTimeRangeSpikeShots.x, splineTimeRangeSpikeShots.y);
+            //    splineAnimateScript.ElapsedTime = currentSplineTime;
+            //}
+            //else
+            //{
+            //    splineSpeed *= -1;
+            //}
         }
 
         if(attackPattern == AttackPattern.SpikeRow)
@@ -126,28 +126,28 @@ public class MinotaurAttacks : MonoBehaviour
                 }
             }
 
-            if (currentSplineTime < splineTimeRangeSpikeRows.y && splineSpeed > 0 || currentSplineTime > splineTimeRangeSpikeRows.x && splineSpeed < 0)
-            {
-                Vector3 directionToPlayer = transform.position - playerMovementScript.transform.position;
-                directionToPlayer.y = 0;
+            //if (currentSplineTime < splineTimeRangeSpikeRows.y && splineSpeed > 0 || currentSplineTime > splineTimeRangeSpikeRows.x && splineSpeed < 0)
+            //{
+            //    Vector3 directionToPlayer = transform.position - playerMovementScript.transform.position;
+            //    directionToPlayer.y = 0;
 
 
-                if (directionToPlayer != Vector3.zero)
-                {
-                    Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+            //    if (directionToPlayer != Vector3.zero)
+            //    {
+            //        Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
 
 
-                    transform.rotation = Quaternion.Euler(0, targetRotation.eulerAngles.y, 0);
-                }
+            //        transform.rotation = Quaternion.Euler(0, targetRotation.eulerAngles.y, 0);
+            //    }
 
-                currentSplineTime += Time.deltaTime * splineSpeed;
-                currentSplineTime = Mathf.Clamp(currentSplineTime, splineTimeRangeSpikeRows.x, splineTimeRangeSpikeRows.y);
-                splineAnimateScript.ElapsedTime = currentSplineTime;
-            }
-            else
-            {
-                splineSpeed *= -1;
-            }
+            //    currentSplineTime += Time.deltaTime * splineSpeed;
+            //    currentSplineTime = Mathf.Clamp(currentSplineTime, splineTimeRangeSpikeRows.x, splineTimeRangeSpikeRows.y);
+            //    splineAnimateScript.ElapsedTime = currentSplineTime;
+            //}
+            //else
+            //{
+            //    splineSpeed *= -1;
+            //}
         }
 
     }

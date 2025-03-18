@@ -2,84 +2,115 @@ using UnityEngine;
 
 public class PlayerMovementEverHood : MonoBehaviour
 {
-    //[Header("Movement Settings")]
-    //[SerializeField] private float moveSpeed = 5f;
-    //[SerializeField] private int gridSize = 5;
+    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float jumpHeight = 1.5f;
+    [SerializeField] private float jumpDuration = 0.5f;
+    [SerializeField] private int gridSize = 5;
+    public int GridSize { get { return gridSize; } }
+    [SerializeField] private float cellDistance = 1.0f;
+    public float CellDistance { get { return cellDistance; } }
 
-    //[Header("Input Settings")]
-    //[SerializeField] private KeyCode leftKey = KeyCode.LeftArrow;
-    //[SerializeField] private KeyCode rightKey = KeyCode.RightArrow;
+    [SerializeField] private bool jumpEnabled = false;
 
-    //private int currentPosition = 0;
-    //private bool isMoving = false;
-    //private Vector3 targetPosition;
-    //private int maxPosition;
+    private Vector3 startPosition;
+    public Vector3 StartPosition { get { return startPosition; } }
+    private Vector3 targetPosition;
+    private int currentZ;
+    private bool isJumping = false;
+    private float jumpTimer = 0f;
 
-    //void Start()
-    //{
-    //    // Calculate the maximum position based on grid size
-    //    // For a grid size of 5, we can move 2 units left and 2 units right from center
-    //    maxPosition = gridSize / 2;
+    void OnEnable()
+    {
+        // Get the starting position when the script is enabled
+        startPosition = transform.position;
+        targetPosition = startPosition;
 
-    //    // Set the initial position to the center of the grid
-    //    transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
-    //    targetPosition = transform.position;
-    //}
+        // Calculate current Z position (assuming middle of grid as default)
+        currentZ = gridSize / 2;
+    }
 
-    //void Update()
-    //{
-    //    HandleInput();
-    //    HandleMovement();
-    //}
+    void Update()
+    {
+        // Handle Z-axis movement using horizontal input
+        if (Mathf.Approximately(transform.position.z, targetPosition.z))
+        {
+            float horizontalInput = Input.GetAxisRaw("Horizontal");
 
-    //private void HandleInput()
-    //{
-    //    // Only process input if we're not already moving
-    //    if (isMoving)
-    //        return;
+            if (horizontalInput < 0 && currentZ < gridSize - 1)
+            {
+                // Move left along Z-axis
+                currentZ++;
+                targetPosition.z = startPosition.z + (currentZ - gridSize / 2) * cellDistance;
+            }
+            else if (horizontalInput > 0 && currentZ > 0)
+            {
+                // Move right along Z-axis
+                currentZ--;
+                targetPosition.z = startPosition.z + (currentZ - gridSize / 2) * cellDistance;
+            }
+        }
 
-    //    // Move left
-    //    if (Input.GetKeyDown(leftKey) && currentPosition > -maxPosition)
-    //    {
-    //        currentPosition--;
-    //        targetPosition = new Vector3(transform.position.x, transform.position.y, currentPosition);
-    //        isMoving = true;
-    //    }
-    //    // Move right
-    //    else if (Input.GetKeyDown(rightKey) && currentPosition < maxPosition)
-    //    {
-    //        currentPosition++;
-    //        targetPosition = new Vector3(transform.position.x, transform.position.y, currentPosition);
-    //        //targetPosition = new Vector3(currentPosition, transform.position.y, transform.position.z);
-    //        isMoving = true;
-    //    }
-    //}
+        // Handle jump input
+        if (!isJumping && Input.GetButtonDown("Jump"))
+        {
+            isJumping = true;
+            jumpTimer = 0f;
+        }
 
-    //private void HandleMovement()
-    //{
-    //    if (isMoving)
-    //    {
-    //        // Move towards the target position
-    //        transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+        // Move toward target position (Z-axis only)
+        transform.position = Vector3.MoveTowards(
+            transform.position,
+            new Vector3(transform.position.x, transform.position.y, targetPosition.z),
+            moveSpeed * Time.deltaTime
+        );
 
-    //        // Check if we've reached the target position
-    //        if (Vector3.Distance(transform.position, targetPosition) < 0.01f)
-    //        {
-    //            transform.position = targetPosition;
-    //            isMoving = false;
-    //        }
-    //    }
-    //}
+        // Handle jumping
+        if (isJumping)
+        {
+            if (jumpEnabled)
+                Jump();
+        }
+    }
 
-    //// Get the current grid position
-    //public int GetCurrentPosition()
-    //{
-    //    return currentPosition;
-    //}
+    private void Jump()
+    {
+        jumpTimer += Time.deltaTime;
+        float jumpProgress = jumpTimer / jumpDuration;
 
-    //// Check if the player is currently moving
-    //public bool IsMoving()
-    //{
-    //    return isMoving;
-    //}
+        if (jumpProgress < 1f)
+        {
+            // Sine curve for smooth jump
+            float jumpOffset = Mathf.Sin(jumpProgress * Mathf.PI) * jumpHeight;
+            transform.position = new Vector3(
+                transform.position.x,
+                startPosition.y + jumpOffset,
+                transform.position.z
+            );
+        }
+        else
+        {
+            // End jump
+            transform.position = new Vector3(
+                transform.position.x,
+                startPosition.y,
+                transform.position.z
+            );
+            isJumping = false;
+        }
+    }
+
+    // Set a custom grid size and recalculate position
+    public void SetGridSize(int newSize)
+    {
+        gridSize = newSize;
+        currentZ = gridSize / 2;
+        targetPosition.z = startPosition.z;
+        transform.position = new Vector3(transform.position.x, transform.position.y, targetPosition.z);
+    }
+
+    // Set the distance between grid cells
+    public void SetCellDistance(float distance)
+    {
+        cellDistance = distance;
+    }
 }

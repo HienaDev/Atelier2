@@ -1241,7 +1241,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1100047775}
   m_Layer: 0
-  m_Name: Scene Unlit
+  m_Name: Scorpion Scene
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
