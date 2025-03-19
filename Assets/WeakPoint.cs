@@ -19,6 +19,8 @@ public class WeakPoint : MonoBehaviour
     [SerializeField] private int lives = 20;
     private int currentLives;
 
+    [SerializeField] private float extrusionIntensitySteps = 0.1f;
+
     private bool dying = false;
 
     [SerializeField] private Collider col;
@@ -60,7 +62,9 @@ public class WeakPoint : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+
+
+    private void OnTriggerEnter(Collider other)
     {
         currentLives -= 1;
         if (currentLives <= 0 && !dying)
@@ -73,8 +77,9 @@ public class WeakPoint : MonoBehaviour
             mat.DOFloat(80f, "_PulseRatio", 0.25f).SetEase(Ease.InExpo).OnComplete(() => {
                 transform.DOKill();
                 onDeath.Invoke();
-                Destroy(gameObject, 0.1f); });
-            
+                Destroy(gameObject, 0.1f);
+            });
+
         }
         else if (currentLives > 0)
         {
@@ -84,9 +89,8 @@ public class WeakPoint : MonoBehaviour
             if (sequence != null) sequence.Kill();
             transform.DOShakePosition(0.1f, 0.3f, 5, 90, false, true);
             sequence = DOTween.Sequence();
-            sequence.Append(mat.DOFloat(1f, "_PulseRatio", 0.05f).SetEase(Ease.InOutSine));
-            sequence.Append(mat.DOFloat(-1f, "_PulseRatio", 0.5f).SetEase(Ease.InOutSine));
+            sequence.Append(mat.DOFloat(1f + ((lives - currentLives) * extrusionIntensitySteps), "_PulseRatio", 0.05f).SetEase(Ease.InOutSine));
+            sequence.Append(mat.DOFloat(-1f + ((lives - currentLives) * extrusionIntensitySteps), "_PulseRatio", 0.5f).SetEase(Ease.InOutSine));
         }
-
     }
 }

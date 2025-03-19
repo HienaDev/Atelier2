@@ -12,11 +12,16 @@ public class MouthBossAttacks : MonoBehaviour
     [SerializeField] private GameObject attackPrefab;
     [SerializeField] private float attackSpeed = 10f;
     [SerializeField] private float attackCooldown = 1f;
+    [SerializeField] private float weakpointSpeed = 10f;
     private float justAttacked = 0f;
 
     [SerializeField] private GameObject weakpointPrefab;
 
     [SerializeField, Range(0, 100)] private int weakpointChance = 50;
+
+    [SerializeField] private BossHealth health;
+
+    [SerializeField] private ClearProjectiles clearProjectiles;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -56,6 +61,9 @@ public class MouthBossAttacks : MonoBehaviour
         {
             attack = Instantiate(weakpointPrefab);
             attack.transform.position = shootingPoint.position + playerMovement.CellDistance * (attackPosition - gridHalfSize) * new Vector3(0f, 0f, 1f);
+            attack.GetComponent<Rigidbody>().linearVelocity = -attack.transform.right * attackSpeed / 2;
+
+            attack.GetComponent<WeakPoint>().onDeath.AddListener(health.DealCritDamage);
         }
 
         else
@@ -65,6 +73,9 @@ public class MouthBossAttacks : MonoBehaviour
             Debug.Log(playerMovement.CellDistance * (attackPosition - gridHalfSize) * new Vector3(0f, 0f, 1f));
             attack.GetComponent<Rigidbody>().linearVelocity = attack.transform.up * attackSpeed;
         }
+
+        clearProjectiles.AddProjectile(attack);
+
 
     }
 }
