@@ -13,6 +13,7 @@ public class BossHealth : MonoBehaviour
     
     [SerializeField] private ClearProjectiles projectiles;
 
+    private bool alreadySwapped = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -32,8 +33,9 @@ public class BossHealth : MonoBehaviour
 
         Debug.Log("currentLives = " + currentLives);
 
-        if (currentLives < livesToSwapPhase)
+        if (currentLives < livesToSwapPhase && !alreadySwapped)
         {
+            alreadySwapped = true;
             projectiles.ClearAllProjectiles();
             phaseManager.ChangeToMinotaur();
         }

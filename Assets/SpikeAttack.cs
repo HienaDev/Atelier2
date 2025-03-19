@@ -87,7 +87,7 @@ public class SpikeAttack : MonoBehaviour
                 isRotating = false;
                 movementStartTime = Time.time; // Record the time when rotation completes
                 isMoving = true;
-                Debug.Log("Rotation complete. Waiting to start moving.");
+                //Debug.Log("Rotation complete. Waiting to start moving.");
             }
         }
 
@@ -118,13 +118,13 @@ public class SpikeAttack : MonoBehaviour
         if (angleToTarget > 0)
         {
             // Rotate right (clockwise)
-            Debug.Log(gameObject.name + " is rotating right.");
+            //Debug.Log(gameObject.name + " is rotating right.");
             targetAngle = Mathf.Min(angleToTarget, 90f); // Limit to 90 degrees
         }
         else
         {
             // Rotate left (counterclockwise)
-            Debug.Log(gameObject.name + " is rotating left.");
+            //Debug.Log(gameObject.name + " is rotating left.");
             targetAngle = Mathf.Max(angleToTarget, -90f); // Limit to -90 degrees
         }
 
@@ -181,7 +181,7 @@ public class SpikeAttack : MonoBehaviour
         // If the spikes have traveled the maximum distance, trigger break effect instead of destroying
         if (distanceTraveled >= maxTravelDistance)
         {
-            Debug.Log("Spikes have traveled the maximum distance. Breaking them apart.");
+            //Debug.Log("Spikes have traveled the maximum distance. Breaking them apart.");
 
             // Get all child spikes and trigger break effect
             Spike[] spikes = GetComponentsInChildren<Spike>();

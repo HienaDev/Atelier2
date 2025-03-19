@@ -15,7 +15,7 @@ public class MinotaurAttacks : MonoBehaviour
         None
     }
 
-    [SerializeField] private float switchAttackPatternTime = 10f;  
+    [SerializeField] private float switchAttackPatternTime = 10f;
     private float justChangedPattern = 0f;
 
     [SerializeField] private AttackPattern attackPattern;
@@ -25,7 +25,7 @@ public class MinotaurAttacks : MonoBehaviour
     [SerializeField] private Vector2 splineTimeRangeSpikeShots = new Vector2(0f, 0.99f);
     [SerializeField] private float splineSpeed = 1f;
     private float currentSplineTime = 0f;
-    [SerializeField] private float spikeMaxDistance = 10f;  
+    [SerializeField] private float spikeMaxDistance = 10f;
     [SerializeField] private float spikeSpeed = 10f;
     [SerializeField] private float spikeShotCooldown = 0.5f;
     private float justShot = 0f;
@@ -48,7 +48,7 @@ public class MinotaurAttacks : MonoBehaviour
     {
         playerMovementScript = FindAnyObjectByType<PlayerMovementMonkeyHell>();
 
-        if(numberOfRows > spikeRowFirePoint.Length)
+        if (numberOfRows > spikeRowFirePoint.Length)
         {
             numberOfRows = spikeRowFirePoint.Length;
         }
@@ -80,12 +80,24 @@ public class MinotaurAttacks : MonoBehaviour
         if (attackPattern == AttackPattern.SpikeShots)
         {
 
-            if(Time.time - justShot > spikeShotCooldown)
+            if (Time.time - justShot > spikeShotCooldown)
             {
                 justShot = Time.time;
                 GameObject spike = Instantiate(spikePrefab, firePoint.position, firePoint.rotation);
                 SpikeShot spikeShotScript = spike.GetComponent<SpikeShot>();
                 spikeShotScript.Initialize(spikeSpeed, spikeMaxDistance);
+            }
+
+            Vector3 directionToPlayer = transform.position - playerMovementScript.transform.position;
+            directionToPlayer.y = 0;
+
+
+            if (directionToPlayer != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+
+
+                transform.rotation = Quaternion.Euler(0, targetRotation.eulerAngles.y, 0);
             }
 
             //if (currentSplineTime < splineTimeRangeSpikeShots.y && splineSpeed > 0 || currentSplineTime > splineTimeRangeSpikeShots.x && splineSpeed < 0)
@@ -112,9 +124,9 @@ public class MinotaurAttacks : MonoBehaviour
             //}
         }
 
-        if(attackPattern == AttackPattern.SpikeRow)
+        if (attackPattern == AttackPattern.SpikeRow)
         {
-            if(Time.time - justRowShot > spikeRowCooldown)
+            if (Time.time - justRowShot > spikeRowCooldown)
             {
                 justRowShot = Time.time;
                 chosenFirePoints.Shuffle();

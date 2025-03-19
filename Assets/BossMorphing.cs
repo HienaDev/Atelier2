@@ -311,7 +311,7 @@ public class BossMorphing : MonoBehaviour
         // Ensure the spline is not closed
         splineContainer.Spline.Closed = false;
 
-        Debug.Log($"Random semi-linear spline generated from {startPosition} to {endPosition}");
+        //Debug.Log($"Random semi-linear spline generated from {startPosition} to {endPosition}");
     }
 
 }

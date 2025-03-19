@@ -27,6 +27,7 @@ public class PlayerBullet : MonoBehaviour
 
         DamageBoss damageBoss = other.GetComponent<DamageBoss>();
 
+        Debug.Log(other.name);
         if (damageBoss != null)
         {
             damageBoss.DealDamage();
