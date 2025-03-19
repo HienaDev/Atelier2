@@ -16,10 +16,10 @@ TagManager:
   - 
   - 
   - Floor
-  - 
-  - 
-  - 
-  - 
+  - EnemyAttack
+  - PlayerAttack
+  - Player
+  - Boss
   - 
   - 
   - 

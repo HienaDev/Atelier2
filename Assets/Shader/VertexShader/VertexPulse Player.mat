@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: VertexPulse
+  m_Name: VertexPulse Player
   m_Shader: {fileID: -6465566751694194690, guid: 967f251a6eb8b954cac5001aba2e6f89, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -72,7 +72,7 @@ Material:
     - _ZWrite: 1
     - _ZWriteControl: 0
     m_Colors:
-    - _Color: {r: 0.73424447, g: 0.7490196, b: 0, a: 0}
+    - _Color: {r: 0, g: 0.24860597, b: 1, a: 0}
     - _Normal: {r: 1, g: 1, b: 1, a: 0}
     - _Position: {r: 0, g: 0, b: 0, a: 0}
     - _Tangent: {r: 1, g: 1, b: 1, a: 0}

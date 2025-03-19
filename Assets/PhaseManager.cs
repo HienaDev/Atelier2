@@ -47,6 +47,8 @@ public class PhaseManager : MonoBehaviour
 
     private Dictionary<Phase, PhaseData> phaseData = new Dictionary<Phase, PhaseData>();
 
+    [SerializeField] private bool debugMode = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private IEnumerator Start()
     {
@@ -87,9 +89,16 @@ public class PhaseManager : MonoBehaviour
         ChangePhaseDictionary(currentPhase);
     }
 
+    public void ChangeToMinotaur()
+    {
+        ChangePhaseDictionary(Phase.MonkeyHell);
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if (!debugMode)
+            return;
         if (Input.GetKeyDown(KeyCode.M)) ChangePhaseDictionary(Phase.MonkeyHell);
         if (Input.GetKeyDown(KeyCode.E)) ChangePhaseDictionary(Phase.Everhood);
         if (Input.GetKeyDown(KeyCode.Q)) ChangePhaseDictionary(Phase.Quark);
