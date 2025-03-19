@@ -3906,26 +3906,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bossMorphing: {fileID: 624881817}
   initialPhase: 0
-  everHoodNumber: 1
-  everHoodCamera: {fileID: 35122889}
-  everHoodBoss: {fileID: 1187527017}
-  everHoodPlayerMovement: {fileID: 1024517188}
-  everHoodPlayerShooting: {fileID: 1024517193}
-  monkeyHellNumber: 0
-  monkeyHellCamera: {fileID: 561546170}
-  monkeyHellBoss: {fileID: 1414104580}
-  monkeyHellPlayerMovement: {fileID: 1024517187}
-  monkeyHellPlayerShooting: {fileID: 1024517183}
-  quarkNumber: 2
-  quarkCamera: {fileID: 1984234603}
-  quarkBoss: {fileID: 0}
-  quarkPlayerMovement: {fileID: 1024517182}
-  quarkPlayerShooting: {fileID: 1024517181}
-  rezNumber: 0
-  rezCamera: {fileID: 2112297999}
-  rezBoss: {fileID: 0}
-  rezPlayerMovement: {fileID: 1024517192}
-  rezPlayerShooting: {fileID: 1024517191}
+  phaseEverhood:
+    number: 0
+    camera: {fileID: 0}
+    boss: {fileID: 0}
+    playerMovement: {fileID: 0}
+    playerShooting: {fileID: 0}
+    arena: {fileID: 0}
+    playerSpawnPoint: {fileID: 0}
+  phaseMonkeyHell:
+    number: 0
+    camera: {fileID: 0}
+    boss: {fileID: 0}
+    playerMovement: {fileID: 0}
+    playerShooting: {fileID: 0}
+    arena: {fileID: 0}
+    playerSpawnPoint: {fileID: 0}
+  phaseQuark:
+    number: 0
+    camera: {fileID: 0}
+    boss: {fileID: 0}
+    playerMovement: {fileID: 0}
+    playerShooting: {fileID: 0}
+    arena: {fileID: 0}
+    playerSpawnPoint: {fileID: 0}
+  phaseRez:
+    number: 0
+    camera: {fileID: 0}
+    boss: {fileID: 0}
+    playerMovement: {fileID: 0}
+    playerShooting: {fileID: 0}
+    arena: {fileID: 0}
+    playerSpawnPoint: {fileID: 0}
 --- !u!114 &624881817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3938,6 +3950,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8052f3eb1c10d647a436ff6a07a1164, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bossPartsParent: {fileID: 0}
   boss:
     parts:
     - {fileID: 1857032678}
@@ -4032,6 +4045,11 @@ MonoBehaviour:
       - {fileID: 0}
   transformationSpeedSpline: 0.5
   transformationSpeedLerp: 0.5
+  previousPhase:
+    numberOfPhase: 0
+    name: 
+    bossParts: []
+  player: {fileID: 0}
   controlPointCount: 3
   randomnessAmount: 0.2
   verticalRandomness: 0.5
@@ -6366,7 +6384,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 8948869955802014866, guid: 571a0873f6caf6d4aa19bb958680ba60, type: 3}
-  firePoint: {fileID: 1514055421}
+  firePoints:
+  - {fileID: 2120872552}
+  - {fileID: 2069300199}
+  - {fileID: 933374670}
+  - {fileID: 336733503}
+  player: {fileID: 1024517180}
   projectileSpeed: 15
   shootingCooldown: 3
 --- !u!1 &1014212797
@@ -6501,50 +6524,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7410817813311717151, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
   m_PrefabInstance: {fileID: 8321138272810845182}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1024517181 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3079806356452332426, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
-  m_PrefabInstance: {fileID: 8321138272810845182}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 103279373}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 323ba0a9d317cd947b130b4e3d85abb7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1024517182 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 926096131667842086, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
-  m_PrefabInstance: {fileID: 8321138272810845182}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 103279373}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a48fd446e72f9aa49b76fa4aed4b8532, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1024517183 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7393047101856437148, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
-  m_PrefabInstance: {fileID: 8321138272810845182}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 103279373}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d0793835003f4e43850e728b9ddf958, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1024517187 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8156704611051244190, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
-  m_PrefabInstance: {fileID: 8321138272810845182}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 103279373}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd91440f07df2974f845b46e8e747b47, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1024517188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6557,6 +6536,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b0383b4578e0df4a9546bc8117efd61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 5
+  jumpHeight: 1.5
+  jumpDuration: 0.5
+  gridSize: 5
+  cellDistance: 1
+  jumpEnabled: 0
 --- !u!114 &1024517191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6604,6 +6589,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12728a17521814a41b0c3ae92004c7fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  topHalf: {fileID: 0}
+  bulletPrefab: {fileID: 0}
+  leftArmRecoil: {fileID: 0}
+  leftArmFirePoint: {fileID: 0}
+  rightArmRecoil: {fileID: 0}
+  rightArmFirePoint: {fileID: 0}
+  shootingCooldown: 0.15
+  bulletSpeed: 20
 --- !u!4 &1024519923 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3897990426993566007, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}

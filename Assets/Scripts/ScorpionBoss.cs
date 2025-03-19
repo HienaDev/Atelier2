@@ -51,7 +51,7 @@ public class ScorpionBoss : MonoBehaviour
             {
                 yield return new WaitForSeconds(attackCooldown);
 
-                int attackChoice = Random.Range(0, 3);
+                int attackChoice = Random.Range(1, 2);
 
                 switch (attackChoice)
                 {
@@ -152,12 +152,16 @@ public class ScorpionBoss : MonoBehaviour
 
         GameObject projectile = Instantiate(projectilePrefab, tailFirePoint.position, Quaternion.identity);
         Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
+        
         Vector3 direction = player.position - tailFirePoint.position;
         direction.x = 0;
         direction.y = 0;
         direction.Normalize();
 
         projectileRb.linearVelocity = direction * projectileSpeed;
+
+        // Destroy the projectile after a set time if it doesn't hit anything
+        Destroy(projectile, 3f);
 
         yield return new WaitForSeconds(1f);
 
