@@ -89,6 +89,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7021311055710648219}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4728146518227345920}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8597932896121633670}
   m_SourcePrefab: {fileID: 100100000, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
 --- !u!1 &8562156156235812664 stripped
 GameObject:
@@ -4968,3 +4974,38 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!64 &4728146518227345920
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8562156156235812664}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 1626232659367728000, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
+--- !u!114 &8597932896121633670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8562156156235812664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d7cc8dcc109f9f48b63628297be2939, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleSystemExplosion: {fileID: 2451390574171143144}

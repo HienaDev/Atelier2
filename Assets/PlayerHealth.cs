@@ -32,10 +32,20 @@ public class PlayerHealth : MonoBehaviour
 
         currentLives--;
 
+
+
         if (currentLives == 0)
         {
             dead = true;
             Death();
+            return;
+        }
+
+        foreach (var renderer in renderers)
+        {
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(renderer.material.DOFloat(3f, "_PulseRatio", 0.05f).SetEase(Ease.InOutSine));
+            sequence.Append(renderer.material.DOFloat(0f, "_PulseRatio", 0.5f).SetEase(Ease.InOutSine));
         }
     }
 

@@ -89,8 +89,8 @@ public class WeakPoint : MonoBehaviour
             if (sequence != null) sequence.Kill();
             transform.DOShakePosition(0.1f, 0.3f, 5, 90, false, true);
             sequence = DOTween.Sequence();
-            sequence.Append(mat.DOFloat(1f + ((lives - currentLives) * extrusionIntensitySteps), "_PulseRatio", 0.05f).SetEase(Ease.InOutSine));
-            sequence.Append(mat.DOFloat(-1f + ((lives - currentLives) * extrusionIntensitySteps), "_PulseRatio", 0.5f).SetEase(Ease.InOutSine));
+            sequence.Append(mat.DOFloat(2f + ((lives - currentLives) * extrusionIntensitySteps), "_PulseRatio", 0.05f).SetEase(Ease.InOutSine));
+            sequence.Append(mat.DOFloat(0f + ((lives - currentLives) * extrusionIntensitySteps), "_PulseRatio", 0.5f).SetEase(Ease.InOutSine));
         }
     }
 }

@@ -34,12 +34,13 @@ public class BossHealth : MonoBehaviour
 
         if (currentLives < livesToSwapPhase)
         {
+            projectiles.ClearAllProjectiles();
             phaseManager.ChangeToMinotaur();
         }
     }
 
     public void DealCritDamage()
     {
-        DealDamage((lives / 20));
+        DealDamage(30);
     }
 }
