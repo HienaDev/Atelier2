@@ -120,22 +120,21 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 981795298378305370}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a48fd446e72f9aa49b76fa4aed4b8532, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   bottomHalf: {fileID: 6605667912589767585}
-  topHalf: {fileID: 3343757072927067586}
-  bobbingScript: {fileID: 251436828322873319}
   rotationSpeed: 10
   movSpeed: 5
-  jumpForce: 5
-  rb: {fileID: 8377950777459884386}
+  jumpHeight: 6
+  jumpSpeed: 22
+  fallSpeed: 15
   groundLayer:
     serializedVersion: 2
     m_Bits: 1024
-  groundCheckDistance: 0.1
+  groundCheckDistance: 0.15
 --- !u!114 &3079806356452332426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,7 +142,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 981795298378305370}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 323ba0a9d317cd947b130b4e3d85abb7, type: 3}
   m_Name: 
@@ -153,7 +152,7 @@ MonoBehaviour:
   rightArmFirePoint: {fileID: 3897990426993566007}
   leftArm: {fileID: 4614962282286782919}
   rightArm: {fileID: 3207599982717256390}
-  model: {fileID: 3020041381154918705}
+  topHalf: {fileID: 2149995248865937525}
   mainCamera: {fileID: 0}
   shootingCooldown: 0.15
   bulletSpeed: 10

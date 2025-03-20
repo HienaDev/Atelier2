@@ -2086,27 +2086,25 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7590239055986798446}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9826e436ff70d2345b6b067248eb7c08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 676240246853319286}
   attackCooldown: 2
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 1024
+  animator: {fileID: 0}
+  rotationSpeed: 5
   chargeSpeed: 15
   chargeDuration: 1.2
   chargeWindupTime: 0.8
-  rotationSpeed: 5
   projectilePrefab: {fileID: 8948869955802014866, guid: 571a0873f6caf6d4aa19bb958680ba60, type: 3}
   tailFirePoint: {fileID: 4525291983141394365}
   projectileSpeed: 20
-  spikePrefab: {fileID: 8948869955802014866, guid: e33946931d75d89448678e35499f0a35, type: 3}
-  groundPoint: {fileID: 0}
-  shockwaveSpeed: 20
-  spikeLifetime: 3
+  dashSpeed: 15
+  dashDuration: 0.2
+  highSpot: {fileID: 0}
+  groundSpikes: {fileID: 0}
 --- !u!95 &619536690408866361
 Animator:
   serializedVersion: 7

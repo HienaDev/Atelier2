@@ -49,10 +49,10 @@ public class ScorpionBoss : MonoBehaviour
         FacePlayer();
 
         // If pressed space key, activate spikes 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.F))
         {
             Debug.Log("Scorpion Boss: **Spikes Activated!**");
-            ActivateArenaSpikes();  
+            ActivateArenaSpikes();
         }
     }
 
@@ -226,13 +226,8 @@ public class ScorpionBoss : MonoBehaviour
             yield return null;
         }
 
-        // Smoothly rotate downward
-        Quaternion normalRotation = Quaternion.Euler(0, 0, 0);
-        while (Quaternion.Angle(transform.rotation, normalRotation) > 0.1f)
-        {
-            transform.rotation = Quaternion.Slerp(transform.rotation, normalRotation, Time.deltaTime * 5f);
-            yield return null;
-        }
+        // Smoothly rotate back to original position
+        RotateTowardsPlayer();
 
         Debug.Log("Scorpion Boss: **Landed back on the ground!**");
 

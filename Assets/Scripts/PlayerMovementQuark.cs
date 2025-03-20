@@ -2,58 +2,57 @@ using UnityEngine;
 
 public class PlayerMovementQuark : MonoBehaviour
 {
-    [SerializeField] private GameObject bottomHalf; 
-    [SerializeField] private GameObject topHalf;    
-    [SerializeField] private BobbingMotion bobbingScript; // Reference to the bobbing script
+    [SerializeField] private GameObject bottomHalf;
 
     [SerializeField] private float rotationSpeed = 10f;
     [SerializeField] private float movSpeed = 5f;
-    [SerializeField] private float jumpForce = 5f;
-    [SerializeField] private Rigidbody rb;
+    [SerializeField] private float jumpHeight = 2f;
+    [SerializeField] private float jumpSpeed = 5f;
+    [SerializeField] private float fallSpeed = 5f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float groundCheckDistance = 0.1f;
 
     private bool isGrounded;
-    private bool isFacingForward = true; 
+    private bool isJumping = false;
+    private bool isFalling = false;
+    private bool isFacingForward = true;
+    private float startY;
+    private float jumpPeakY;
+
+    void Start()
+    {
+        startY = transform.position.y; // Store initial ground height
+    }
 
     void Update()
     {
         CheckGrounded();
         HandleMovement();
-
-        if (isGrounded && Input.GetButtonDown("Jump"))
-        {
-            Jump();
-        }
+        HandleJump();
     }
 
     private void CheckGrounded()
     {
-        // Check if player is on the ground
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundLayer);
+        // Perform a raycast slightly below the player to check for ground
+        RaycastHit hit;
+        bool wasGrounded = isGrounded;
+        isGrounded = Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, out hit, groundCheckDistance + 0.2f, groundLayer);
 
-        // Reactivate bobbing when touching the ground
-        if (isGrounded && !bobbingScript.enabled)
+        // Reset jump states when landing
+        if (!wasGrounded && isGrounded)
         {
-            bobbingScript.enabled = true;
+            isJumping = false;
+            isFalling = false;
+            startY = hit.point.y; // Ensure accurate landing position
         }
     }
 
     private void HandleMovement()
     {
-        float moveZ = Input.GetAxisRaw("Horizontal"); 
+        float moveZ = Input.GetAxisRaw("Horizontal");
 
         // Apply movement only on Z-axis
-        rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, moveZ * movSpeed);
-
-        if (moveZ > 0 && !isFacingForward)
-        {
-            Flip();
-        }
-        else if (moveZ < 0 && isFacingForward)
-        {
-            Flip();
-        }
+        transform.position += new Vector3(0, 0, moveZ * movSpeed * Time.deltaTime);
 
         // Smoothly rotate bottomHalf towards movement direction
         if (moveZ != 0)
@@ -63,20 +62,50 @@ public class PlayerMovementQuark : MonoBehaviour
         }
     }
 
-    private void Jump()
+    private void HandleJump()
     {
-        // Disable bobbing while in the air
-        bobbingScript.enabled = false;
+        if (isGrounded && Input.GetButtonDown("Jump"))
+        {
+            StartJump();
+        }
 
-        // Apply jump force
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForce, rb.linearVelocity.z);
+        if (isJumping)
+        {
+            JumpUp();
+        }
+        else if (isFalling)
+        {
+            FallDown();
+        }
     }
 
-    private void Flip()
+    private void StartJump()
     {
-        isFacingForward = !isFacingForward;
+        isJumping = true;
+        isFalling = false;
+        jumpPeakY = startY + jumpHeight;
+    }
 
-        // Instantly rotate the top half 180 degrees
-        topHalf.transform.Rotate(0, 180, 0);
+    private void JumpUp()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, jumpPeakY, transform.position.z), jumpSpeed * Time.deltaTime);
+
+        // If reached peak, start falling
+        if (Mathf.Abs(transform.position.y - jumpPeakY) < 0.05f)
+        {
+            isJumping = false;
+            isFalling = true;
+        }
+    }
+
+    private void FallDown()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, startY, transform.position.z), fallSpeed * Time.deltaTime);
+
+        // If landed, reset jump state (ground check will handle the final reset)
+        if (Mathf.Abs(transform.position.y - startY) < 0.05f)
+        {
+            isFalling = false;
+        }
     }
 }
