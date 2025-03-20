@@ -819,6 +819,7 @@ GameObject:
   - component: {fileID: 639764067571600795}
   - component: {fileID: 1176813038004655662}
   - component: {fileID: 1625759736592517698}
+  - component: {fileID: 1849502850616699346}
   m_Layer: 0
   m_Name: 1 _ Stringer
   m_TagString: Untagged
@@ -895,6 +896,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &1849502850616699346
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2513613198000128181}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 1626232659367728000, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
 --- !u!1 &4059520202042131781
 GameObject:
   m_ObjectHideFlags: 0
@@ -1660,7 +1683,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -1793,7 +1816,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -2104,7 +2127,10 @@ MonoBehaviour:
   dashSpeed: 15
   dashDuration: 0.2
   highSpot: {fileID: 0}
-  groundSpikes: {fileID: 0}
+  groundSpikesPrefab: {fileID: 5869776498054630807, guid: cbd1d9c1af99fef48b1b33d2848688a5, type: 3}
+  groundSpikesSpawnPoint: {fileID: 0}
+  spikeMoveTime: 0.1
+  spikeUpDuration: 0.5
 --- !u!95 &619536690408866361
 Animator:
   serializedVersion: 7

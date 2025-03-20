@@ -29,7 +29,8 @@ public class ScorpionBoss : MonoBehaviour
 
     [Header("SpikeDown")]
     [SerializeField] private Transform highSpot;
-    [SerializeField] private GameObject groundSpikes;
+    [SerializeField] private GameObject groundSpikesPrefab;
+    [SerializeField] private Transform groundSpikesSpawnPoint;
     [SerializeField] private float spikeMoveTime = 0.5f;
     [SerializeField] private float spikeUpDuration = 1f;
 
@@ -67,7 +68,7 @@ public class ScorpionBoss : MonoBehaviour
             {
                 yield return new WaitForSeconds(attackCooldown);
 
-                int attackChoice = Random.Range(3, 4); // 0 = Charge, 1 = Tail Projectile, 2 = Stab, 3 = SpikeDown
+                int attackChoice = Random.Range(0, 4); // 0 = Charge, 1 = Tail Projectile, 2 = Stab, 3 = SpikeDown
 
                 switch (attackChoice)
                 {
@@ -247,7 +248,8 @@ public class ScorpionBoss : MonoBehaviour
 
     private void ActivateArenaSpikes()
     {
-        StartCoroutine(RaiseAndLowerSpike(groundSpikes));
+        GameObject spike = Instantiate(groundSpikesPrefab, groundSpikesSpawnPoint.position, Quaternion.identity);
+        StartCoroutine(RaiseAndLowerSpike(spike));
     }
 
     private IEnumerator RaiseAndLowerSpike(GameObject spike)
@@ -277,6 +279,8 @@ public class ScorpionBoss : MonoBehaviour
             yield return null;
         }
         spike.transform.position = startPos; // Ensure it returns exactly to the ground
+
+        Destroy(spike);
     }
 
     private void FacePlayer()

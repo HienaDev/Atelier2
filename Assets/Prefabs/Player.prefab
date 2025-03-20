@@ -130,7 +130,7 @@ MonoBehaviour:
   movSpeed: 5
   jumpHeight: 6
   jumpSpeed: 22
-  fallSpeed: 15
+  fallSpeed: 10
   groundLayer:
     serializedVersion: 2
     m_Bits: 1024
