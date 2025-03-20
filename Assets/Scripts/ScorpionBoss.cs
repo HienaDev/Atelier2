@@ -12,6 +12,7 @@ public class ScorpionBoss : MonoBehaviour
     [SerializeField] private float attackCooldown = 2f;
     [SerializeField] private Animator animator;
     [SerializeField] private float rotationSpeed = 5f;
+    [SerializeField] private CameraShake cameraShake;
 
     [Header("Charge Attack Settings")]
     [SerializeField] private float chargeSpeed = 15f;
@@ -31,8 +32,8 @@ public class ScorpionBoss : MonoBehaviour
     [SerializeField] private Transform highSpot;
     [SerializeField] private GameObject groundSpikesPrefab;
     [SerializeField] private Transform groundSpikesSpawnPoint;
-    [SerializeField] private float spikeMoveTime = 0.5f;
-    [SerializeField] private float spikeUpDuration = 1f;
+    [SerializeField] private float groundSpikesMoveTime = 0.5f;
+    [SerializeField] private float groundSpikesUpDuration = 1f;
 
     private bool isSlamImpactTriggered;
     private bool isAttacking;
@@ -68,7 +69,7 @@ public class ScorpionBoss : MonoBehaviour
             {
                 yield return new WaitForSeconds(attackCooldown);
 
-                int attackChoice = Random.Range(0, 4); // 0 = Charge, 1 = Tail Projectile, 2 = Stab, 3 = SpikeDown
+                int attackChoice = Random.Range(2, 3); // 0 = Charge, 1 = Tail Projectile, 2 = Stab, 3 = SpikeDown
 
                 switch (attackChoice)
                 {
@@ -104,9 +105,13 @@ public class ScorpionBoss : MonoBehaviour
         // Windup animation before charging
         // animator.SetTrigger("ChargeWindup");
 
+        cameraShake.ShakeCamera(0.5f, chargeWindupTime);
+        
         yield return new WaitForSeconds(chargeWindupTime);
 
         Debug.Log("Scorpion Boss: **Charging at Player!**");
+
+        cameraShake.ShakeCamera(1f, chargeDuration);
 
         // Charge attack animation
         // animator.SetTrigger("Charge");
@@ -163,8 +168,10 @@ public class ScorpionBoss : MonoBehaviour
 
         Debug.Log("Scorpion Boss: **Dashing Forward!**");
 
+        cameraShake.ShakeCamera(0.3f, dashDuration);
+
         // Dash windup animation
-        // animator.SetTrigger("DashWindup");
+        // animator.Play("StabDash");
 
         Vector3 dashDirection = player.position - transform.position;
         dashDirection.x = 0;
@@ -180,7 +187,7 @@ public class ScorpionBoss : MonoBehaviour
         Debug.Log("Scorpion Boss: **Performing Stab Attack!**");
 
         // Stab attack animation
-        // animator.SetTrigger("Stab");
+        animator.Play("StabDash", 0, 0);
 
         yield return new WaitForSeconds(1f); // Adjust based on animation length
 
@@ -256,25 +263,28 @@ public class ScorpionBoss : MonoBehaviour
     {
         Vector3 startPos = spike.transform.position;
         Vector3 targetPos = startPos + Vector3.up * 2f;
+        cameraShake.ShakeCamera(3, groundSpikesMoveTime);
 
         // Raise spikes over spikeMoveTime seconds
         float elapsedTime = 0f;
-        while (elapsedTime < spikeMoveTime)
+        while (elapsedTime < groundSpikesMoveTime)
         {
-            spike.transform.position = Vector3.Lerp(startPos, targetPos, elapsedTime / spikeMoveTime);
+            spike.transform.position = Vector3.Lerp(startPos, targetPos, elapsedTime / groundSpikesMoveTime);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
         spike.transform.position = targetPos; // Ensure it reaches the exact position
 
         // Spikes stay up for the configured duration
-        yield return new WaitForSeconds(spikeUpDuration);
+        yield return new WaitForSeconds(groundSpikesUpDuration);
+
+        cameraShake.ShakeCamera(1.5f, groundSpikesMoveTime);
 
         // Lower spikes over spikeMoveTime seconds
         elapsedTime = 0f;
-        while (elapsedTime < spikeMoveTime)
+        while (elapsedTime < groundSpikesMoveTime)
         {
-            spike.transform.position = Vector3.Lerp(targetPos, startPos, elapsedTime / spikeMoveTime);
+            spike.transform.position = Vector3.Lerp(targetPos, startPos, elapsedTime / groundSpikesMoveTime);
             elapsedTime += Time.deltaTime;
             yield return null;
         }

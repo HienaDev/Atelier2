@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class TailProjectile : MonoBehaviour
 {
@@ -11,6 +10,8 @@ public class TailProjectile : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("Floor"))
         {
             SpawnSpike();
+            CameraShake cameraShake = FindFirstObjectByType<CameraShake>();
+            cameraShake.ShakeCamera(2f, 0.1f);
             Destroy(gameObject); // Destroy projectile upon impact
         }
     }
