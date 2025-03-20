@@ -30,6 +30,8 @@ public class ScorpionBoss : MonoBehaviour
     [Header("SpikeDown")]
     [SerializeField] private Transform highSpot;
     [SerializeField] private GameObject groundSpikes;
+    [SerializeField] private float spikeMoveTime = 0.5f;
+    [SerializeField] private float spikeUpDuration = 1f;
 
     private bool isSlamImpactTriggered;
     private bool isAttacking;
@@ -54,6 +56,7 @@ public class ScorpionBoss : MonoBehaviour
             Debug.Log("Scorpion Boss: **Spikes Activated!**");
             ActivateArenaSpikes();
         }
+
     }
 
     private IEnumerator BossAI()
@@ -252,27 +255,29 @@ public class ScorpionBoss : MonoBehaviour
         Vector3 startPos = spike.transform.position;
         Vector3 targetPos = startPos + Vector3.up * 2f;
 
-        // Raise spikes quickly
+        // Raise spikes over spikeMoveTime seconds
         float elapsedTime = 0f;
-        while (elapsedTime < 0.2f)
+        while (elapsedTime < spikeMoveTime)
         {
-            spike.transform.position = Vector3.Lerp(startPos, targetPos, elapsedTime * 10f);
+            spike.transform.position = Vector3.Lerp(startPos, targetPos, elapsedTime / spikeMoveTime);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
+        spike.transform.position = targetPos; // Ensure it reaches the exact position
 
-        yield return new WaitForSeconds(1f);
+        // Spikes stay up for the configured duration
+        yield return new WaitForSeconds(spikeUpDuration);
 
-        // Lower spikes slowly
+        // Lower spikes over spikeMoveTime seconds
         elapsedTime = 0f;
-        while (elapsedTime < 1f)
+        while (elapsedTime < spikeMoveTime)
         {
-            spike.transform.position = Vector3.Lerp(targetPos, startPos, elapsedTime * 2f);
+            spike.transform.position = Vector3.Lerp(targetPos, startPos, elapsedTime / spikeMoveTime);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
+        spike.transform.position = startPos; // Ensure it returns exactly to the ground
     }
-
 
     private void FacePlayer()
     {
