@@ -2126,7 +2126,7 @@ MonoBehaviour:
   tailFirePoint: {fileID: 4525291983141394365}
   projectileSpeed: 20
   tailAttackMinRange: 15
-  tailAttackMaxRange: 20
+  tailAttackMaxRange: 18.5
   dashSpeed: 15
   dashDuration: 0.2
   stabAttackMinRange: 5
