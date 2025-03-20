@@ -23,10 +23,13 @@ public class ScorpionBoss : MonoBehaviour
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform tailFirePoint;
     [SerializeField] private float projectileSpeed = 20f;
+    [SerializeField] private float tailAttackMinRange = 6f;
 
     [Header("Stab Attack Settings")]
     [SerializeField] private float dashSpeed = 8f;
     [SerializeField] private float dashDuration = 0.4f;
+    [SerializeField] private float stabAttackMinRange = 3f;
+    [SerializeField] private float stabAttackMaxRange = 7f;
 
     [Header("SpikeDown")]
     [SerializeField] private Transform highSpot;
@@ -69,26 +72,56 @@ public class ScorpionBoss : MonoBehaviour
             {
                 yield return new WaitForSeconds(attackCooldown);
 
-                int attackChoice = Random.Range(2, 3); // 0 = Charge, 1 = Tail Projectile, 2 = Stab, 3 = SpikeDown
+                bool attackChosen = false;
+                int maxAttempts = 10; // Prevent infinite loops
+                int attempts = 0;
 
-                switch (attackChoice)
+                while (!attackChosen && attempts < maxAttempts)
                 {
-                    case 0:
-                        Debug.Log("Scorpion Boss: Preparing **Charge Attack**");
-                        StartCoroutine(ChargeAttack());
-                        break;
-                    case 1:
-                        Debug.Log("Scorpion Boss: Preparing **Tail Projectile Attack**");
-                        StartCoroutine(TailProjectileAttack());
-                        break;
-                    case 2:
-                        Debug.Log("Scorpion Boss: Preparing **Stab Attack**");
-                        StartCoroutine(StabAttack());
-                        break;
-                    case 3:
-                        Debug.Log("Scorpion Boss: Preparing **Spike Down Attack**");
-                        StartCoroutine(SpikeDownAttack());
-                        break;
+                    int attackChoice = Random.Range(2, 3); // 0 = Charge, 1 = Tail, 2 = Stab, 3 = SpikeDown
+                    
+                    switch (attackChoice)
+                    {
+                        case 0: // Charge Attack (Always allowed)
+                            Debug.Log("Scorpion Boss: Preparing **Charge Attack**");
+                            StartCoroutine(ChargeAttack());
+                            attackChosen = true;
+                            break;
+
+                        case 1: // Tail Projectile Attack (Only if player is FAR from boss)
+                            if (Vector3.Distance(transform.position, player.position) > tailAttackMinRange)
+                            {
+                                Debug.Log("Scorpion Boss: Preparing **Tail Projectile Attack**");
+                                StartCoroutine(TailProjectileAttack());
+                                attackChosen = true;
+                            }
+                            break;
+
+                        case 2: // Stab Attack (Only if player is within a specific range)
+                            float playerDistance = Vector3.Distance(transform.position, player.position);
+                            if (playerDistance > stabAttackMinRange && playerDistance < stabAttackMaxRange)
+                            {
+                                Debug.Log("Scorpion Boss: Preparing **Stab Attack**");
+                                StartCoroutine(StabAttack());
+                                attackChosen = true;
+                            }
+                            break;
+
+                        case 3: // Spike Down Attack (Always allowed)
+                            Debug.Log("Scorpion Boss: Preparing **Spike Down Attack**");
+                            StartCoroutine(SpikeDownAttack());
+                            attackChosen = true;
+                            break;
+                    }
+
+                    attempts++;
+                }
+
+                // If no valid attack was found, do a default attack
+                if (!attackChosen)
+                {
+                    Debug.LogWarning("Scorpion Boss: No valid attack found! Defaulting to Charge Attack.");
+                    StartCoroutine(ChargeAttack());
                 }
             }
             yield return null;
@@ -106,7 +139,7 @@ public class ScorpionBoss : MonoBehaviour
         // animator.SetTrigger("ChargeWindup");
 
         cameraShake.ShakeCamera(0.5f, chargeWindupTime);
-        
+
         yield return new WaitForSeconds(chargeWindupTime);
 
         Debug.Log("Scorpion Boss: **Charging at Player!**");
@@ -328,5 +361,18 @@ public class ScorpionBoss : MonoBehaviour
         Quaternion targetRotation = Quaternion.LookRotation(finalDirection);
         targetRotation *= Quaternion.Euler(0, 180, 0);
         transform.rotation = targetRotation;
+    }
+
+    // Draw the range of the attacks in the Scene view
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, tailAttackMinRange);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, stabAttackMinRange);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, stabAttackMaxRange);
     }
 }
