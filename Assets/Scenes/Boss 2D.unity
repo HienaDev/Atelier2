@@ -2149,8 +2149,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1634831820}
     - target: {fileID: 6536184952667945689, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
-      propertyPath: tailAttackMaxRange
-      value: 18.5
+      propertyPath: stabAttackMaxRange
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6536184952667945689, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
       propertyPath: groundSpikesSpawnPoint
