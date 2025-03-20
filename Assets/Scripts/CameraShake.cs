@@ -31,12 +31,39 @@ public class CameraShake : MonoBehaviour
         StartCoroutine(Shake(intensity, duration));
     }
 
+    public void SmoothShakeCamera(float intensity, float duration)
+    {
+        if (noise == null) return;
+
+        StopAllCoroutines();
+        StartCoroutine(SmoothShake(intensity, duration));
+    }
+
     private IEnumerator Shake(float intensity, float duration)
     {
         if (noise == null) yield break;
 
         noise.AmplitudeGain = intensity;
         yield return new WaitForSeconds(duration);
+        noise.AmplitudeGain = 0f; // Reset shake
+    }
+
+    private IEnumerator SmoothShake(float intensity, float duration)
+    {
+        if (noise == null) yield break;
+
+        float elapsed = 0f;
+        float smoothIntensity = 0f;
+
+        while (elapsed < duration)
+        {
+            smoothIntensity = Mathf.Lerp(intensity, 0f, elapsed / duration);
+            noise.AmplitudeGain = smoothIntensity;
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
         noise.AmplitudeGain = 0f; // Reset shake
     }
 }

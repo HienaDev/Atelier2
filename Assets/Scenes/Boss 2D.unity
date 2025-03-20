@@ -1255,11 +1255,6 @@ Transform:
   - {fileID: 408951282}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -15, z: 0}
---- !u!95 &1103986585 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 619536690408866361, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
-  m_PrefabInstance: {fileID: 6419242119863126097}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1160606446
 GameObject:
   m_ObjectHideFlags: 0
@@ -2105,10 +2100,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 619536690408866361, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 7717068fde0e15e4e8debf0628657e26, type: 2}
     - target: {fileID: 1213537006460658545, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2150,10 +2141,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6536184952667945689, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
-      propertyPath: animator
-      value: 
-      objectReference: {fileID: 1103986585}
-    - target: {fileID: 6536184952667945689, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
       propertyPath: highSpot
       value: 
       objectReference: {fileID: 600456944}
@@ -2162,29 +2149,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1634831820}
     - target: {fileID: 6536184952667945689, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
-      propertyPath: stabAttackMaxRange
-      value: 7.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6536184952667945689, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
-      propertyPath: stabAttackMinRange
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6536184952667945689, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
-      propertyPath: tailAttackMinRange
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6536184952667945689, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
-      propertyPath: groundSpikesMoveTime
-      value: 0.2
+      propertyPath: tailAttackMaxRange
+      value: 18.5
       objectReference: {fileID: 0}
     - target: {fileID: 6536184952667945689, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
       propertyPath: groundSpikesSpawnPoint
       value: 
       objectReference: {fileID: 549275346}
-    - target: {fileID: 6536184952667945689, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
-      propertyPath: groundSpikesUpDuration
-      value: 0.4
-      objectReference: {fileID: 0}
     - target: {fileID: 7590239055986798446, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
       propertyPath: m_Name
       value: Scorpion Boss

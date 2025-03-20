@@ -24,6 +24,7 @@ public class ScorpionBoss : MonoBehaviour
     [SerializeField] private Transform tailFirePoint;
     [SerializeField] private float projectileSpeed = 20f;
     [SerializeField] private float tailAttackMinRange = 6f;
+    [SerializeField] private float tailAttackMaxRange = 10f;
 
     [Header("Stab Attack Settings")]
     [SerializeField] private float dashSpeed = 8f;
@@ -78,8 +79,9 @@ public class ScorpionBoss : MonoBehaviour
 
                 while (!attackChosen && attempts < maxAttempts)
                 {
-                    int attackChoice = Random.Range(2, 3); // 0 = Charge, 1 = Tail, 2 = Stab, 3 = SpikeDown
-                    
+                    int attackChoice = Random.Range(0, 4); // 0 = Charge, 1 = Tail, 2 = Stab, 3 = SpikeDown
+                    float playerDistance = Vector3.Distance(transform.position, player.position);
+
                     switch (attackChoice)
                     {
                         case 0: // Charge Attack (Always allowed)
@@ -88,8 +90,8 @@ public class ScorpionBoss : MonoBehaviour
                             attackChosen = true;
                             break;
 
-                        case 1: // Tail Projectile Attack (Only if player is FAR from boss)
-                            if (Vector3.Distance(transform.position, player.position) > tailAttackMinRange)
+                        case 1: // Tail Projectile Attack (Only if player is within min-max range)
+                            if (playerDistance > tailAttackMinRange && playerDistance < tailAttackMaxRange)
                             {
                                 Debug.Log("Scorpion Boss: Preparing **Tail Projectile Attack**");
                                 StartCoroutine(TailProjectileAttack());
@@ -97,8 +99,7 @@ public class ScorpionBoss : MonoBehaviour
                             }
                             break;
 
-                        case 2: // Stab Attack (Only if player is within a specific range)
-                            float playerDistance = Vector3.Distance(transform.position, player.position);
+                        case 2: // Stab Attack (Only if player is within min-max range)
                             if (playerDistance > stabAttackMinRange && playerDistance < stabAttackMaxRange)
                             {
                                 Debug.Log("Scorpion Boss: Preparing **Stab Attack**");
@@ -117,10 +118,10 @@ public class ScorpionBoss : MonoBehaviour
                     attempts++;
                 }
 
-                // If no valid attack was found, do a default attack
+                // If no valid attack is found after max attempts, default to Charge Attack
                 if (!attackChosen)
                 {
-                    Debug.LogWarning("Scorpion Boss: No valid attack found! Defaulting to Charge Attack.");
+                    Debug.Log("Scorpion Boss: doing default attack (Charge)");
                     StartCoroutine(ChargeAttack());
                 }
             }
@@ -144,7 +145,7 @@ public class ScorpionBoss : MonoBehaviour
 
         Debug.Log("Scorpion Boss: **Charging at Player!**");
 
-        cameraShake.ShakeCamera(1f, chargeDuration);
+        cameraShake.SmoothShakeCamera(1f, chargeDuration + 0.5f);
 
         // Charge attack animation
         // animator.SetTrigger("Charge");
@@ -296,7 +297,7 @@ public class ScorpionBoss : MonoBehaviour
     {
         Vector3 startPos = spike.transform.position;
         Vector3 targetPos = startPos + Vector3.up * 2f;
-        cameraShake.ShakeCamera(3, groundSpikesMoveTime);
+        cameraShake.SmoothShakeCamera(3, groundSpikesMoveTime + 0.1f);
 
         // Raise spikes over spikeMoveTime seconds
         float elapsedTime = 0f;
@@ -311,7 +312,7 @@ public class ScorpionBoss : MonoBehaviour
         // Spikes stay up for the configured duration
         yield return new WaitForSeconds(groundSpikesUpDuration);
 
-        cameraShake.ShakeCamera(1.5f, groundSpikesMoveTime);
+        cameraShake.SmoothShakeCamera(1.5f, groundSpikesMoveTime + 0.1f);
 
         // Lower spikes over spikeMoveTime seconds
         elapsedTime = 0f;
@@ -361,6 +362,8 @@ public class ScorpionBoss : MonoBehaviour
         Quaternion targetRotation = Quaternion.LookRotation(finalDirection);
         targetRotation *= Quaternion.Euler(0, 180, 0);
         transform.rotation = targetRotation;
+
+        cameraShake.SmoothShakeCamera(0.5f, maxRotationTime);
     }
 
     // Draw the range of the attacks in the Scene view
@@ -368,6 +371,9 @@ public class ScorpionBoss : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, tailAttackMinRange);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, tailAttackMaxRange);
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, stabAttackMinRange);

@@ -2116,21 +2116,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 676240246853319286}
   attackCooldown: 2
-  animator: {fileID: 0}
+  animator: {fileID: 619536690408866361}
   rotationSpeed: 5
+  cameraShake: {fileID: 0}
   chargeSpeed: 15
   chargeDuration: 1.2
   chargeWindupTime: 0.8
   projectilePrefab: {fileID: 8948869955802014866, guid: 571a0873f6caf6d4aa19bb958680ba60, type: 3}
   tailFirePoint: {fileID: 4525291983141394365}
   projectileSpeed: 20
+  tailAttackMinRange: 15
+  tailAttackMaxRange: 20
   dashSpeed: 15
   dashDuration: 0.2
+  stabAttackMinRange: 5
+  stabAttackMaxRange: 7.5
   highSpot: {fileID: 0}
   groundSpikesPrefab: {fileID: 5869776498054630807, guid: cbd1d9c1af99fef48b1b33d2848688a5, type: 3}
   groundSpikesSpawnPoint: {fileID: 0}
-  spikeMoveTime: 0.1
-  spikeUpDuration: 0.5
+  groundSpikesMoveTime: 0.2
+  groundSpikesUpDuration: 0.4
 --- !u!95 &619536690408866361
 Animator:
   serializedVersion: 7
@@ -2141,7 +2146,7 @@ Animator:
   m_GameObject: {fileID: 7590239055986798446}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7717068fde0e15e4e8debf0628657e26, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
