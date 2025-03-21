@@ -4,6 +4,8 @@ using System.Collections;
 public class ScorpionBoss : MonoBehaviour
 {
     public enum BossState { Idle, Charge, TailAttack, StabAttack, SpikeDown }
+    public enum BossDifficulty { Tutorial, Easy, Normal }
+
     private BossState currentState = BossState.Idle;
 
     [Header("General Settings")]
@@ -23,8 +25,8 @@ public class ScorpionBoss : MonoBehaviour
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform tailFirePoint;
     [SerializeField] private float projectileSpeed = 20f;
+
     [SerializeField] private float tailAttackMinRange = 6f;
-    [SerializeField] private float tailAttackMaxRange = 10f;
 
     [Header("Stab Attack Settings")]
     [SerializeField] private float dashSpeed = 8f;
@@ -39,20 +41,86 @@ public class ScorpionBoss : MonoBehaviour
     [SerializeField] private float groundSpikesMoveTime = 0.5f;
     [SerializeField] private float groundSpikesUpDuration = 1f;
 
+    [Header("Difficulty Percentages")]
+    [SerializeField] [Range(10, 200)] private float tutorialPercentage = 50f; 
+    [SerializeField] [Range(10, 200)] private float easyPercentage = 75f;
+
+    private BossDifficulty difficulty;
     private bool isSlamImpactTriggered;
     private bool isAttacking;
     private float originalGroundY;
+    private float baseChargeSpeed;
+    private float baseChargeDuration;
+    private float baseChargeWindupTime;
+    private float baseProjectileSpeed;
+    private float baseAttackCooldown;
+    private float baseDashSpeed;
+    private float baseDashDuration;
+    private float baseGroundSpikesMoveTime;
+    private float baseGroundSpikesUpDuration;
 
-    void Start()
+    public void SetDifficulty(BossDifficulty newDifficulty)
+    {
+        difficulty = newDifficulty;
+        ApplyDifficultySettings();
+    }
+
+    private void ApplyDifficultySettings()
+    {
+        float percent = 100f;
+
+        switch (difficulty)
+        {
+            case BossDifficulty.Tutorial:
+                percent = tutorialPercentage;
+                break;
+            case BossDifficulty.Easy:
+                percent = easyPercentage;
+                break;
+            case BossDifficulty.Normal:
+            default:
+                percent = 100f;
+                break;
+        }
+
+        float speedMultiplier = percent / 100f;           
+        float inverseMultiplier = 200f / (percent + 100f);
+
+        chargeSpeed = baseChargeSpeed * speedMultiplier;
+        chargeDuration = baseChargeDuration * inverseMultiplier;
+        chargeWindupTime = baseChargeWindupTime * inverseMultiplier;
+        projectileSpeed = baseProjectileSpeed * speedMultiplier;
+        attackCooldown = baseAttackCooldown * inverseMultiplier;
+        dashSpeed = baseDashSpeed * speedMultiplier;
+        dashDuration = baseDashDuration * inverseMultiplier;
+        groundSpikesMoveTime = baseGroundSpikesMoveTime * inverseMultiplier;
+        groundSpikesUpDuration = baseGroundSpikesUpDuration * inverseMultiplier;
+    }
+
+    private void Start()
     {
         player = FindAnyObjectByType<PlayerMovementQuark>().transform;
         originalGroundY = transform.position.y;
         isSlamImpactTriggered = false;
         isAttacking = false;
+
+        // Store the base values before modifying them
+        baseChargeSpeed = chargeSpeed;
+        baseChargeDuration = chargeDuration;
+        baseChargeWindupTime = chargeWindupTime;
+        baseProjectileSpeed = projectileSpeed;
+        baseAttackCooldown = attackCooldown;
+        baseDashSpeed = dashSpeed;
+        baseDashDuration = dashDuration;
+        baseGroundSpikesMoveTime = groundSpikesMoveTime;
+        baseGroundSpikesUpDuration = groundSpikesUpDuration;
+
+        ApplyDifficultySettings(); // Set initial difficulty
+
         StartCoroutine(BossAI());
     }
 
-    void Update()
+    private void Update()
     {
         FacePlayer();
 
@@ -63,6 +131,21 @@ public class ScorpionBoss : MonoBehaviour
             ActivateArenaSpikes();
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            SetDifficulty(BossDifficulty.Tutorial);
+            Debug.Log("Difficulty set to Tutorial");
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            SetDifficulty(BossDifficulty.Easy);
+            Debug.Log("Difficulty set to Easy");
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            SetDifficulty(BossDifficulty.Normal);
+            Debug.Log("Difficulty set to Normal");
+        }
     }
 
     private IEnumerator BossAI()
@@ -79,7 +162,7 @@ public class ScorpionBoss : MonoBehaviour
 
                 while (!attackChosen && attempts < maxAttempts)
                 {
-                    int attackChoice = Random.Range(2, 3); // 0 = Charge, 1 = Tail, 2 = Stab, 3 = SpikeDown
+                    int attackChoice = Random.Range(0, 4); // 0 = Charge, 1 = Tail, 2 = Stab, 3 = SpikeDown
                     float playerDistance = Vector3.Distance(transform.position, player.position);
 
                     switch (attackChoice)
@@ -90,8 +173,8 @@ public class ScorpionBoss : MonoBehaviour
                             attackChosen = true;
                             break;
 
-                        case 1: // Tail Projectile Attack (Only if player is within min-max range)
-                            if (playerDistance > tailAttackMinRange && playerDistance < tailAttackMaxRange)
+                        case 1: // Tail Projectile Attack (Only if player is outside min range)
+                            if (playerDistance > tailAttackMinRange)
                             {
                                 Debug.Log("Scorpion Boss: Preparing **Tail Projectile Attack**");
                                 StartCoroutine(TailProjectileAttack());
@@ -174,20 +257,14 @@ public class ScorpionBoss : MonoBehaviour
 
         Debug.Log("Scorpion Boss: **Firing Tail Projectile!**");
 
-        // Tail attack animation
-        // animator.SetTrigger("TailAttack");
-
         GameObject projectile = Instantiate(projectilePrefab, tailFirePoint.position, Quaternion.identity);
-        Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
+        TailProjectile tailProjectile = projectile.GetComponent<TailProjectile>();
 
-        Vector3 direction = player.position - tailFirePoint.position;
-        direction.x = 0;
-        direction.y = 0;
-        direction.Normalize();
-
-        projectileRb.linearVelocity = direction * projectileSpeed;
-
-        Destroy(projectile, 3f);
+        if (tailProjectile != null)
+        {
+            // Pass projectileSpeed from ScorpionBoss
+            tailProjectile.Initialize(player.position, projectileSpeed);
+        }
 
         yield return new WaitForSeconds(1f);
 
@@ -371,9 +448,6 @@ public class ScorpionBoss : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, tailAttackMinRange);
-
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, tailAttackMaxRange);
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, stabAttackMinRange);
