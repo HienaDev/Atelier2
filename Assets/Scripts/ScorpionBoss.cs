@@ -313,6 +313,8 @@ public class ScorpionBoss : MonoBehaviour
 
         Debug.Log("Scorpion Boss: **Spike Down Attack!**");
 
+        cameraShake.SmoothShakeCamera(1.5f, 2f);
+
         // Move scorpion to high position smoothly
         while (Vector3.Distance(transform.position, highSpot.position) > 0.1f)
         {
