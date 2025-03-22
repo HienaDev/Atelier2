@@ -73,6 +73,7 @@ public class ScorpionBoss : MonoBehaviour
     private BossState currentState;
     private bool waitingToSpawnNextWeakpoint;
     private GameObject currentExtraWeakpoint;
+    private float baseAnimSpeed;
 
     public void SetDifficulty(BossDifficulty newDifficulty)
     {
@@ -98,7 +99,7 @@ public class ScorpionBoss : MonoBehaviour
                 break;
         }
 
-        float speedMultiplier = percent / 100f;           
+        float speedMultiplier = percent / 100f;
         float inverseMultiplier = 200f / (percent + 100f);
 
         chargeSpeed = baseChargeSpeed * speedMultiplier;
@@ -110,6 +111,7 @@ public class ScorpionBoss : MonoBehaviour
         dashDuration = baseDashDuration * inverseMultiplier;
         groundSpikesMoveTime = baseGroundSpikesMoveTime * inverseMultiplier;
         groundSpikesUpDuration = baseGroundSpikesUpDuration * inverseMultiplier;
+        animator.speed = baseAnimSpeed * speedMultiplier;
     }
 
     private void Start()
@@ -122,6 +124,7 @@ public class ScorpionBoss : MonoBehaviour
         weakpointsDestroyed = 0;
         extraSpawnLoopStarted = false;
         waitingToSpawnNextWeakpoint = false;
+        baseAnimSpeed = 1f;
 
         // Store the base values before modifying them
         baseChargeSpeed = chargeSpeed;
@@ -133,6 +136,7 @@ public class ScorpionBoss : MonoBehaviour
         baseDashDuration = dashDuration;
         baseGroundSpikesMoveTime = groundSpikesMoveTime;
         baseGroundSpikesUpDuration = groundSpikesUpDuration;
+        baseAnimSpeed = animator.speed;
 
         SetDifficulty(BossDifficulty.Tutorial); // Set initial difficulty
 
@@ -183,7 +187,7 @@ public class ScorpionBoss : MonoBehaviour
 
                 while (!attackChosen && attempts < maxAttempts)
                 {
-                    int attackChoice = Random.Range(0, 4); // 0 = Charge, 1 = Tail, 2 = Stab, 3 = SpikeDown
+                    int attackChoice = Random.Range(1, 2); // 0 = Charge, 1 = Tail, 2 = Stab, 3 = SpikeDown
                     float playerDistance = Vector3.Distance(transform.position, player.position);
 
                     switch (attackChoice)
