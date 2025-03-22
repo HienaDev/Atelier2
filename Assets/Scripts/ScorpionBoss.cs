@@ -276,6 +276,18 @@ public class ScorpionBoss : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
+        Debug.Log("Scorpion Boss: **Preparing Tail Projectile!**");
+
+        animator.Play("PoisonGrowth", 0, 0);
+
+        yield return new WaitForSeconds(1f);
+
+        currentState = BossState.Idle;
+        isAttacking = false;
+    }
+
+    public void FireTailProjectile()
+    {
         Debug.Log("Scorpion Boss: **Firing Tail Projectile!**");
 
         GameObject projectile = Instantiate(projectilePrefab, tailFirePoint.position, Quaternion.identity);
@@ -283,15 +295,10 @@ public class ScorpionBoss : MonoBehaviour
 
         if (tailProjectile != null)
         {
-            // Pass projectileSpeed from ScorpionBoss
             tailProjectile.Initialize(player.position, projectileSpeed);
         }
-
-        yield return new WaitForSeconds(1f);
-
-        currentState = BossState.Idle;
-        isAttacking = false;
     }
+
 
     private IEnumerator StabAttack()
     {
