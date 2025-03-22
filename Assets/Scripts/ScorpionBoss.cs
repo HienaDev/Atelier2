@@ -6,8 +6,6 @@ public class ScorpionBoss : MonoBehaviour
     public enum BossState { Idle, Charge, TailAttack, StabAttack, SpikeDown }
     public enum BossDifficulty { Tutorial, Easy, Normal }
 
-    private BossState currentState = BossState.Idle;
-
     [Header("General Settings")]
     private Transform player;
     [SerializeField] private Rigidbody rb;
@@ -41,6 +39,18 @@ public class ScorpionBoss : MonoBehaviour
     [SerializeField] private float groundSpikesMoveTime = 0.5f;
     [SerializeField] private float groundSpikesUpDuration = 1f;
 
+    [Header("Weakpoint Settings")]
+    [SerializeField] private GameObject weakpointPrefab;
+    [SerializeField] private WeakpointSlot[] weakpointSpawnPoints;
+    [SerializeField] private int requiredWeakpointsToDestroy = 2;
+    [SerializeField] private float extraWeakpointDelay = 5f;
+    [System.Serializable]
+    public struct WeakpointSlot
+    {
+        public Transform spawnPoint;
+        [Min(0.01f)] public float uniformScale; // single value for X, Y, Z
+    }
+
     [Header("Difficulty Percentages")]
     [SerializeField] [Range(10, 200)] private float tutorialPercentage = 50f; 
     [SerializeField] [Range(10, 200)] private float easyPercentage = 75f;
@@ -58,6 +68,12 @@ public class ScorpionBoss : MonoBehaviour
     private float baseDashDuration;
     private float baseGroundSpikesMoveTime;
     private float baseGroundSpikesUpDuration;
+    private int weakpointsDestroyed;
+    private bool extraSpawnLoopStarted;
+    private BossState currentState;
+    private bool waitingToSpawnNextWeakpoint;
+    private GameObject currentExtraWeakpoint;
+    private float baseAnimSpeed;
 
     public void SetDifficulty(BossDifficulty newDifficulty)
     {
@@ -83,7 +99,7 @@ public class ScorpionBoss : MonoBehaviour
                 break;
         }
 
-        float speedMultiplier = percent / 100f;           
+        float speedMultiplier = percent / 100f;
         float inverseMultiplier = 200f / (percent + 100f);
 
         chargeSpeed = baseChargeSpeed * speedMultiplier;
@@ -95,14 +111,20 @@ public class ScorpionBoss : MonoBehaviour
         dashDuration = baseDashDuration * inverseMultiplier;
         groundSpikesMoveTime = baseGroundSpikesMoveTime * inverseMultiplier;
         groundSpikesUpDuration = baseGroundSpikesUpDuration * inverseMultiplier;
+        animator.speed = baseAnimSpeed * speedMultiplier;
     }
 
     private void Start()
     {
+        currentState = BossState.Idle;
         player = FindAnyObjectByType<PlayerMovementQuark>().transform;
         originalGroundY = transform.position.y;
         isSlamImpactTriggered = false;
         isAttacking = false;
+        weakpointsDestroyed = 0;
+        extraSpawnLoopStarted = false;
+        waitingToSpawnNextWeakpoint = false;
+        baseAnimSpeed = 1f;
 
         // Store the base values before modifying them
         baseChargeSpeed = chargeSpeed;
@@ -114,10 +136,13 @@ public class ScorpionBoss : MonoBehaviour
         baseDashDuration = dashDuration;
         baseGroundSpikesMoveTime = groundSpikesMoveTime;
         baseGroundSpikesUpDuration = groundSpikesUpDuration;
+        baseAnimSpeed = animator.speed;
 
-        ApplyDifficultySettings(); // Set initial difficulty
+        SetDifficulty(BossDifficulty.Tutorial); // Set initial difficulty
 
-        StartCoroutine(BossAI());
+        SpawnWeakpoints(); // Spawn weakpoints at the start
+
+        StartCoroutine(WaitForWeakpointsDestroyed()); // Wait for weakpoints to be destroyed before starting AI
     }
 
     private void Update()
@@ -255,6 +280,18 @@ public class ScorpionBoss : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
+        Debug.Log("Scorpion Boss: **Preparing Tail Projectile!**");
+
+        animator.Play("PoisonGrowth", 0, 0);
+
+        yield return new WaitForSeconds(1f);
+
+        currentState = BossState.Idle;
+        isAttacking = false;
+    }
+
+    public void FireTailProjectile()
+    {
         Debug.Log("Scorpion Boss: **Firing Tail Projectile!**");
 
         GameObject projectile = Instantiate(projectilePrefab, tailFirePoint.position, Quaternion.identity);
@@ -262,15 +299,10 @@ public class ScorpionBoss : MonoBehaviour
 
         if (tailProjectile != null)
         {
-            // Pass projectileSpeed from ScorpionBoss
             tailProjectile.Initialize(player.position, projectileSpeed);
         }
-
-        yield return new WaitForSeconds(1f);
-
-        currentState = BossState.Idle;
-        isAttacking = false;
     }
+
 
     private IEnumerator StabAttack()
     {
@@ -443,6 +475,92 @@ public class ScorpionBoss : MonoBehaviour
         transform.rotation = targetRotation;
 
         cameraShake.SmoothShakeCamera(0.5f, maxRotationTime);
+    }
+
+    private void SpawnWeakpoints()
+    {
+        for (int i = 0; i < requiredWeakpointsToDestroy; i++)
+        {
+            WeakpointSlot slot = weakpointSpawnPoints[i];
+
+            GameObject wp = Instantiate(weakpointPrefab, slot.spawnPoint.position, Quaternion.identity);
+
+            // Attach to the spawn point to follow it
+            wp.transform.SetParent(slot.spawnPoint, worldPositionStays: true);
+
+            // Apply uniform scale
+            wp.transform.localScale = Vector3.one * slot.uniformScale;
+
+            WeakPoint wpScript = wp.GetComponent<WeakPoint>();
+            wpScript.onDeath.AddListener(OnWeakpointDestroyed);
+
+            // First weakpoints never expire
+            wpScript.DisableLifetime();
+        }
+    }
+
+    private IEnumerator WaitForWeakpointsDestroyed()
+    {
+        while (weakpointsDestroyed < requiredWeakpointsToDestroy)
+            yield return null;
+
+        Debug.Log("Scorpion Boss: **Weakpoints destroyed!**");
+        StartCoroutine(BossAI());
+    }
+
+    private void OnWeakpointDestroyed()
+    {
+        weakpointsDestroyed++;
+        Debug.Log("Weakpoint destroyed! Total destroyed: " + weakpointsDestroyed);
+
+        if (weakpointsDestroyed == requiredWeakpointsToDestroy && !extraSpawnLoopStarted)
+        {
+            extraSpawnLoopStarted = true;
+            SpawnNextWeakpointAfterDelay();
+        }
+        else if (weakpointsDestroyed > requiredWeakpointsToDestroy)
+        {
+            currentExtraWeakpoint = null;
+
+            if (!waitingToSpawnNextWeakpoint)
+            {
+                SpawnNextWeakpointAfterDelay();
+            }
+        }
+    }
+
+    private void SpawnNextWeakpointAfterDelay()
+    {
+        StartCoroutine(DelayedWeakpointSpawn());
+    }
+
+    private IEnumerator DelayedWeakpointSpawn()
+    {
+        waitingToSpawnNextWeakpoint = true;
+        yield return new WaitForSeconds(extraWeakpointDelay);
+
+        // Check if the current extra weakpoint is still alive
+        if (currentExtraWeakpoint == null)
+        {
+            SpawnRandomWeakpoint();
+        }
+
+        waitingToSpawnNextWeakpoint = false;
+    }
+    
+    private void SpawnRandomWeakpoint()
+    {
+        int randomIndex = Random.Range(0, weakpointSpawnPoints.Length);
+        WeakpointSlot slot = weakpointSpawnPoints[randomIndex];
+
+        GameObject wp = Instantiate(weakpointPrefab, slot.spawnPoint.position, Quaternion.identity);
+        wp.transform.SetParent(slot.spawnPoint, worldPositionStays: true);
+        wp.transform.localScale = Vector3.one * slot.uniformScale;
+
+        WeakPoint wpScript = wp.GetComponent<WeakPoint>();
+        wpScript.onDeath.AddListener(OnWeakpointDestroyed);
+
+        currentExtraWeakpoint = wp;
     }
 
     // Draw the range of the attacks in the Scene view
