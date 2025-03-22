@@ -454,7 +454,6 @@ Transform:
   - {fileID: 8550140446217436356}
   - {fileID: 5789388645468994474}
   - {fileID: 7641595840269974380}
-  - {fileID: 7884896303494620993}
   m_Father: {fileID: 1213537006460658545}
   m_LocalEulerAnglesHint: {x: -6, y: -180, z: 0}
 --- !u!1 &1729324847913526349
@@ -590,40 +589,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -7691300609363347970, guid: 32938ca456502644c8fb7bc8d3551a81, type: 3}
---- !u!1 &2024043680841189046
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7884896303494620993}
-  m_Layer: 0
-  m_Name: Weakpoints
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7884896303494620993
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2024043680841189046}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.9986295, z: 0.052335896, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7913540538395088293}
-  - {fileID: 756155042021119894}
-  - {fileID: 6574062565993679172}
-  m_Father: {fileID: 8181406905126130617}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2262569909915919136
 GameObject:
   m_ObjectHideFlags: 0
@@ -876,6 +841,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4525291983141394365}
+  - {fileID: 756155042021119894}
   m_Father: {fileID: 7641595840269974380}
   m_LocalEulerAnglesHint: {x: 75, y: 0, z: 0}
 --- !u!33 &1176813038004655662
@@ -963,7 +929,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6574062565993679172}
   m_Layer: 0
-  m_Name: Weakpoint 3
+  m_Name: Weakpoint Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -977,12 +943,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3933365742845886012}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.512, z: 0.022}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.7431448, y: -0, z: -0, w: 0.6691306}
+  m_LocalPosition: {x: 0, y: -0.9468225, z: -0.8428638}
+  m_LocalScale: {x: 0.8754135, y: 0.9308513, z: 0.55211455}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7884896303494620993}
+  m_Father: {fileID: 877532477197557828}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4059520202042131781
 GameObject:
@@ -1631,7 +1597,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7913540538395088293}
   m_Layer: 0
-  m_Name: Weakpoint 1
+  m_Name: Weakpoint Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1645,12 +1611,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6224659727587888902}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.699, z: -0.175}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.7431448, y: -0, z: -0, w: 0.6691306}
+  m_LocalPosition: {x: 0, y: -1.0077958, z: -0.06510007}
+  m_LocalScale: {x: 0.8754135, y: 0.9308513, z: 0.55211455}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7884896303494620993}
+  m_Father: {fileID: 877532477197557828}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6255869747420915398
 GameObject:
@@ -1817,7 +1783,9 @@ Transform:
   m_LocalPosition: {x: -0, y: 1.602, z: -1.482}
   m_LocalScale: {x: 1.1423174, y: 1.8194499, z: 1.066054}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7913540538395088293}
+  - {fileID: 6574062565993679172}
   m_Father: {fileID: 8181406905126130617}
   m_LocalEulerAnglesHint: {x: 90, y: 90, z: -90}
 --- !u!33 &3944468705885270447
@@ -2037,7 +2005,7 @@ GameObject:
   m_Component:
   - component: {fileID: 756155042021119894}
   m_Layer: 0
-  m_Name: Weakpoint 2
+  m_Name: Weakpoint Stringer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2051,12 +2019,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7489051628202160450}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4.343, z: 2.254}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: 0.82412684, z: -0.5664053, w: 0}
+  m_LocalPosition: {x: 0, y: 0.4688627, z: -0.03962946}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7884896303494620993}
+  m_Father: {fileID: 639764067571600795}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7542066871640029697
 GameObject:
@@ -2272,6 +2240,7 @@ MonoBehaviour:
   - spawnPoint: {fileID: 7913540538395088293}
     uniformScale: 1.2
   requiredWeakpointsToDestroy: 2
+  extraWeakpointDelay: 5
   tutorialPercentage: 50
   easyPercentage: 75
 --- !u!95 &619536690408866361

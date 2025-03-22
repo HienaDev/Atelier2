@@ -45,8 +45,11 @@ public class WeakPoint : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!disableLifetime && Time.time - justSpawned > timeAlive)
+        if (!disableLifetime && Time.time - justSpawned > timeAlive && !dying)
         {
+            dying = true;
+            col.enabled = false;
+            onDeath.Invoke();
             Destroy(gameObject);
         }
     }

@@ -123,13 +123,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   intensitySteps: 0.3
-  lives: 20
+  lives: 10
   isTriggerWeakPoint: 1
   extrusionIntensitySteps: 0.1
   col: {fileID: 6779117755271713210}
   particles: {fileID: 8881244261015604869}
   numberOfParticles: 5
   timeAlive: 20
+  disableLifetime: 0
   onDeath:
     m_PersistentCalls:
       m_Calls: []

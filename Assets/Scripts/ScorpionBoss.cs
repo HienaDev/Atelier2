@@ -6,8 +6,6 @@ public class ScorpionBoss : MonoBehaviour
     public enum BossState { Idle, Charge, TailAttack, StabAttack, SpikeDown }
     public enum BossDifficulty { Tutorial, Easy, Normal }
 
-    private BossState currentState = BossState.Idle;
-
     [Header("General Settings")]
     private Transform player;
     [SerializeField] private Rigidbody rb;
@@ -45,6 +43,7 @@ public class ScorpionBoss : MonoBehaviour
     [SerializeField] private GameObject weakpointPrefab;
     [SerializeField] private WeakpointSlot[] weakpointSpawnPoints;
     [SerializeField] private int requiredWeakpointsToDestroy = 2;
+    [SerializeField] private float extraWeakpointDelay = 5f;
     [System.Serializable]
     public struct WeakpointSlot
     {
@@ -70,6 +69,10 @@ public class ScorpionBoss : MonoBehaviour
     private float baseGroundSpikesMoveTime;
     private float baseGroundSpikesUpDuration;
     private int weakpointsDestroyed;
+    private bool extraSpawnLoopStarted;
+    private BossState currentState;
+    private bool waitingToSpawnNextWeakpoint;
+    private GameObject currentExtraWeakpoint;
 
     public void SetDifficulty(BossDifficulty newDifficulty)
     {
@@ -111,11 +114,14 @@ public class ScorpionBoss : MonoBehaviour
 
     private void Start()
     {
+        currentState = BossState.Idle;
         player = FindAnyObjectByType<PlayerMovementQuark>().transform;
         originalGroundY = transform.position.y;
         isSlamImpactTriggered = false;
         isAttacking = false;
         weakpointsDestroyed = 0;
+        extraSpawnLoopStarted = false;
+        waitingToSpawnNextWeakpoint = false;
 
         // Store the base values before modifying them
         baseChargeSpeed = chargeSpeed;
@@ -495,6 +501,55 @@ public class ScorpionBoss : MonoBehaviour
     {
         weakpointsDestroyed++;
         Debug.Log("Weakpoint destroyed! Total destroyed: " + weakpointsDestroyed);
+
+        if (weakpointsDestroyed == requiredWeakpointsToDestroy && !extraSpawnLoopStarted)
+        {
+            extraSpawnLoopStarted = true;
+            SpawnNextWeakpointAfterDelay();
+        }
+        else if (weakpointsDestroyed > requiredWeakpointsToDestroy)
+        {
+            currentExtraWeakpoint = null;
+
+            if (!waitingToSpawnNextWeakpoint)
+            {
+                SpawnNextWeakpointAfterDelay();
+            }
+        }
+    }
+
+    private void SpawnNextWeakpointAfterDelay()
+    {
+        StartCoroutine(DelayedWeakpointSpawn());
+    }
+
+    private IEnumerator DelayedWeakpointSpawn()
+    {
+        waitingToSpawnNextWeakpoint = true;
+        yield return new WaitForSeconds(extraWeakpointDelay);
+
+        // Check if the current extra weakpoint is still alive
+        if (currentExtraWeakpoint == null)
+        {
+            SpawnRandomWeakpoint();
+        }
+
+        waitingToSpawnNextWeakpoint = false;
+    }
+    
+    private void SpawnRandomWeakpoint()
+    {
+        int randomIndex = Random.Range(0, weakpointSpawnPoints.Length);
+        WeakpointSlot slot = weakpointSpawnPoints[randomIndex];
+
+        GameObject wp = Instantiate(weakpointPrefab, slot.spawnPoint.position, Quaternion.identity);
+        wp.transform.SetParent(slot.spawnPoint, worldPositionStays: true);
+        wp.transform.localScale = Vector3.one * slot.uniformScale;
+
+        WeakPoint wpScript = wp.GetComponent<WeakPoint>();
+        wpScript.onDeath.AddListener(OnWeakpointDestroyed);
+
+        currentExtraWeakpoint = wp;
     }
 
     // Draw the range of the attacks in the Scene view
