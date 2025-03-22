@@ -41,6 +41,17 @@ public class ScorpionBoss : MonoBehaviour
     [SerializeField] private float groundSpikesMoveTime = 0.5f;
     [SerializeField] private float groundSpikesUpDuration = 1f;
 
+    [Header("Weakpoint Settings")]
+    [SerializeField] private GameObject weakpointPrefab;
+    [SerializeField] private WeakpointSlot[] weakpointSpawnPoints;
+    [SerializeField] private int requiredWeakpointsToDestroy = 2;
+    [System.Serializable]
+    public struct WeakpointSlot
+    {
+        public Transform spawnPoint;
+        [Min(0.01f)] public float uniformScale; // single value for X, Y, Z
+    }
+
     [Header("Difficulty Percentages")]
     [SerializeField] [Range(10, 200)] private float tutorialPercentage = 50f; 
     [SerializeField] [Range(10, 200)] private float easyPercentage = 75f;
@@ -58,6 +69,7 @@ public class ScorpionBoss : MonoBehaviour
     private float baseDashDuration;
     private float baseGroundSpikesMoveTime;
     private float baseGroundSpikesUpDuration;
+    private int weakpointsDestroyed;
 
     public void SetDifficulty(BossDifficulty newDifficulty)
     {
@@ -103,6 +115,7 @@ public class ScorpionBoss : MonoBehaviour
         originalGroundY = transform.position.y;
         isSlamImpactTriggered = false;
         isAttacking = false;
+        weakpointsDestroyed = 0;
 
         // Store the base values before modifying them
         baseChargeSpeed = chargeSpeed;
@@ -115,9 +128,11 @@ public class ScorpionBoss : MonoBehaviour
         baseGroundSpikesMoveTime = groundSpikesMoveTime;
         baseGroundSpikesUpDuration = groundSpikesUpDuration;
 
-        ApplyDifficultySettings(); // Set initial difficulty
+        SetDifficulty(BossDifficulty.Tutorial); // Set initial difficulty
 
-        StartCoroutine(BossAI());
+        SpawnWeakpoints(); // Spawn weakpoints at the start
+
+        StartCoroutine(WaitForWeakpointsDestroyed()); // Wait for weakpoints to be destroyed before starting AI
     }
 
     private void Update()
@@ -443,6 +458,43 @@ public class ScorpionBoss : MonoBehaviour
         transform.rotation = targetRotation;
 
         cameraShake.SmoothShakeCamera(0.5f, maxRotationTime);
+    }
+
+    private void SpawnWeakpoints()
+    {
+        for (int i = 0; i < requiredWeakpointsToDestroy; i++)
+        {
+            WeakpointSlot slot = weakpointSpawnPoints[i];
+
+            GameObject wp = Instantiate(weakpointPrefab, slot.spawnPoint.position, Quaternion.identity);
+
+            // Attach to the spawn point to follow it
+            wp.transform.SetParent(slot.spawnPoint, worldPositionStays: true);
+
+            // Apply uniform scale
+            wp.transform.localScale = Vector3.one * slot.uniformScale;
+
+            WeakPoint wpScript = wp.GetComponent<WeakPoint>();
+            wpScript.onDeath.AddListener(OnWeakpointDestroyed);
+
+            // First weakpoints never expire
+            wpScript.DisableLifetime();
+        }
+    }
+
+    private IEnumerator WaitForWeakpointsDestroyed()
+    {
+        while (weakpointsDestroyed < requiredWeakpointsToDestroy)
+            yield return null;
+
+        Debug.Log("Scorpion Boss: **Weakpoints destroyed!**");
+        StartCoroutine(BossAI());
+    }
+
+    private void OnWeakpointDestroyed()
+    {
+        weakpointsDestroyed++;
+        Debug.Log("Weakpoint destroyed! Total destroyed: " + weakpointsDestroyed);
     }
 
     // Draw the range of the attacks in the Scene view

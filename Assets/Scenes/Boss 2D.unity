@@ -1965,10 +1965,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 676240246853319286, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
-      propertyPath: m_Constraints
-      value: 118
-      objectReference: {fileID: 0}
     - target: {fileID: 1213537006460658545, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2017,22 +2013,6 @@ PrefabInstance:
       propertyPath: cameraShake
       value: 
       objectReference: {fileID: 1634831820}
-    - target: {fileID: 6536184952667945689, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
-      propertyPath: attackCooldown
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6536184952667945689, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
-      propertyPath: projectileSpeed
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 6536184952667945689, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
-      propertyPath: stabAttackMaxRange
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6536184952667945689, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
-      propertyPath: tailAttackMinRange
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 6536184952667945689, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
       propertyPath: groundSpikesSpawnPoint
       value: 
