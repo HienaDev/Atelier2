@@ -33,6 +33,9 @@ public class WeakPoint : MonoBehaviour
     [SerializeField] private float period = 0.1f;
     [SerializeField] private float flyingDuration = 2f;
 
+    public UnityEvent onDeath;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -106,12 +109,11 @@ public class WeakPoint : MonoBehaviour
             transform.DOMove(transform.position + new Vector3(0f, 5f, 0f), 0.2f).SetEase(Ease.InOutSine).OnComplete(() => {
                 transform.DOMove(bossSpawn.position, flyingDuration).SetEase(Ease.InElastic, amplitude: amplitude, period: period).OnComplete(() =>
                 {
-                    mat.DOFloat(160f, "_PulseRatio", 0.2f).SetEase(Ease.InSine).OnComplete(() =>
-                    {
-                        transform.DOKill();
-                        onDeath.Invoke();
-                        Destroy(gameObject, 0.1f);
-                    });
+                    mat.DOFloat(160f, "_PulseRatio", 0.2f).SetEase(Ease.InSine);
+                    transform.DOKill();
+                    onDeath.Invoke();
+                    Destroy(gameObject, 0.3f);
+  
                 });
             });
 

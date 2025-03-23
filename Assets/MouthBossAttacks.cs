@@ -70,7 +70,7 @@ public class MouthBossAttacks : MonoBehaviour
             attack.transform.position = shootingPoint.position + playerMovement.CellDistance * (attackPosition - gridHalfSize) * new Vector3(0f, 0f, 1f);
             attack.GetComponent<Rigidbody>().linearVelocity = -attack.transform.right * attackSpeed / 2;
 
-            attack.GetComponent<WeakPoint>().onDeath.AddListener(health.DealCritDamage);
+            attack.GetComponent<WeakPoint>().onDeath.AddListener(DealWeakPointDamage);
             attack.GetComponent<WeakPoint>().SetTarget(targetForWeakpoints);
         }
 
