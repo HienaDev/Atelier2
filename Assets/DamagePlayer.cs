@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using UnityEngine;
 
 public class DamagePlayer : MonoBehaviour
@@ -6,6 +7,8 @@ public class DamagePlayer : MonoBehaviour
     [SerializeField] private ParticleSystem particleSystemExplosion;
 
     private Collider colliderTrigger;
+
+    [SerializeField] private bool destroy = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -40,8 +43,8 @@ public class DamagePlayer : MonoBehaviour
             lifetime = particleSystemExplosion.main.duration + particleSystemExplosion.main.startLifetime.constantMax;
         }
 
-
-        Destroy(gameObject, lifetime);
+        if(destroy)
+            Destroy(gameObject, lifetime);
     }
 
 

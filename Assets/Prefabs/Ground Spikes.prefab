@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 3418866651995833736}
   - component: {fileID: 8202359529852430530}
   - component: {fileID: 5205292988046535207}
-  m_Layer: 0
+  - component: {fileID: 2632337499994397344}
+  m_Layer: 11
   m_Name: Small Spike 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,6 +110,20 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -7691300609363347970, guid: 32938ca456502644c8fb7bc8d3551a81, type: 3}
+--- !u!114 &2632337499994397344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3954129215366399715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d7cc8dcc109f9f48b63628297be2939, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleSystemExplosion: {fileID: 0}
+  destroy: 0
 --- !u!1 &5254815981165663765
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,7 +136,8 @@ GameObject:
   - component: {fileID: 6624740911928080340}
   - component: {fileID: 1290153893228155244}
   - component: {fileID: 8813506669311611860}
-  m_Layer: 0
+  - component: {fileID: 7908646660456146479}
+  m_Layer: 11
   m_Name: Big Spike
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -218,6 +234,20 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -7691300609363347970, guid: 32938ca456502644c8fb7bc8d3551a81, type: 3}
+--- !u!114 &7908646660456146479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5254815981165663765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d7cc8dcc109f9f48b63628297be2939, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleSystemExplosion: {fileID: 0}
+  destroy: 0
 --- !u!1 &6515121784764475412
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,7 +260,8 @@ GameObject:
   - component: {fileID: 5797030096607131962}
   - component: {fileID: 8393288000581628388}
   - component: {fileID: 6995181173027118060}
-  m_Layer: 0
+  - component: {fileID: 1513029532808306937}
+  m_Layer: 11
   m_Name: Small Spike 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -327,6 +358,20 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -7691300609363347970, guid: 32938ca456502644c8fb7bc8d3551a81, type: 3}
+--- !u!114 &1513029532808306937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6515121784764475412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d7cc8dcc109f9f48b63628297be2939, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleSystemExplosion: {fileID: 0}
+  destroy: 0
 --- !u!1 &8948869955802014866
 GameObject:
   m_ObjectHideFlags: 0

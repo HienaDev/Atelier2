@@ -19,7 +19,7 @@ public class MouthBossAttacks : MonoBehaviour
 
     [SerializeField, Range(0, 100)] private int weakpointChance = 50;
 
-    [SerializeField] private BossHealth health;
+    [SerializeField] private DamageBoss health;
 
     [SerializeField] private ClearProjectiles clearProjectiles;
 
@@ -48,6 +48,11 @@ public class MouthBossAttacks : MonoBehaviour
             SendAttack();
             justAttacked = Time.time;
         }
+    }
+
+    private void DealWeakPointDamage()
+    {
+        health.DealDamage(30);
     }
 
     public void SendAttack()

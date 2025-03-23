@@ -1,28 +1,61 @@
 using UnityEngine;
-using System.Collections;
 
 public class TailProjectile : MonoBehaviour
 {
     [SerializeField] private GameObject spikePrefab;
     [SerializeField] private float spikeLifetime = 3f;
 
-    private void OnTriggerEnter(Collider other)
+    private Vector3 startPosition;
+    private Vector3 targetPosition;
+    private float flightTime;
+    private float elapsedTime;
+    private bool isMoving = true;
+
+    public void Initialize(Vector3 target, float speed)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Floor"))
+        startPosition = transform.position;
+        targetPosition = target;
+        targetPosition.y = 0.1f;
+
+        flightTime = Vector3.Distance(startPosition, targetPosition) / speed;
+        elapsedTime = 0f;
+    }
+
+    private void Update()
+    {
+        if (!isMoving) return;
+
+        elapsedTime += Time.deltaTime;
+        float t = elapsedTime / flightTime;
+
+        if (t >= 1f)
         {
-            SpawnSpike();
-            Destroy(gameObject); // Destroy projectile upon impact
+            transform.position = targetPosition;
+            Impact();
         }
+        else
+        {
+            Vector3 nextPos = Vector3.Lerp(startPosition, targetPosition, t);
+            nextPos.y += Mathf.Sin(t * Mathf.PI) * 3.5f;
+            transform.position = nextPos;
+        }
+    }
+
+    private void Impact()
+    {
+        isMoving = false;
+
+        CameraShake cameraShake = FindFirstObjectByType<CameraShake>();
+        if (cameraShake != null)
+            cameraShake.ShakeCamera(2f, 0.1f);
+
+        SpawnSpike();
+        Destroy(gameObject);
     }
 
     private void SpawnSpike()
     {
-        Vector3 spawnPosition = transform.position;
-        spawnPosition.y = 0.1f; // Ensure spike is slightly above the ground
-
-        GameObject spike = Instantiate(spikePrefab, spawnPosition, Quaternion.identity);
-
-        // Ensure the spike is destroyed after spikeLifetime
+        GameObject spike = Instantiate(spikePrefab, targetPosition, Quaternion.identity);
         Destroy(spike, spikeLifetime);
     }
 }

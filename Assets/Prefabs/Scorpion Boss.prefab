@@ -819,6 +819,7 @@ GameObject:
   - component: {fileID: 639764067571600795}
   - component: {fileID: 1176813038004655662}
   - component: {fileID: 1625759736592517698}
+  - component: {fileID: 1849502850616699346}
   m_Layer: 0
   m_Name: 1 _ Stringer
   m_TagString: Untagged
@@ -840,6 +841,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4525291983141394365}
+  - {fileID: 756155042021119894}
   m_Father: {fileID: 7641595840269974380}
   m_LocalEulerAnglesHint: {x: 75, y: 0, z: 0}
 --- !u!33 &1176813038004655662
@@ -895,6 +897,59 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &1849502850616699346
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2513613198000128181}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 1626232659367728000, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
+--- !u!1 &3933365742845886012
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6574062565993679172}
+  m_Layer: 0
+  m_Name: Weakpoint Head
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6574062565993679172
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3933365742845886012}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7431448, y: -0, z: -0, w: 0.6691306}
+  m_LocalPosition: {x: 0, y: -0.9468225, z: -0.8428638}
+  m_LocalScale: {x: 0.8754135, y: 0.9308513, z: 0.55211455}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 877532477197557828}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4059520202042131781
 GameObject:
   m_ObjectHideFlags: 0
@@ -1532,6 +1587,37 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -7137438423068111797, guid: 0eb6c053345d1db408b94dbf8ddde305, type: 3}
+--- !u!1 &6224659727587888902
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7913540538395088293}
+  m_Layer: 0
+  m_Name: Weakpoint Body
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7913540538395088293
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6224659727587888902}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7431448, y: -0, z: -0, w: 0.6691306}
+  m_LocalPosition: {x: 0, y: -1.0077958, z: -0.06510007}
+  m_LocalScale: {x: 0.8754135, y: 0.9308513, z: 0.55211455}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 877532477197557828}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6255869747420915398
 GameObject:
   m_ObjectHideFlags: 0
@@ -1660,7 +1746,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -1697,7 +1783,9 @@ Transform:
   m_LocalPosition: {x: -0, y: 1.602, z: -1.482}
   m_LocalScale: {x: 1.1423174, y: 1.8194499, z: 1.066054}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7913540538395088293}
+  - {fileID: 6574062565993679172}
   m_Father: {fileID: 8181406905126130617}
   m_LocalEulerAnglesHint: {x: 90, y: 90, z: -90}
 --- !u!33 &3944468705885270447
@@ -1793,7 +1881,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -1907,6 +1995,37 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -7137438423068111797, guid: 0eb6c053345d1db408b94dbf8ddde305, type: 3}
+--- !u!1 &7489051628202160450
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 756155042021119894}
+  m_Layer: 0
+  m_Name: Weakpoint Stringer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &756155042021119894
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7489051628202160450}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.82412684, z: -0.5664053, w: 0}
+  m_LocalPosition: {x: 0, y: 0.4688627, z: -0.03962946}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 639764067571600795}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7542066871640029697
 GameObject:
   m_ObjectHideFlags: 0
@@ -2077,7 +2196,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 114
+  m_Constraints: 118
   m_CollisionDetection: 1
 --- !u!114 &6536184952667945689
 MonoBehaviour:
@@ -2086,27 +2205,44 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7590239055986798446}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9826e436ff70d2345b6b067248eb7c08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 676240246853319286}
-  attackCooldown: 2
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 1024
+  attackCooldown: 1
+  animator: {fileID: 619536690408866361}
+  rotationSpeed: 5
+  cameraShake: {fileID: 0}
   chargeSpeed: 15
   chargeDuration: 1.2
   chargeWindupTime: 0.8
-  rotationSpeed: 5
   projectilePrefab: {fileID: 8948869955802014866, guid: 571a0873f6caf6d4aa19bb958680ba60, type: 3}
   tailFirePoint: {fileID: 4525291983141394365}
-  projectileSpeed: 20
-  spikePrefab: {fileID: 8948869955802014866, guid: e33946931d75d89448678e35499f0a35, type: 3}
-  groundPoint: {fileID: 0}
-  shockwaveSpeed: 20
-  spikeLifetime: 3
+  projectileSpeed: 30
+  tailAttackMinRange: 10
+  dashSpeed: 15
+  dashDuration: 0.2
+  stabAttackMinRange: 5
+  stabAttackMaxRange: 8
+  highSpot: {fileID: 0}
+  groundSpikesPrefab: {fileID: 5869776498054630807, guid: cbd1d9c1af99fef48b1b33d2848688a5, type: 3}
+  groundSpikesSpawnPoint: {fileID: 0}
+  groundSpikesMoveTime: 0.2
+  groundSpikesUpDuration: 0.4
+  weakpointPrefab: {fileID: 8336133669464535913, guid: 1d46df66a09acf242a675382ac6a416d, type: 3}
+  weakpointSpawnPoints:
+  - spawnPoint: {fileID: 6574062565993679172}
+    uniformScale: 0.5
+  - spawnPoint: {fileID: 756155042021119894}
+    uniformScale: 0.5
+  - spawnPoint: {fileID: 7913540538395088293}
+    uniformScale: 1.2
+  requiredWeakpointsToDestroy: 2
+  extraWeakpointDelay: 5
+  tutorialPercentage: 50
+  easyPercentage: 75
 --- !u!95 &619536690408866361
 Animator:
   serializedVersion: 7
@@ -2117,7 +2253,7 @@ Animator:
   m_GameObject: {fileID: 7590239055986798446}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7717068fde0e15e4e8debf0628657e26, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

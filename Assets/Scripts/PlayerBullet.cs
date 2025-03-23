@@ -30,7 +30,7 @@ public class PlayerBullet : MonoBehaviour
         Debug.Log(other.name);
         if (damageBoss != null)
         {
-            damageBoss.DealDamage();
+            damageBoss.DealDamage(1);
         }
 
 
