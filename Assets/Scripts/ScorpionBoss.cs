@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UIElements;
 
 public class ScorpionBoss : MonoBehaviour
 {
@@ -187,7 +188,7 @@ public class ScorpionBoss : MonoBehaviour
 
                 while (!attackChosen && attempts < maxAttempts)
                 {
-                    int attackChoice = Random.Range(0, 3); // 0 = Charge, 1 = Tail, 2 = Stab, 3 = SpikeDown
+                    int attackChoice = Random.Range(0, 4); // 0 = Charge, 1 = Tail, 2 = Stab, 3 = SpikeDown
                     float playerDistance = Vector3.Distance(transform.position, player.position);
 
                     switch (attackChoice)
@@ -349,34 +350,33 @@ public class ScorpionBoss : MonoBehaviour
 
         cameraShake.SmoothShakeCamera(1.5f, 2f);
 
-        // Move scorpion to high position smoothly
-        while (Vector3.Distance(transform.position, highSpot.position) > 0.1f)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, highSpot.position, 15f * Time.deltaTime);
-            yield return null;
-        }
-
-        // Smoothly rotate downward
-        Quaternion targetRotation = Quaternion.Euler(0, -90, 0);
-        while (Quaternion.Angle(transform.rotation, targetRotation) > 0.1f)
-        {
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
-            yield return null;
-        }
-
         // Windup animation before slamming
-        // animator.SetTrigger("SpikeDown");
+        animator.CrossFade("JumpToAereal", 0.1f);
 
-        yield return new WaitForSeconds(1f); // Adjust based on animation length
+        // Move scorpion to high position smoothly
+        Vector3 highPos = new Vector3(transform.position.x, transform.position.y, highSpot.position.z);
+        while (Vector3.Distance(transform.position, highPos) > 0.1f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, highPos, 10f * Time.deltaTime);
+            yield return null;
+        }
 
-        // Wait until the impact is triggered
-        //yield return new WaitUntil(() => isSlamImpactTriggered);
+        float jumpAnimDuration = GetAnimationClipLength("JumpToAereal");
+        yield return new WaitForSeconds(jumpAnimDuration);
 
-        // **Placeholder**: Wait 1 second before descending (Replace with animation trigger later)
-        Debug.Log("Scorpion Boss: **Waiting 1s before descending...**");
-        yield return new WaitForSeconds(1f);
+        // Slam animation
+        animator.CrossFade("AerealStomp", 0.1f);
+
+        // Trigger the slam impact
+        float slamAnimDuration = GetAnimationClipLength("AerealStomp");
+        yield return new WaitForSeconds(slamAnimDuration * 2f);
+
+        RotateTowardsPlayer();
 
         Debug.Log("Scorpion Boss: **Returning to ground!**");
+
+        animator.CrossFade("StompToGround", 0.1f);
+
         Vector3 groundPos = new Vector3(transform.position.x, originalGroundY, transform.position.z);
         while (Vector3.Distance(transform.position, groundPos) > 0.1f)
         {
@@ -384,12 +384,10 @@ public class ScorpionBoss : MonoBehaviour
             yield return null;
         }
 
-        // Smoothly rotate back to original position
-        RotateTowardsPlayer();
+        float slamImpactDuration = GetAnimationClipLength("StompToGround");
+        yield return new WaitForSeconds(slamImpactDuration + 1f);
 
         Debug.Log("Scorpion Boss: **Landed back on the ground!**");
-
-        yield return new WaitForSeconds(0.5f); // Short delay before resuming normal state
 
         currentState = BossState.Idle;
         isAttacking = false;
@@ -563,6 +561,20 @@ public class ScorpionBoss : MonoBehaviour
         wpScript.onDeath.AddListener(OnWeakpointDestroyed);
 
         currentExtraWeakpoint = wp;
+    }
+
+    private float GetAnimationClipLength(string clipName)
+    {
+        foreach (var clip in animator.runtimeAnimatorController.animationClips)
+        {
+            if (clip.name == clipName)
+            {
+                return clip.length;
+            }
+        }
+
+        Debug.LogWarning($"Animation '{clipName}' not found!");
+        return 0f;
     }
 
     // Draw the range of the attacks in the Scene view
