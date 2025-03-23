@@ -23,6 +23,8 @@ public class MouthBossAttacks : MonoBehaviour
 
     [SerializeField] private ClearProjectiles clearProjectiles;
 
+    [SerializeField] private Transform targetForWeakpoints;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -64,6 +66,7 @@ public class MouthBossAttacks : MonoBehaviour
             attack.GetComponent<Rigidbody>().linearVelocity = -attack.transform.right * attackSpeed / 2;
 
             attack.GetComponent<WeakPoint>().onDeath.AddListener(health.DealCritDamage);
+            attack.GetComponent<WeakPoint>().SetTarget(targetForWeakpoints);
         }
 
         else

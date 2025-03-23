@@ -3,6 +3,7 @@ using System.Net.NetworkInformation;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Rendering;
+using UnityEngine.UIElements;
 using static UnityEngine.ParticleSystem;
 
 public class WeakPoint : MonoBehaviour
@@ -33,6 +34,12 @@ public class WeakPoint : MonoBehaviour
     [SerializeField] private float timeAlive = 20f;
     private float justSpawned;
 
+    private Transform bossSpawn;
+
+    [SerializeField] private float amplitude = 0.1f;
+    [SerializeField] private float period = 0.1f;
+    [SerializeField] private float flyingDuration = 2f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -56,16 +63,22 @@ public class WeakPoint : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Time.time - justSpawned > timeAlive)
+        if (Time.time - justSpawned > timeAlive)
         {
             Destroy(gameObject);
         }
     }
 
+    public void SetTarget(Transform target)
+    {
+        bossSpawn = target;
+    }
 
 
     private void OnTriggerEnter(Collider other)
     {
+
+
         currentLives -= 1;
         if (currentLives <= 0 && !dying)
         {
@@ -73,12 +86,41 @@ public class WeakPoint : MonoBehaviour
             dying = true;
             sequence.Kill();
             transform.DOKill();
-            transform.DOShakePosition(0.1f, 0.1f, 5, 50, false, true).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
-            mat.DOFloat(80f, "_PulseRatio", 0.25f).SetEase(Ease.InExpo).OnComplete(() => {
-                transform.DOKill();
-                onDeath.Invoke();
-                Destroy(gameObject, 0.1f);
+            transform.DOShakeRotation(0.2f, 0.2f, 5, 50, false, ShakeRandomnessMode.Harmonic).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
+            transform.DOShakeScale(0.2f, 0.2f, 5, 50, false, ShakeRandomnessMode.Harmonic).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
+
+            //transform.DOMove(transform.position + new Vector3(0f, 5f, 0f), 0.2f).SetEase(Ease.InOutSine);
+            //transform.DOMove(bossSpawn.position, flyingDuration).SetEase(Ease.InElastic, amplitude: amplitude, period: period).OnComplete(() =>
+            //{
+            //    mat.DOFloat(160f, "_PulseRatio", 0.2f).SetEase(Ease.InSine).OnComplete(() =>
+            //    {
+            //        transform.DOKill();
+            //        onDeath.Invoke();
+            //        Destroy(gameObject, 0.1f);
+            //    });
+            //});
+
+            transform.DOMove(transform.position + new Vector3(0f, 5f, 0f), 0.2f).SetEase(Ease.InOutSine).OnComplete(() => {
+                transform.DOMove(bossSpawn.position, flyingDuration).SetEase(Ease.InElastic, amplitude: amplitude, period: period).OnComplete(() =>
+                {
+                    mat.DOFloat(160f, "_PulseRatio", 0.2f).SetEase(Ease.InSine).OnComplete(() =>
+                    {
+                        transform.DOKill();
+                        onDeath.Invoke();
+                        Destroy(gameObject, 0.1f);
+                    });
+                });
             });
+
+
+
+
+            //transform.DOShakePosition(0.1f, 0.1f, 5, 50, false, true).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
+            //mat.DOFloat(80f, "_PulseRatio", 0.25f).SetEase(Ease.InExpo).OnComplete(() => {
+            //    transform.DOKill();
+            //    onDeath.Invoke();
+            //    Destroy(gameObject, 0.1f);
+            //});
 
         }
         else if (currentLives > 0)

@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   intensitySteps: 0.3
-  lives: 20
+  lives: 10
   extrusionIntensitySteps: 0.1
   col: {fileID: 6779117755271713210}
   particles: {fileID: 8881244261015604869}
@@ -135,6 +135,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   timeAlive: 20
+  amplitude: 0.1
+  period: 0.5
+  flyingDuration: 2
 --- !u!64 &6779117755271713210
 MeshCollider:
   m_ObjectHideFlags: 0
