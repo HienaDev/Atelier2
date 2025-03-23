@@ -956,6 +956,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleSystemExplosion: {fileID: 0}
+  disableMesh: 0
   destroy: 0
 --- !u!1 &3933365742845886012
 GameObject:
@@ -1961,7 +1962,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleSystemExplosion: {fileID: 0}
-  destroy: 1
+  disableMesh: 0
+  destroy: 0
 --- !u!1 &6862811922441930666
 GameObject:
   m_ObjectHideFlags: 0
@@ -2289,7 +2291,7 @@ MonoBehaviour:
   rb: {fileID: 676240246853319286}
   attackCooldown: 1
   animator: {fileID: 619536690408866361}
-  rotationSpeed: 5
+  rotationSpeed: 10
   cameraShake: {fileID: 0}
   chargeSpeed: 15
   chargeDuration: 1.2
