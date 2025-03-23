@@ -129,7 +129,7 @@ MonoBehaviour:
   bottomHalf: {fileID: 6605667912589767585}
   rotationSpeed: 10
   movSpeed: 5
-  jumpHeight: 6
+  jumpHeight: 7
   jumpSpeed: 22
   fallSpeed: 10
   groundLayer:
