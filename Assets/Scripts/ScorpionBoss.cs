@@ -76,6 +76,8 @@ public class ScorpionBoss : MonoBehaviour
     private GameObject currentExtraWeakpoint;
     private float baseAnimSpeed;
 
+    [SerializeField] private Transform targetForWeapoints;
+
     public void SetDifficulty(BossDifficulty newDifficulty)
     {
         difficulty = newDifficulty;
@@ -493,6 +495,7 @@ public class ScorpionBoss : MonoBehaviour
 
             WeakPoint wpScript = wp.GetComponent<WeakPoint>();
             wpScript.onDeath.AddListener(OnWeakpointDestroyed);
+            wpScript.SetTarget(targetForWeapoints);
 
             // First weakpoints never expire
             wpScript.DisableLifetime();
