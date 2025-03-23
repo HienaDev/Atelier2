@@ -128,7 +128,7 @@ MonoBehaviour:
   bottomHalf: {fileID: 6605667912589767585}
   rotationSpeed: 10
   movSpeed: 5
-  jumpHeight: 6
+  jumpHeight: 7
   jumpSpeed: 22
   fallSpeed: 10
   groundLayer:
@@ -155,7 +155,7 @@ MonoBehaviour:
   topHalf: {fileID: 2149995248865937525}
   mainCamera: {fileID: 0}
   shootingCooldown: 0.15
-  bulletSpeed: 10
+  bulletSpeed: 30
   armRotationSpeed: 15
 --- !u!114 &5594109249443185664
 MonoBehaviour:

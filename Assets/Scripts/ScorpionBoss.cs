@@ -187,7 +187,7 @@ public class ScorpionBoss : MonoBehaviour
 
                 while (!attackChosen && attempts < maxAttempts)
                 {
-                    int attackChoice = Random.Range(0, 4); // 0 = Charge, 1 = Tail, 2 = Stab, 3 = SpikeDown
+                    int attackChoice = Random.Range(0, 3); // 0 = Charge, 1 = Tail, 2 = Stab, 3 = SpikeDown
                     float playerDistance = Vector3.Distance(transform.position, player.position);
 
                     switch (attackChoice)
