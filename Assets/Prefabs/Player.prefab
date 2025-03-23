@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 2447303558361411365}
   - component: {fileID: 4517615133449452451}
   - component: {fileID: 6395650202015916675}
+  - component: {fileID: 3006515426418737331}
   m_Layer: 13
   m_Name: Player
   m_TagString: Player
@@ -110,7 +111,7 @@ MonoBehaviour:
   rightArmRecoil: {fileID: 8478053187224658297}
   rightArmFirePoint: {fileID: 3897990426993566007}
   shootingCooldown: 0.15
-  bulletSpeed: 10
+  bulletSpeed: 30
   topHalf: {fileID: 3343757072927067586}
   rotationSpeed: 10
 --- !u!114 &926096131667842086
@@ -120,7 +121,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 981795298378305370}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a48fd446e72f9aa49b76fa4aed4b8532, type: 3}
   m_Name: 
@@ -142,7 +143,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 981795298378305370}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 323ba0a9d317cd947b130b4e3d85abb7, type: 3}
   m_Name: 
@@ -155,7 +156,7 @@ MonoBehaviour:
   topHalf: {fileID: 2149995248865937525}
   mainCamera: {fileID: 0}
   shootingCooldown: 0.15
-  bulletSpeed: 10
+  bulletSpeed: 30
   armRotationSpeed: 15
 --- !u!114 &5594109249443185664
 MonoBehaviour:
@@ -194,7 +195,7 @@ MonoBehaviour:
   rightArmRecoil: {fileID: 8478053187224658297}
   rightArmFirePoint: {fileID: 1713491256170656024}
   shootingCooldown: 0.15
-  bulletSpeed: 20
+  bulletSpeed: 30
 --- !u!114 &495869513505543081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,7 +229,7 @@ MonoBehaviour:
   leftArmFirePoint: {fileID: 0}
   rightArmFirePoint: {fileID: 0}
   rotationSpeed: 10
-  bulletSpeed: 20
+  bulletSpeed: 30
   shootingCooldown: 0.15
 --- !u!114 &4517615133449452451
 MonoBehaviour:
@@ -265,6 +266,29 @@ CapsuleCollider:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.12
+  m_Height: 0.71
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.25, z: 0}
+--- !u!136 &3006515426418737331
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981795298378305370}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
