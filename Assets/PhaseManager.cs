@@ -14,6 +14,13 @@ public class PhaseManager : MonoBehaviour
         Rez
     }
 
+    public enum SubPhase
+    {
+        Tutorial,
+        Easy,
+        Normal
+    }
+
     private GameObject currentCamera;
 
     [Serializable]
@@ -45,7 +52,10 @@ public class PhaseManager : MonoBehaviour
     [Header("Phase Rez")]
     [SerializeField] private PhaseData phaseRez;
 
+    [SerializeField] private Phase[] phases;
+    private int currentPhaseIndex = 0;
     private Dictionary<Phase, PhaseData> phaseData = new Dictionary<Phase, PhaseData>();
+    private Dictionary<Phase, SubPhase> subPhaseData = new Dictionary<Phase, SubPhase>();
 
     [SerializeField] private bool debugMode = false;
 
@@ -70,8 +80,16 @@ public class PhaseManager : MonoBehaviour
 
         phaseData[Phase.Rez] = phaseRez;
 
+        subPhaseData[Phase.MonkeyHell] = SubPhase.Tutorial;
 
-        foreach(PhaseData data in phaseData.Values)
+        subPhaseData[Phase.Everhood] = SubPhase.Tutorial;
+
+        subPhaseData[Phase.Quark] = SubPhase.Tutorial;
+
+        subPhaseData[Phase.Rez] = SubPhase.Tutorial;
+
+
+        foreach (PhaseData data in phaseData.Values)
         {
             if(data.camera != null)
                 data.camera.SetActive(false);
@@ -89,10 +107,6 @@ public class PhaseManager : MonoBehaviour
         ChangePhaseDictionary(currentPhase);
     }
 
-    public void ChangeToMinotaur()
-    {
-        ChangePhaseDictionary(Phase.MonkeyHell);
-    }
 
     // Update is called once per frame
     void Update()
@@ -105,7 +119,28 @@ public class PhaseManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R)) ChangePhaseDictionary(Phase.Rez);
     }
 
-    public void ChangePhaseDictionary(Phase phase)
+    public void ChangePhase()
+    {
+        if (subPhaseData[currentPhase] == SubPhase.Tutorial)
+        {
+            subPhaseData[currentPhase] = SubPhase.Easy;
+        }
+        else
+        {
+            currentPhaseIndex++;
+            if(currentPhaseIndex >= phases.Length)
+            {
+                Debug.LogError("No more phases");
+                return;
+            }
+            phases[currentPhaseIndex] = currentPhase;
+        }
+
+        ChangePhaseDictionary(phases[currentPhaseIndex], subPhaseData[phases[currentPhaseIndex]]);
+
+    }
+
+    public void ChangePhaseDictionary(Phase phase, SubPhase subphase = SubPhase.Normal)
     {
         if (!phaseData.ContainsKey(phase))
         {
