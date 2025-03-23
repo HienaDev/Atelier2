@@ -1961,7 +1961,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleSystemExplosion: {fileID: 0}
-  destroy: 0
+  destroy: 1
 --- !u!1 &6862811922441930666
 GameObject:
   m_ObjectHideFlags: 0

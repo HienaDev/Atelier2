@@ -8,6 +8,7 @@ public class DamagePlayer : MonoBehaviour
 
     private Collider colliderTrigger;
 
+    [SerializeField] private bool disableMesh = true;
     [SerializeField] private bool destroy = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -31,8 +32,12 @@ public class DamagePlayer : MonoBehaviour
 
         playerHealth.DealDamage(1);
 
-        colliderTrigger.enabled = false;
-        GetComponent<Renderer>().enabled = false;
+        if(disableMesh)
+        {
+            colliderTrigger.enabled = false;
+            GetComponent<Renderer>().enabled = false;
+
+        }
 
         float lifetime = 0.1f;
 

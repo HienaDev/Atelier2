@@ -15,6 +15,9 @@ public class BossHealth : MonoBehaviour
 
     private bool alreadySwapped = false;
 
+
+    
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -37,7 +40,7 @@ public class BossHealth : MonoBehaviour
         {
             alreadySwapped = true;
             projectiles.ClearAllProjectiles();
-            phaseManager.ChangeToMinotaur();
+            //phaseManager.ChangePhaseDictionary(Phase);
         }
     }
 
