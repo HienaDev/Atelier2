@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class PlayerMovementQuark : MonoBehaviour
 {
+    [SerializeField] private Rigidbody rb;
     [SerializeField] private GameObject bottomHalf;
-
     [SerializeField] private float rotationSpeed = 10f;
     [SerializeField] private float movSpeed = 5f;
     [SerializeField] private float jumpHeight = 2f;
@@ -15,13 +15,13 @@ public class PlayerMovementQuark : MonoBehaviour
     private bool isGrounded;
     private bool isJumping = false;
     private bool isFalling = false;
-    private bool isFacingForward = true;
     private float startY;
     private float jumpPeakY;
 
-    void Start()
+    void Awake()
     {
         startY = transform.position.y; // Store initial ground height
+        rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotation;
     }
 
     void Update()

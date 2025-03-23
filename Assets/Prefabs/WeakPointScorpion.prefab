@@ -131,6 +131,9 @@ MonoBehaviour:
   numberOfParticles: 5
   timeAlive: 20
   disableLifetime: 0
+  amplitude: 0.1
+  period: 0.1
+  flyingDuration: 0
   onDeath:
     m_PersistentCalls:
       m_Calls: []
@@ -149,7 +152,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
@@ -5028,4 +5031,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleSystemExplosion: {fileID: 8881244261015604869}
+  disableMesh: 1
   destroy: 0

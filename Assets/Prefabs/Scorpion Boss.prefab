@@ -2317,7 +2317,7 @@ MonoBehaviour:
     uniformScale: 0.5
   - spawnPoint: {fileID: 7913540538395088293}
     uniformScale: 1.2
-  requiredWeakpointsToDestroy: 0
+  requiredWeakpointsToDestroy: 2
   extraWeakpointDelay: 5
   tutorialPercentage: 55
   easyPercentage: 75

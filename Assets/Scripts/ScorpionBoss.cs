@@ -246,7 +246,7 @@ public class ScorpionBoss : MonoBehaviour
         yield return StartCoroutine(RotateTowardsPlayer());
 
         // Windup animation before charging
-        // animator.SetTrigger("ChargeWindup");
+        animator.CrossFade("Charge", 0.1f);
 
         cameraShake.ShakeCamera(0.5f, chargeWindupTime);
 
@@ -257,7 +257,7 @@ public class ScorpionBoss : MonoBehaviour
         cameraShake.SmoothShakeCamera(1f, chargeDuration + 0.5f);
 
         // Charge attack animation
-        animator.CrossFade("Charge", 0.1f);
+        animator.CrossFade("ChargeDash", 0.1f);
 
         Vector3 chargeDirection = player.position - transform.position;
         chargeDirection.x = 0;
