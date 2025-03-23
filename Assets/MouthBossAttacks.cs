@@ -19,7 +19,7 @@ public class MouthBossAttacks : MonoBehaviour
 
     [SerializeField, Range(0, 100)] private int weakpointChance = 50;
 
-    [SerializeField] private BossHealth health;
+    [SerializeField] private DamageBoss health;
 
     [SerializeField] private ClearProjectiles clearProjectiles;
 
@@ -48,6 +48,11 @@ public class MouthBossAttacks : MonoBehaviour
         }
     }
 
+    private void DealWeakPointDamage()
+    {
+        health.DealDamage(30);
+    }
+
     public void SendAttack()
     {
         int attackPosition = UnityEngine.Random.Range(1, playerMovement.GridSize + 1);
@@ -63,7 +68,7 @@ public class MouthBossAttacks : MonoBehaviour
             attack.transform.position = shootingPoint.position + playerMovement.CellDistance * (attackPosition - gridHalfSize) * new Vector3(0f, 0f, 1f);
             attack.GetComponent<Rigidbody>().linearVelocity = -attack.transform.right * attackSpeed / 2;
 
-            attack.GetComponent<WeakPoint>().onDeath.AddListener(health.DealCritDamage);
+            attack.GetComponent<WeakPoint>().onDeath.AddListener(DealWeakPointDamage);
         }
 
         else

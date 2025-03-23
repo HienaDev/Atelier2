@@ -6002,7 +6002,7 @@ GameObject:
   - component: {fileID: 838982306}
   - component: {fileID: 838982307}
   m_Layer: 14
-  m_Name: BossCollider
+  m_Name: Mouth BossCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7174,7 +7174,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 8321138272810845182}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 323ba0a9d317cd947b130b4e3d85abb7, type: 3}
   m_Name: 
@@ -7185,7 +7185,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 8321138272810845182}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a48fd446e72f9aa49b76fa4aed4b8532, type: 3}
   m_Name: 
@@ -8357,7 +8357,7 @@ MonoBehaviour:
   weakpointSpeed: 10
   weakpointPrefab: {fileID: 8336133669464535913, guid: 9b3623684ee96a14eb0ab9b4ffc6672b, type: 3}
   weakpointChance: 20
-  health: {fileID: 842874741}
+  health: {fileID: 838982307}
   clearProjectiles: {fileID: 790325804}
 --- !u!1 &1188504607
 GameObject:
@@ -13910,6 +13910,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 926096131667842086, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 981795298378305370, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
       propertyPath: m_Name
       value: Player
@@ -13917,6 +13921,10 @@ PrefabInstance:
     - target: {fileID: 2447303558361411365, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
       propertyPath: bulletSpeed
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3079806356452332426, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3079806356452332426, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
       propertyPath: mainCamera
