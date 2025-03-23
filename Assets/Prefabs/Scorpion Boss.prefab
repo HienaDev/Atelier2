@@ -820,6 +820,8 @@ GameObject:
   - component: {fileID: 1176813038004655662}
   - component: {fileID: 1625759736592517698}
   - component: {fileID: 1849502850616699346}
+  - component: {fileID: 9034320449800660454}
+  - component: {fileID: 9026846051029536674}
   m_Layer: 0
   m_Name: 1 _ Stringer
   m_TagString: Untagged
@@ -919,6 +921,42 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 1626232659367728000, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
+--- !u!64 &9034320449800660454
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2513613198000128181}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 1626232659367728000, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
+--- !u!114 &9026846051029536674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2513613198000128181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d7cc8dcc109f9f48b63628297be2939, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleSystemExplosion: {fileID: 0}
+  destroy: 0
 --- !u!1 &3933365742845886012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1764,6 +1802,8 @@ GameObject:
   - component: {fileID: 5286090400607000281}
   - component: {fileID: 4081639409694427416}
   - component: {fileID: 8856031712559763184}
+  - component: {fileID: 3150527273584079429}
+  - component: {fileID: 1938060063686702447}
   m_Layer: 0
   m_Name: 2 _ Body
   m_TagString: Untagged
@@ -1886,6 +1926,42 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -7691300609363347970, guid: 32938ca456502644c8fb7bc8d3551a81, type: 3}
+--- !u!64 &3150527273584079429
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6306158307309943648}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 1626232659367728000, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
+--- !u!114 &1938060063686702447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6306158307309943648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d7cc8dcc109f9f48b63628297be2939, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleSystemExplosion: {fileID: 0}
+  destroy: 0
 --- !u!1 &6862811922441930666
 GameObject:
   m_ObjectHideFlags: 0
@@ -2239,7 +2315,7 @@ MonoBehaviour:
     uniformScale: 0.5
   - spawnPoint: {fileID: 7913540538395088293}
     uniformScale: 1.2
-  requiredWeakpointsToDestroy: 2
+  requiredWeakpointsToDestroy: 0
   extraWeakpointDelay: 5
   tutorialPercentage: 50
   easyPercentage: 75

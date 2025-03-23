@@ -2017,10 +2017,6 @@ PrefabInstance:
       propertyPath: groundSpikesSpawnPoint
       value: 
       objectReference: {fileID: 549275346}
-    - target: {fileID: 6536184952667945689, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
-      propertyPath: requiredWeakpointsToDestroy
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 7590239055986798446, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
       propertyPath: m_Name
       value: Scorpion Boss
