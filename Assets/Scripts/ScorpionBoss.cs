@@ -256,7 +256,7 @@ public class ScorpionBoss : MonoBehaviour
         cameraShake.SmoothShakeCamera(1f, chargeDuration + 0.5f);
 
         // Charge attack animation
-        // animator.SetTrigger("Charge");
+        animator.CrossFade("Charge", 0.1f);
 
         Vector3 chargeDirection = player.position - transform.position;
         chargeDirection.x = 0;
@@ -266,6 +266,9 @@ public class ScorpionBoss : MonoBehaviour
         rb.linearVelocity = chargeDirection * chargeSpeed;
 
         yield return new WaitForSeconds(chargeDuration);
+
+        // Stop the animation with fade out
+        animator.Play("Idle", 0, 0.1f);
 
         rb.linearVelocity = Vector3.zero;
 
@@ -282,7 +285,7 @@ public class ScorpionBoss : MonoBehaviour
 
         Debug.Log("Scorpion Boss: **Preparing Tail Projectile!**");
 
-        animator.Play("PoisonGrowth", 0, 0);
+        animator.CrossFade("PoisonGrowth", 0.1f);
 
         yield return new WaitForSeconds(1f);
 
@@ -303,7 +306,6 @@ public class ScorpionBoss : MonoBehaviour
         }
     }
 
-
     private IEnumerator StabAttack()
     {
         isAttacking = true;
@@ -314,7 +316,7 @@ public class ScorpionBoss : MonoBehaviour
         cameraShake.ShakeCamera(0.3f, dashDuration);
 
         // Dash windup animation
-        animator.Play("SmallDash", 0, 0);
+        animator.CrossFade("SmallDash", 0.1f);
 
         Vector3 dashDirection = player.position - transform.position;
         dashDirection.x = 0;
@@ -330,7 +332,7 @@ public class ScorpionBoss : MonoBehaviour
         Debug.Log("Scorpion Boss: **Performing Stab Attack!**");
 
         // Stab attack animation
-        animator.Play("StabDash", 0, 0);
+        animator.CrossFade("StabDash", 0.1f);
 
         yield return new WaitForSeconds(1f); // Adjust based on animation length
 
