@@ -6,11 +6,11 @@ public class PlayerMovementEverHood : MonoBehaviour
     [SerializeField] private float jumpHeight = 1.5f;
     [SerializeField] private float jumpDuration = 0.5f;
     [SerializeField] private int gridSize = 5;
-    public int GridSize { get { return gridSize; } }
-    [SerializeField] private float cellDistance = 1.0f;
-    public float CellDistance { get { return cellDistance; } }
-
     [SerializeField] private bool jumpEnabled = false;
+    [SerializeField] private float cellDistance = 1.0f;
+
+    public int GridSize { get { return gridSize; } }
+    public float CellDistance { get { return cellDistance; } }
 
     private Vector3 startPosition;
     public Vector3 StartPosition { get { return startPosition; } }
@@ -18,8 +18,6 @@ public class PlayerMovementEverHood : MonoBehaviour
     private int currentZ;
     private bool isJumping = false;
     private float jumpTimer = 0f;
-
-
 
     void OnEnable()
     {
@@ -29,7 +27,6 @@ public class PlayerMovementEverHood : MonoBehaviour
 
         // Calculate current Z position (assuming middle of grid as default)
         currentZ = gridSize / 2;
-
     }
 
     void Update()

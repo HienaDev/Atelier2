@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using System;
-using Unity.VisualScripting;
 
 public class PhaseManager : MonoBehaviour
 {
@@ -91,7 +90,6 @@ public class PhaseManager : MonoBehaviour
 
         subPhaseData[Phase.Rez] = SubPhase.Tutorial;
 
-
         foreach (PhaseData data in phaseData.Values)
         {
             if(data.camera != null)
@@ -103,7 +101,6 @@ public class PhaseManager : MonoBehaviour
             if (data.arena != null)
                 data.arena.SetActive(false);
         }
-
 
         yield return new WaitForSeconds(0.1f);
 
@@ -147,7 +144,6 @@ public class PhaseManager : MonoBehaviour
         }
 
         ChangePhaseDictionary(phases[currentPhaseIndex], subPhaseData[phases[currentPhaseIndex]]);
-
     }
 
     public void ChangePhaseDictionary(Phase phase, SubPhase subphase = SubPhase.Normal)
@@ -192,8 +188,5 @@ public class PhaseManager : MonoBehaviour
         currentPlayerShooting = data.playerShooting;
 
         lastPhase = phase;
-
     }
-
-    
 }

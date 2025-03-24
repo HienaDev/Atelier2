@@ -3,23 +3,17 @@ using UnityEngine.UI;
 
 public class BossHealth : MonoBehaviour
 {
-
     [SerializeField] private int lives = 2000;
-    private int currentLives;
-
-
     [SerializeField] private float percentageToChangePhase = 0.1f;
-    private int currentPhase = 0;
-
     [SerializeField] private PhaseManager phaseManager;
-    
     [SerializeField] private ClearProjectiles projectiles;
-
-    private int numberOfPhasesSwapped = 0;
-
     [SerializeField] private Image healthBarFill;
     [SerializeField] private Transform UIParent;
     [SerializeField] private GameObject healthSplit;
+
+    private int currentLives;
+    private int currentPhase = 0;
+    private int numberOfPhasesSwapped = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -49,8 +43,8 @@ public class BossHealth : MonoBehaviour
             numberOfPhasesSwapped++;
             ChangePhase();
         }
-
     }
+
     // -255 - 255
     private void GenerateSplits()
     {
@@ -75,6 +69,4 @@ public class BossHealth : MonoBehaviour
     {
         phaseManager.ChangePhase();
     }
-
-
 }

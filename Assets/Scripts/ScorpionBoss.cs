@@ -1,8 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using static PhaseManager;
-using DG.Tweening.Core.Easing;
-using Unity.VisualScripting;
 
 public class ScorpionBoss : MonoBehaviour, BossInterface
 {

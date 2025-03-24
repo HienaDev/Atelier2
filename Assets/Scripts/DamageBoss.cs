@@ -3,12 +3,8 @@ using UnityEngine;
 
 public class DamageBoss : MonoBehaviour
 {
-
     [SerializeField] private BossHealth health;
-
     [SerializeField] private Renderer[] partsRenderer;
-
-    
 
     private bool damageable = false;
 

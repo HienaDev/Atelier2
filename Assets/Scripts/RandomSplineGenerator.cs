@@ -1,7 +1,6 @@
 using UnityEngine;
 using Unity.Mathematics;
 using UnityEngine.Splines;
-using System.Net;
 
 public class RandomSplineGenerator : MonoBehaviour
 {

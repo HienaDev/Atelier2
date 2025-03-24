@@ -2,33 +2,21 @@ using UnityEngine;
 
 public class PlayerShootingMonkeyHell : MonoBehaviour
 {
-
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private ArmRecoil leftArmRecoil;
     [SerializeField] private Transform leftArmFirePoint;
     [SerializeField] private ArmRecoil rightArmRecoil;
     [SerializeField] private Transform rightArmFirePoint;
-
-    private bool isLeftArm = true;
-
     [SerializeField] private float shootingCooldown = 0.15f;
-    private float justShot = 0f;
-
     [SerializeField] private float bulletSpeed = 20f;
-
     [SerializeField] private GameObject topHalf;
     [SerializeField] private float rotationSpeed = 10f;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    private bool isLeftArm = true;
+    private float justShot = 0f;
 
-    // Update is called once per frame
     void Update()
     {
-
         // Get direction from object to the hit point, but only on the X-Z plane
         Vector3 direction = Mouse3D.GetMouseObjectPosition() - topHalf.transform.position;
 

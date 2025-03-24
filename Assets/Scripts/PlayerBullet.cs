@@ -24,7 +24,6 @@ public class PlayerBullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
         DamageBoss damageBoss = other.GetComponent<DamageBoss>();
 
         Debug.Log(other.name);
@@ -32,7 +31,6 @@ public class PlayerBullet : MonoBehaviour
         {
             damageBoss.DealDamage(1);
         }
-
 
         // Get the closest point on the collider
         Vector3 hitPoint = other.ClosestPoint(transform.position);

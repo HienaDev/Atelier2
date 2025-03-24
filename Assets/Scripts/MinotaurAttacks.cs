@@ -1,13 +1,9 @@
 using System.Collections.Generic;
-using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Splines;
 
-
 public class MinotaurAttacks : MonoBehaviour
 {
-
     public enum AttackPattern
     {
         SpikeShots,
@@ -42,8 +38,6 @@ public class MinotaurAttacks : MonoBehaviour
     private float justRowShot = 0f;
     private List<int> chosenFirePoints;
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         playerMovementScript = FindAnyObjectByType<PlayerMovementMonkeyHell>();
@@ -60,10 +54,8 @@ public class MinotaurAttacks : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
-
         if (Time.time - justChangedPattern > switchAttackPatternTime)
         {
             justChangedPattern = Time.time;
@@ -161,8 +153,5 @@ public class MinotaurAttacks : MonoBehaviour
             //    splineSpeed *= -1;
             //}
         }
-
     }
-
-
 }

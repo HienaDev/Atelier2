@@ -2,10 +2,9 @@ using UnityEngine;
 using System.Collections;
 public class SpikeShot : MonoBehaviour
 {
-    private Rigidbody rb; // Reference to the Rigidbody component
-    // Add reference to the particle system
     [SerializeField] private ParticleSystem breakEffect;
-
+    
+    private Rigidbody rb; // Reference to the Rigidbody component
     private MeshRenderer meshRenderer;
     private Collider spikeCollider;
     private Vector3 startPosition; // To track the starting position

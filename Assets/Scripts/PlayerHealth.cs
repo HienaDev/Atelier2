@@ -3,31 +3,20 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-
     [SerializeField] private Renderer[] renderers;
-
     [SerializeField] private int lives = 3;
-    private int currentLives;
-
-    private bool dead = false;
-
     [SerializeField] private PhaseManager phaseManager;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private int currentLives;
+    private bool dead = false;
+
     void Start()
     {
         currentLives = lives;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void DealDamage(int damage)
     {
-
         CameraShake cameraShake = phaseManager.CurrentCamera.GetComponent<CameraShake>();
         if (cameraShake != null)
             cameraShake.ShakeCamera(2f, 0.1f);
@@ -38,8 +27,6 @@ public class PlayerHealth : MonoBehaviour
         }
 
         currentLives--;
-
-
 
         if (currentLives == 0)
         {

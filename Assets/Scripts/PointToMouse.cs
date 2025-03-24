@@ -1,14 +1,12 @@
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class PointToMouse : MonoBehaviour
 {
-
     [SerializeField] private GameObject topHalf;
     [SerializeField] private float rotationSpeed = 10f;
+
     void Update()
     {
-
         // Get direction from object to the hit point, but only on the X-Z plane
         Vector3 direction = Mouse3D.GetMouseObjectPosition() - topHalf.transform.position;
 
@@ -22,6 +20,5 @@ public class PointToMouse : MonoBehaviour
             // Smoothly rotate towards the target
             topHalf.transform.rotation = Quaternion.Slerp(topHalf.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }
-
     }
 }
