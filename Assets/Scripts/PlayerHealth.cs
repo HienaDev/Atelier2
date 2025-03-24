@@ -21,6 +21,7 @@ public class PlayerHealth : MonoBehaviour
 
     [SerializeField] private GameObject[] livesUI;
 
+    private Sequence sequence;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -96,7 +97,7 @@ public class PlayerHealth : MonoBehaviour
 
         foreach (var renderer in renderers)
         {
-            Sequence sequence = DOTween.Sequence();
+            sequence = DOTween.Sequence();
             sequence.Append(renderer.material.DOFloat(3f, "_PulseRatio", 0.05f).SetEase(Ease.InOutSine));
             sequence.Append(renderer.material.DOFloat(0f, "_PulseRatio", 0.5f).SetEase(Ease.InOutSine));
         }
@@ -104,6 +105,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void Death()
     {
+        sequence.Kill();
         foreach (var renderer in renderers)
         {
             renderer.material.DOFloat(80f, "_PulseRatio", 0.25f).SetEase(Ease.InExpo);
