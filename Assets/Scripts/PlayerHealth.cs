@@ -51,7 +51,7 @@ public class PlayerHealth : MonoBehaviour
             livesUI[i].SetActive(false);
         }
 
-        for (int i = 0; i <= currentLives; i++)
+        for (int i = 0; i < currentLives; i++)
         {
             livesUI[i].SetActive(true);
         }

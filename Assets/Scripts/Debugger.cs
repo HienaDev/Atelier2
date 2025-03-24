@@ -7,6 +7,7 @@ public class Debugger : MonoBehaviour
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private BossHealth bossHealth;
     [SerializeField] private ScorpionBoss scorpionBoss;
+    [SerializeField] private MouthBossAttacks mouthBoss;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -32,20 +33,28 @@ public class Debugger : MonoBehaviour
             bossHealth.DealDamage(250);
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.F4))
         {
             scorpionBoss.SetDifficulty(BossDifficulty.Tutorial);
             Debug.Log("Difficulty set to Tutorial");
         }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.F5))
         {
             scorpionBoss.SetDifficulty(BossDifficulty.Easy);
             Debug.Log("Difficulty set to Easy");
         }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
+        if (Input.GetKeyDown(KeyCode.F6))
         {
             scorpionBoss.SetDifficulty(BossDifficulty.Normal);
             Debug.Log("Difficulty set to Normal");
         }
+
+        if (Input.GetKeyDown(KeyCode.F7))
+        {
+            mouthBoss.NormalDifficulty();
+            Debug.Log("Difficulty set to Normal");
+        }
+
+        
     }
 }
