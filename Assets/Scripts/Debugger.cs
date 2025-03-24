@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static ScorpionBoss;
 
 public class Debugger : MonoBehaviour
@@ -55,6 +56,11 @@ public class Debugger : MonoBehaviour
             Debug.Log("Difficulty set to Normal");
         }
 
-        
+        if (Input.GetKeyDown(KeyCode.F8))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        }
+
     }
 }
