@@ -6326,8 +6326,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BPM: 120
-  bop: 1
   matGridVertical: {fileID: 2100000, guid: bcc3b6e4e14b8e346965770f50a6d863, type: 2}
+  bop: 1
 --- !u!82 &793038626
 AudioSource:
   m_ObjectHideFlags: 0
@@ -14749,7 +14749,7 @@ Transform:
   m_GameObject: {fileID: 2064369210}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.7, y: 3.83, z: 3}
+  m_LocalPosition: {x: 4.7, y: 4, z: 3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

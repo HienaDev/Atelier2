@@ -17,7 +17,7 @@ public class TailProjectile : MonoBehaviour
     {
         startPosition = transform.position;
         targetPosition = target;
-        targetPosition.y = 0.1f;
+        targetPosition.y = 1.25f;
 
         flightTime = Vector3.Distance(startPosition, targetPosition) / speed;
         elapsedTime = 0f;

@@ -12,7 +12,6 @@ public class PlayerHealth : MonoBehaviour
 
     private bool invulnerable = false;
 
-    [SerializeField] private PhaseManager phaseManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
