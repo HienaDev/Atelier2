@@ -12,11 +12,22 @@ public class PlayerHealth : MonoBehaviour
 
     private bool invulnerable = false;
 
+    [SerializeField] private Renderer gridRenderer;
+    private Material gridMaterial;
+    [SerializeField] private Renderer mountainRenderer;
+    private Material mountainMaterial;
+    [SerializeField] private Renderer starRenderer;
+    private Material starMaterial;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         currentLives = lives;
+
+        gridMaterial = gridRenderer.sharedMaterial;
+        mountainMaterial = mountainRenderer.sharedMaterial;
+        starMaterial = starRenderer.sharedMaterial;
     }
 
     // Update is called once per frame
@@ -34,6 +45,17 @@ public class PlayerHealth : MonoBehaviour
     {
 
 
+        Sequence sequenceGrid = DOTween.Sequence();
+        sequenceGrid.Append(gridMaterial.DOFloat(1f, "_ColorIntensity", 0.05f).SetEase(Ease.InOutSine));
+        sequenceGrid.Append(gridMaterial.DOFloat(0.1f, "_ColorIntensity", 0.2f).SetEase(Ease.InOutSine));
+
+        Sequence sequenceMountain = DOTween.Sequence();
+        sequenceMountain.Append(mountainMaterial.DOFloat(1f, "_ColorIntensity", 0.05f).SetEase(Ease.InOutSine));
+        sequenceMountain.Append(mountainMaterial.DOFloat(0.2f, "_ColorIntensity", 0.2f).SetEase(Ease.InOutSine));
+
+        Sequence sequenceStar = DOTween.Sequence();
+        sequenceStar.Append(starMaterial.DOFloat(1f, "_ColorIntensity", 0.05f).SetEase(Ease.InOutSine));
+        sequenceStar.Append(starMaterial.DOFloat(0.1f, "_ColorIntensity", 0.05f).SetEase(Ease.InOutSine));
 
         CameraShake cameraShake = phaseManager.CurrentCamera.GetComponent<CameraShake>();
 

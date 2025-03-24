@@ -32,6 +32,7 @@ public class PlayerShootingEverHood : MonoBehaviour
 
     private void OnEnable()
     {
+        rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.None;
         topHalf.DORotateQuaternion(Quaternion.LookRotation(transform.forward), 0.5f);
         rightArm.DORotate(new Vector3(0f, 90f, 0f), 0.5f);
