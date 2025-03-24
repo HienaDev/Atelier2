@@ -82,9 +82,9 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
     [SerializeField] private DamageBoss health;
 
     private Coroutine bossAIcoroutine;
-
+    [SerializeField] private Transform model;
     private Vector3 startPosition = Vector3.zero;
-    private Quaternion startRotation = Quaternion.identity;
+    private Quaternion startRotation = Quaternion.Euler(90, 90, 90);
     public void StartBoss(PhaseManager.SubPhase subPhase)
     {
         Debug.Log("Change Scorpion phase " + subPhase);
@@ -100,32 +100,36 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
             case PhaseManager.SubPhase.Easy:
                 health?.ToggleDamageable(true);
                 StopAllCoroutines();
-                animator.Play("Idle", 0, 0.1f);
+                animator.Play("Idle", 0, 0f);
                 SpawnNextWeakpointAfterDelay();
-                transform.position =  startPosition ;
-                transform.rotation = startRotation;
-
-                currentState = BossState.Idle;
-                isAttacking = false;
+                StartCoroutine(ResetPosition());
                 SetDifficulty(BossDifficulty.Easy); // Set initial difficulty
                 StartCoroutine(BossAI());
                 break;
             case PhaseManager.SubPhase.Normal:
                 health?.ToggleDamageable(true);
                 StopAllCoroutines();
-                animator.Play("Idle", 0, 0.1f);
+                animator.Play("Idle", 0, 0f);
                 SpawnNextWeakpointAfterDelay();
-                transform.position = startPosition;
-                transform.rotation = startRotation;
-                Debug.Log(transform.position);
-                Debug.Log(transform.rotation);
-                currentState = BossState.Idle;
-                isAttacking = false;
-
+                StartCoroutine(ResetPosition());
                 SetDifficulty(BossDifficulty.Normal);
                 StartCoroutine(BossAI());
                 break;
         }
+    }
+
+    private IEnumerator ResetPosition()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        transform.position = startPosition;
+        transform.rotation = startRotation;
+        Debug.Log(transform.position);
+        Debug.Log(transform.rotation);
+        model.transform.position = Vector3.zero;
+        model.transform.rotation = Quaternion.Euler(0, 0, 0);
+        currentState = BossState.Idle;
+        isAttacking = false;
     }
 
     public void PhaseEnded()
@@ -188,7 +192,7 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
         if(startPosition == Vector3.zero)
             startPosition = transform.position;
 
-        if (startRotation == Quaternion.identity)
+        if (startRotation == Quaternion.Euler(90, 90, 90))
             startRotation = transform.rotation;
 
         Debug.Log("startposition: " + startPosition);

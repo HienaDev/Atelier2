@@ -124,6 +124,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: dd7838bbf2de0394c949fedd71b75e03, type: 3}
   m_PrefabInstance: {fileID: 1189376044}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8352097
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8352098}
+  m_Layer: 0
+  m_Name: ScorpionSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8352098
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8352097}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.05, z: 27.67}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 842874740}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &12804135
 GameObject:
   m_ObjectHideFlags: 0
@@ -7357,6 +7388,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1414104581}
+  - {fileID: 8352098}
   - {fileID: 1439814232}
   - {fileID: 1187527018}
   m_Father: {fileID: 0}
@@ -11290,6 +11322,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 116e4b8ccc8deeb49a300b1148bd1c15, type: 2}
     - target: {fileID: 6536184952667945689, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
+      propertyPath: model
+      value: 
+      objectReference: {fileID: 1853051871}
+    - target: {fileID: 6536184952667945689, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
       propertyPath: health
       value: 
       objectReference: {fileID: 1168521745}
@@ -11317,6 +11353,10 @@ PrefabInstance:
       propertyPath: chargeDuration
       value: 1.2
       objectReference: {fileID: 0}
+    - target: {fileID: 6536184952667945689, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
+      propertyPath: scorpionSpawnPoint
+      value: 
+      objectReference: {fileID: 8352098}
     - target: {fileID: 6536184952667945689, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
       propertyPath: targetForWeapoints
       value: 
@@ -14222,6 +14262,11 @@ MeshRenderer:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 32938ca456502644c8fb7bc8d3551a81, type: 3}
   m_PrefabInstance: {fileID: 1619821191}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1853051871 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8181406905126130617, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
+  m_PrefabInstance: {fileID: 1439814230}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1853890289
 PrefabInstance:
