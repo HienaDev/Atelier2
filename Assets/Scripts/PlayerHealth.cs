@@ -11,6 +11,8 @@ public class PlayerHealth : MonoBehaviour
 
     private bool dead = false;
 
+    private bool invulnerable = false;
+
     [SerializeField] private PhaseManager phaseManager;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -25,10 +27,21 @@ public class PlayerHealth : MonoBehaviour
 
     }
 
+    public void ToggleInvulnerable()
+    {
+        invulnerable = !invulnerable;
+    }
+
     public void DealDamage(int damage)
     {
 
+
+
         CameraShake cameraShake = phaseManager.CurrentCamera.GetComponent<CameraShake>();
+
+        if (invulnerable)
+            return;
+        
         if (cameraShake != null)
             cameraShake.ShakeCamera(2f, 0.1f);
 
