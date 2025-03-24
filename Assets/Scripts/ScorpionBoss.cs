@@ -300,7 +300,7 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
 
         Debug.Log("Scorpion Boss: **Preparing Tail Projectile!**");
 
-        animator.CrossFade("PoisonGrowth", 0.1f);
+        animator.Play("PoisonGrowth", 0 , 0);
 
         yield return new WaitForSeconds(1f);
 
