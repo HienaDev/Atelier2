@@ -3,12 +3,11 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-
     [SerializeField] private Renderer[] renderers;
-
     [SerializeField] private int lives = 3;
-    private int currentLives;
+    [SerializeField] private PhaseManager phaseManager;
 
+    private int currentLives;
     private bool dead = false;
 
     private bool invulnerable = false;
@@ -51,8 +50,6 @@ public class PlayerHealth : MonoBehaviour
         }
 
         currentLives--;
-
-
 
         if (currentLives == 0)
         {

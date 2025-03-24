@@ -2,9 +2,6 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
-using static UnityEngine.ParticleSystem;
 
 public class WeakPoint : MonoBehaviour
 {
@@ -35,8 +32,6 @@ public class WeakPoint : MonoBehaviour
 
     public UnityEvent onDeath;
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rend = GetComponent<Renderer>();
@@ -47,7 +42,6 @@ public class WeakPoint : MonoBehaviour
         justSpawned = Time.time;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if  (!disableLifetime && Time.time - justSpawned > timeAlive && !dying)
@@ -63,7 +57,6 @@ public class WeakPoint : MonoBehaviour
     {
         bossSpawn = target;
     }
-
 
     private void OnTriggerEnter(Collider other)
     {
@@ -83,8 +76,6 @@ public class WeakPoint : MonoBehaviour
 
     private void HandleHit()
     {
-
-
         currentLives--;
         if (currentLives <= 0 && !dying)
         {
@@ -116,9 +107,6 @@ public class WeakPoint : MonoBehaviour
   
                 });
             });
-
-
-
 
             //transform.DOShakePosition(0.1f, 0.1f, 5, 50, false, true).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
             //mat.DOFloat(80f, "_PulseRatio", 0.25f).SetEase(Ease.InExpo).OnComplete(() => {

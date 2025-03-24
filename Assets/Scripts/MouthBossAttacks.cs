@@ -2,11 +2,9 @@ using UnityEngine;
 using System;
 using System.Collections;
 using DG.Tweening;
-using static PhaseManager;
 
 public class MouthBossAttacks : MonoBehaviour, BossInterface
 {
-
     [Serializable]
     private struct AttackPattern
     {
@@ -60,10 +58,6 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
         currentPatterns = attackPatternsEasy;
         gridHalfSize = (int)Math.Ceiling((float)playerMovement.GridSize / 2f);
         currentPattern = currentPatterns[UnityEngine.Random.Range(0, currentPatterns.Length)];
-
-        
-
-
     }
 
     public void StartBoss(PhaseManager.SubPhase subPhase)
@@ -101,10 +95,8 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
         weakpointSpeed *= attackSpeedMultiplier;
     }
 
-    // Update is called once per frame
     void Update()
     {
-
         if (!fightStarted)
             return;
 
@@ -133,12 +125,8 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
         // 2 - 4
         int attackPosition = UnityEngine.Random.Range(2, playerMovement.GridSize);
 
-
-
         bool weakPointActive = UnityEngine.Random.Range(0, 100) < weakpointChance;
         int weakPointPosition = UnityEngine.Random.Range(-1, 2);
-
-
 
         int[] attacks = new int[]
                         {
@@ -152,10 +140,7 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
             if (attacks[i + 1] == 0 && (!weakPointActive))// && weakPointPosition == i))
                 continue;
 
-
-
             GameObject attack;
-
 
             if (weakPointActive && weakPointPosition != i)
             {
@@ -175,29 +160,20 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
                 attack.GetComponent<Rigidbody>().linearVelocity = attack.transform.up * attackSpeed;
             }
 
-
-
             clearProjectiles.AddProjectile(attack);
         }
 
         currentPatternRow++;
-
-
-
-
 
         if (currentPatternRow >= currentPattern.pattern.Length)
         {
             currentPatternRow = 0;
             currentPattern = currentPatterns[UnityEngine.Random.Range(0, currentPatterns.Length)];
         }
-
-
     }
 
     private IEnumerator SpawnTutorialWeakpoints()
     {
-
         health.ToggleDamageable(false);
 
         Debug.Log(numberOfWeakpointsDestroyed + " >= " + numberOfWeakspointsToDestroy + " : " + (numberOfWeakpointsDestroyed >= numberOfWeakspointsToDestroy));
@@ -215,8 +191,5 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
         Debug.Log("Leave coroutine");
         health.ChangePhase();
         health.ToggleDamageable(true);
-
     }
-
-
 }

@@ -1,8 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using static PhaseManager;
-using DG.Tweening.Core.Easing;
-using Unity.VisualScripting;
 
 public class ScorpionBoss : MonoBehaviour, BossInterface
 {
@@ -21,6 +18,7 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
     [SerializeField] private float chargeSpeed = 15f;
     [SerializeField] private float chargeDuration = 1.2f;
     [SerializeField] private float chargeWindupTime = 0.8f;
+    [SerializeField] private float wallDetectionDistance = 1f;
 
     [Header("Tail Projectile Settings")]
     [SerializeField] private GameObject projectilePrefab;
@@ -108,8 +106,6 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
         }
     }
 
-       
-
     public void PhaseEnded()
     {
         if(bossAIcoroutine != null)
@@ -144,7 +140,7 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
         float inverseMultiplier = 200f / (percent + 100f);
 
         chargeSpeed = baseChargeSpeed * speedMultiplier;
-        chargeDuration = baseChargeDuration * inverseMultiplier;
+        chargeDuration = baseChargeDuration * speedMultiplier;
         chargeWindupTime = baseChargeWindupTime * inverseMultiplier;
         projectileSpeed = baseProjectileSpeed * speedMultiplier;
         attackCooldown = baseAttackCooldown * inverseMultiplier;
@@ -185,29 +181,6 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
     private void Update()
     {
         FacePlayer();
-
-        // If pressed space key, activate spikes 
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            Debug.Log("Scorpion Boss: **Spikes Activated!**");
-            ActivateArenaSpikes();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            SetDifficulty(BossDifficulty.Tutorial);
-            Debug.Log("Difficulty set to Tutorial");
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            SetDifficulty(BossDifficulty.Easy);
-            Debug.Log("Difficulty set to Easy");
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            SetDifficulty(BossDifficulty.Normal);
-            Debug.Log("Difficulty set to Normal");
-        }
     }
 
     private IEnumerator BossAI()
@@ -281,36 +254,39 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
 
         yield return StartCoroutine(RotateTowardsPlayer());
 
-        // Windup animation before charging
         animator.CrossFade("Charge", 0.1f);
-
         phaseManager?.CurrentCamera.GetComponent<CameraShake>().ShakeCamera(0.5f, chargeWindupTime);
-
         yield return new WaitForSeconds(chargeWindupTime);
 
-        Debug.Log("Scorpion Boss: **Charging at Player!**");
+        Debug.Log("Scorpion Boss: **Charging forward!**");
 
+        animator.CrossFade("ChargeDash", 0.1f);
         phaseManager?.CurrentCamera.GetComponent<CameraShake>().SmoothShakeCamera(1f, chargeDuration + 0.5f);
 
-        // Charge attack animation
-        animator.CrossFade("ChargeDash", 0.1f);
-
-        Vector3 chargeDirection = player.position - transform.position;
-        chargeDirection.x = 0;
-        chargeDirection.y = 0;
-        chargeDirection.Normalize();
-
-        rb.linearVelocity = chargeDirection * chargeSpeed;
-
+        float timer = 0f;
         
+        // Use direction based on player's position
+        Vector3 direction = (player.position - transform.position).normalized;
+        direction.y = 0; // Prevent vertical movement
 
-        yield return new WaitForSeconds(chargeDuration);
+        float rayDistance = 1f;
+        LayerMask wallMask = LayerMask.GetMask("Default");
 
-        // Stop the animation with fade out
+        while (timer < chargeDuration)
+        {
+            // Detect walls ahead
+            if (Physics.Raycast(transform.position, direction, out RaycastHit hit, rayDistance, wallMask))
+            {
+                Debug.Log("Scorpion Boss: **Hit wall: " + hit.collider.name + "**");
+                break;
+            }
+
+            transform.position += direction * chargeSpeed * Time.deltaTime;
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
         animator.Play("Idle", 0, 0.1f);
-
-        rb.linearVelocity = Vector3.zero;
-
         currentState = BossState.Idle;
         isAttacking = false;
     }
@@ -324,7 +300,7 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
 
         Debug.Log("Scorpion Boss: **Preparing Tail Projectile!**");
 
-        animator.CrossFade("PoisonGrowth", 0.1f);
+        animator.Play("PoisonGrowth", 0 , 0);
 
         yield return new WaitForSeconds(1f);
 
@@ -620,9 +596,15 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
         return 0f;
     }
 
+    public void SmallCameraShake()
+    {
+        phaseManager?.CurrentCamera.GetComponent<CameraShake>().ShakeCamera(0.5f, 0.5f);
+    }
+
     // Draw the range of the attacks in the Scene view
     private void OnDrawGizmosSelected()
     {
+        // Existing range gizmos
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, tailAttackMinRange);
 
@@ -631,7 +613,9 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
 
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, stabAttackMaxRange);
+
+        // Raycast for charge direction (always forward)
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawRay(transform.position, -transform.forward * wallDetectionDistance);
     }
-
-
 }

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
-using static PhaseManager;
 
 public class BossMorphing : MonoBehaviour
 {
@@ -24,17 +23,11 @@ public class BossMorphing : MonoBehaviour
     }
 
     [SerializeField] private GameObject bossPartsParent;
-
     [SerializeField] private Boss boss;
     [SerializeField] private float transformationSpeedSpline = 1f;
     [SerializeField] private float transformationSpeedLerp = 0.2f;
     [SerializeField] private BossPhase previousPhase;
     [SerializeField] private Transform player;
-
-    private Coroutine currentCoroutine;
-
-    private List<SplineContainer> splineContainerList = new List<SplineContainer>();
-    private List<SplineAnimate> splineAnimateList = new List<SplineAnimate>();
 
     [SerializeField] private int controlPointCount = 5; // Number of control points
     [SerializeField] private float randomnessAmount = 0.5f; // Controls how random the path is (0-1)
@@ -42,11 +35,14 @@ public class BossMorphing : MonoBehaviour
     [SerializeField] private float archHeight = 0.5f; // Controls the height of the arch (0-1)
     [SerializeField] private bool useArchedPath = false; // Toggle between random and arched paths
 
+    private Coroutine currentCoroutine;
+    private List<SplineContainer> splineContainerList = new List<SplineContainer>();
+    private List<SplineAnimate> splineAnimateList = new List<SplineAnimate>();
+
     public bool Morphing { get; private set; }
 
     private void Start()
     {
-
         previousPhase = boss.bossPhases[0];
 
         foreach (BossPhase phase in boss.bossPhases)
@@ -141,9 +137,7 @@ public class BossMorphing : MonoBehaviour
             Morphing = true;
             float lerpValue = 0f;
 
-
             BossPhase fromPhase;
-
 
             fromPhase = previousPhase;
 
@@ -226,14 +220,12 @@ public class BossMorphing : MonoBehaviour
             Morphing = false;
             bossObject.SetActive(true);
             ToggleBossParts(false);
-
         }
 
 
         yield return null;
 
         bossInterface.StartBoss(subphase);
-
     }
 
     private void CreateSplineContainer()
@@ -322,5 +314,4 @@ public class BossMorphing : MonoBehaviour
 
         //Debug.Log($"Random semi-linear spline generated from {startPosition} to {endPosition}");
     }
-
 }

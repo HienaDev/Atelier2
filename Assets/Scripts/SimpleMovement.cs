@@ -7,8 +7,6 @@ public class SimpleMovement : MonoBehaviour
 
     void Update()
     {
-
-
         // Get input
         float horizontal = Input.GetAxisRaw("Horizontal"); // A/D or Left/Right arrow
         float vertical = Input.GetAxisRaw("Vertical"); // W/S or Up/Down arrow

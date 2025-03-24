@@ -16,8 +16,6 @@ public class ArmRecoil : MonoBehaviour
 
     void Update()
     {
-        
-
         // Smoothly return to rest position when not shooting
         recoilProgress = Mathf.MoveTowards(recoilProgress, 0f, returnSpeed * Time.deltaTime);
         transform.localPosition = restPosition + new Vector3(0, 0, -recoilProgress);
