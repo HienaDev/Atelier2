@@ -38,6 +38,7 @@ public class PlayerMovementQuark : MonoBehaviour
         bool wasGrounded = isGrounded;
         isGrounded = Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, out hit, groundCheckDistance + 0.2f, groundLayer);
 
+
         // Reset jump states when landing
         if (!wasGrounded && isGrounded)
         {
@@ -66,6 +67,7 @@ public class PlayerMovementQuark : MonoBehaviour
     {
         if (isGrounded && Input.GetButtonDown("Jump"))
         {
+            Debug.Log("Jump");
             StartJump();
         }
 

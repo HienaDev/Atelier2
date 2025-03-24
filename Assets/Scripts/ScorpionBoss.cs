@@ -299,6 +299,8 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
 
         rb.linearVelocity = chargeDirection * chargeSpeed;
 
+        
+
         yield return new WaitForSeconds(chargeDuration);
 
         // Stop the animation with fade out
