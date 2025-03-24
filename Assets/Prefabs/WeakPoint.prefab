@@ -127,17 +127,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   intensitySteps: 0.3
   lives: 10
+  isTriggerWeakPoint: 0
   extrusionIntensitySteps: 0.1
   col: {fileID: 6779117755271713210}
   particles: {fileID: 8881244261015604869}
   numberOfParticles: 5
-  onDeath:
-    m_PersistentCalls:
-      m_Calls: []
   timeAlive: 20
+  disableLifetime: 0
   amplitude: 0.1
   period: 0.5
   flyingDuration: 2
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!64 &6779117755271713210
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -153,7 +155,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
@@ -5059,3 +5061,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleSystemExplosion: {fileID: 8881244261015604869}
+  disableMesh: 1
+  destroy: 1

@@ -113,7 +113,7 @@ public class BossMorphing : MonoBehaviour
         }
     }
 
-    public bool ChangePhase(int phaseNumber, GameObject bossObject, Transform playerStartPosition, MonoBehaviour playerMovementScript, MonoBehaviour playerShootingScript)
+    public bool ChangePhase(int phaseNumber, GameObject bossObject, Transform playerStartPosition, MonoBehaviour playerMovementScript, MonoBehaviour playerShootingScript, BossInterface bossInterface, PhaseManager.SubPhase subphase, bool differentPhase)
     {
         foreach (BossPhase phase in boss.bossPhases)
         {
@@ -123,7 +123,7 @@ public class BossMorphing : MonoBehaviour
                 {
                     StopCoroutine(currentCoroutine);
                 }
-                currentCoroutine = StartCoroutine(PhaseMorphSpline(boss, phase, bossObject, playerStartPosition, playerMovementScript, playerShootingScript));
+                currentCoroutine = StartCoroutine(PhaseMorphSpline(boss, phase, bossObject, playerStartPosition, playerMovementScript, playerShootingScript, bossInterface, subphase, differentPhase));
                 return true;
 
             }
@@ -132,98 +132,107 @@ public class BossMorphing : MonoBehaviour
         return false;
     }
 
-    public IEnumerator PhaseMorphSpline(Boss boss, BossPhase toPhase, GameObject bossObject, Transform playerNextPosition, MonoBehaviour playerMovementScript, MonoBehaviour playerShootingScript)
+    public IEnumerator PhaseMorphSpline(Boss boss, BossPhase toPhase, GameObject bossObject, Transform playerNextPosition, MonoBehaviour playerMovementScript, MonoBehaviour playerShootingScript, BossInterface bossInterface, PhaseManager.SubPhase subphase, bool differentPhase)
     {
 
-        ToggleBossParts(true);
-        Morphing = true;
-        float lerpValue = 0f;
-
-
-        BossPhase fromPhase;
-
-
-        fromPhase = previousPhase;
-
-        Transform playerInitialPosition = player;
-
-        // Collect original transformations in world space
-        List<Vector3> originalPositions = new List<Vector3>();
-        List<Quaternion> originalRotations = new List<Quaternion>();
-        List<Vector3> originalScales = new List<Vector3>();
-
-        for (int i = 0; i < fromPhase.bossParts.Length; i++)
+        if(differentPhase)
         {
-            originalPositions.Add(fromPhase.bossParts[i].position);
-            originalRotations.Add(fromPhase.bossParts[i].rotation);
-            originalScales.Add(fromPhase.bossParts[i].localScale);
-        }
-
-        // Generate splines
-        for (int i = 0; i < boss.parts.Length; i++)
-        {
-            // Get the target position in world space
-            Vector3 targetPosition = toPhase.bossParts[i].position;
-
-            // Generate spline from current position to target position
-            GenerateRandomLinearSpline(boss.parts[i].position, targetPosition, splineContainerList[i]);
-
-            // Set the SplineAnimate component
-            splineAnimateList[i].Container = splineContainerList[i];
-            splineAnimateList[i].Duration = 1f;
-            splineAnimateList[i].ElapsedTime = 0f;
-        }
-
-        while (lerpValue < 0.999f)
-        {
-            lerpValue += Time.deltaTime * transformationSpeedSpline;
-            lerpValue = Mathf.Clamp(lerpValue, 0f, 0.999f);
+            ToggleBossParts(true);
+            Morphing = true;
+            float lerpValue = 0f;
 
 
-            // Move Player
-            player.position = Vector3.Lerp(playerInitialPosition.position, playerNextPosition.position, lerpValue);
+            BossPhase fromPhase;
 
-            for (int i = 0; i < boss.parts.Length; i++)
+
+            fromPhase = previousPhase;
+
+            Transform playerInitialPosition = player;
+
+            // Collect original transformations in world space
+            List<Vector3> originalPositions = new List<Vector3>();
+            List<Quaternion> originalRotations = new List<Quaternion>();
+            List<Vector3> originalScales = new List<Vector3>();
+
+            for (int i = 0; i < fromPhase.bossParts.Length; i++)
             {
-                // Update spline position
-                splineAnimateList[i].ElapsedTime = lerpValue;
-
-                // Get the target rotation and scale in world space
-                Quaternion targetRotation = toPhase.bossParts[i].rotation;
-                Vector3 targetScale = toPhase.bossParts[i].lossyScale; // Use lossyScale to get world scale
-
-                // Apply rotation and scale
-                boss.parts[i].rotation = Quaternion.Lerp(originalRotations[i], targetRotation, lerpValue);
-
-                // Handle scale more carefully - convert from world to local scale
-                Vector3 currentWorldScale = Vector3.Lerp(originalScales[i], targetScale, lerpValue);
-                // Convert world scale to local scale if there's a parent
-                if (boss.parts[i].parent != null)
-                {
-                    Vector3 parentWorldScale = boss.parts[i].parent.lossyScale;
-                    boss.parts[i].localScale = new Vector3(
-                        currentWorldScale.x / parentWorldScale.x,
-                        currentWorldScale.y / parentWorldScale.y,
-                        currentWorldScale.z / parentWorldScale.z
-                    );
-                }
-                else
-                {
-                    boss.parts[i].localScale = currentWorldScale;
-                }
+                originalPositions.Add(fromPhase.bossParts[i].position);
+                originalRotations.Add(fromPhase.bossParts[i].rotation);
+                originalScales.Add(fromPhase.bossParts[i].localScale);
             }
 
-            yield return null;
+            // Generate splines
+            for (int i = 0; i < boss.parts.Length; i++)
+            {
+                // Get the target position in world space
+                Vector3 targetPosition = toPhase.bossParts[i].position;
+
+                // Generate spline from current position to target position
+                GenerateRandomLinearSpline(boss.parts[i].position, targetPosition, splineContainerList[i]);
+
+                // Set the SplineAnimate component
+                splineAnimateList[i].Container = splineContainerList[i];
+                splineAnimateList[i].Duration = 1f;
+                splineAnimateList[i].ElapsedTime = 0f;
+            }
+
+            while (lerpValue < 0.999f)
+            {
+                lerpValue += Time.deltaTime * transformationSpeedSpline;
+                lerpValue = Mathf.Clamp(lerpValue, 0f, 0.999f);
+
+
+                // Move Player
+                player.position = Vector3.Lerp(playerInitialPosition.position, playerNextPosition.position, lerpValue);
+
+                for (int i = 0; i < boss.parts.Length; i++)
+                {
+                    // Update spline position
+                    splineAnimateList[i].ElapsedTime = lerpValue;
+
+                    // Get the target rotation and scale in world space
+                    Quaternion targetRotation = toPhase.bossParts[i].rotation;
+                    Vector3 targetScale = toPhase.bossParts[i].lossyScale; // Use lossyScale to get world scale
+
+                    // Apply rotation and scale
+                    boss.parts[i].rotation = Quaternion.Lerp(originalRotations[i], targetRotation, lerpValue);
+
+                    // Handle scale more carefully - convert from world to local scale
+                    Vector3 currentWorldScale = Vector3.Lerp(originalScales[i], targetScale, lerpValue);
+                    // Convert world scale to local scale if there's a parent
+                    if (boss.parts[i].parent != null)
+                    {
+                        Vector3 parentWorldScale = boss.parts[i].parent.lossyScale;
+                        boss.parts[i].localScale = new Vector3(
+                            currentWorldScale.x / parentWorldScale.x,
+                            currentWorldScale.y / parentWorldScale.y,
+                            currentWorldScale.z / parentWorldScale.z
+                        );
+                    }
+                    else
+                    {
+                        boss.parts[i].localScale = currentWorldScale;
+                    }
+                }
+
+                yield return null;
+            }
+
+            previousPhase = toPhase;
+
+            playerMovementScript.enabled = true;
+            playerShootingScript.enabled = true;
+
+            Morphing = false;
+            bossObject.SetActive(true);
+            ToggleBossParts(false);
+
         }
 
-        previousPhase = toPhase;
 
-        playerMovementScript.enabled = true;
-        playerShootingScript.enabled = true;
+        yield return null;
 
-        Morphing = false;
-        bossObject.SetActive(true);
-        ToggleBossParts(false);
+        bossInterface.StartBoss(subphase);
 
     }
 

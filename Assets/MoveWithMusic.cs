@@ -13,7 +13,7 @@ public class MoveWithMusic : MonoBehaviour
     private float timeBetweenNotes;
 
     private float justBopped;
-    private bool bop = true;
+    [HideInInspector] public bool bop = true;
 
 
     private Sequence sequenceVertical;
@@ -34,7 +34,8 @@ public class MoveWithMusic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (bop)
+            bop = false;
 
         if (Time.timeSinceLevelLoad - justBopped > timeBetweenNotes)
         {
@@ -54,7 +55,6 @@ public class MoveWithMusic : MonoBehaviour
             //sequenceColor.Append(matGridVertical.DOFloat(0.1f, "_ColorChangeSpeed", 0.2f).SetEase(Ease.InOutSine));
 
 
-            bop = false;
             justBopped = Time.timeSinceLevelLoad;
         }
 

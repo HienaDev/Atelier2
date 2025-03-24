@@ -11,7 +11,8 @@ public class PhaseManager : MonoBehaviour
         MonkeyHell,
         Everhood,
         Quark,
-        Rez
+        Rez,
+        None
     }
 
     public enum SubPhase
@@ -22,6 +23,7 @@ public class PhaseManager : MonoBehaviour
     }
 
     private GameObject currentCamera;
+    public GameObject CurrentCamera { get => currentCamera; }
 
     [Serializable]
     public class PhaseData
@@ -33,10 +35,11 @@ public class PhaseManager : MonoBehaviour
         public MonoBehaviour playerShooting;
         public GameObject arena;
         public Transform playerSpawnPoint;
+        public MonoBehaviour bossInterface;
     }
 
     [SerializeField] private BossMorphing bossMorphing;
-    [SerializeField] private Phase initialPhase;
+
     private Phase currentPhase;
     private GameObject currentBoss;
     private MonoBehaviour currentPlayerMovement;
@@ -56,13 +59,13 @@ public class PhaseManager : MonoBehaviour
     private int currentPhaseIndex = 0;
     private Dictionary<Phase, PhaseData> phaseData = new Dictionary<Phase, PhaseData>();
     private Dictionary<Phase, SubPhase> subPhaseData = new Dictionary<Phase, SubPhase>();
-
+    private Phase lastPhase = Phase.None;
     [SerializeField] private bool debugMode = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private IEnumerator Start()
     {
-        currentPhase = initialPhase;
+        currentPhase = phases[0];
 
         // Initialize just to avoid nulls but will be replaced right after
         currentCamera = phaseMonkeyHell.camera;
@@ -104,7 +107,7 @@ public class PhaseManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
 
-        ChangePhaseDictionary(currentPhase);
+        ChangePhaseDictionary(phases[currentPhaseIndex], subPhaseData[phases[currentPhaseIndex]]);
     }
 
 
@@ -121,19 +124,26 @@ public class PhaseManager : MonoBehaviour
 
     public void ChangePhase()
     {
+        Debug.Log("Phase changing");
+        Debug.Log(currentPhase);
+        Debug.Log(subPhaseData[currentPhase]);
         if (subPhaseData[currentPhase] == SubPhase.Tutorial)
         {
             subPhaseData[currentPhase] = SubPhase.Easy;
         }
+        else if(subPhaseData[currentPhase] == SubPhase.Easy && lastPhase != currentPhase)
+        {
+            subPhaseData[currentPhase] = SubPhase.Normal;
+        }
         else
         {
             currentPhaseIndex++;
-            if(currentPhaseIndex >= phases.Length)
+            if (currentPhaseIndex >= phases.Length)
             {
                 Debug.LogError("No more phases");
                 return;
             }
-            phases[currentPhaseIndex] = currentPhase;
+            currentPhase = phases[currentPhaseIndex];
         }
 
         ChangePhaseDictionary(phases[currentPhaseIndex], subPhaseData[phases[currentPhaseIndex]]);
@@ -150,7 +160,7 @@ public class PhaseManager : MonoBehaviour
 
         PhaseData data = phaseData[phase];
 
-        if (!bossMorphing.ChangePhase(data.number, data.boss, data.playerSpawnPoint, data.playerMovement, data.playerShooting))
+        if (!bossMorphing.ChangePhase(data.number, data.boss, data.playerSpawnPoint, data.playerMovement, data.playerShooting, data.bossInterface as BossInterface, subphase, lastPhase != phase))
             return;
 
         if(data.boss == null)
@@ -159,10 +169,15 @@ public class PhaseManager : MonoBehaviour
             return;
         }
 
+        if (lastPhase == phase)
+            return;
+
         currentCamera.SetActive(false);
         currentCamera = data.camera;
         currentCamera.SetActive(true);
 
+        BossInterface bossInterfaceAux = data.bossInterface as BossInterface;
+        bossInterfaceAux.PhaseEnded();
         currentBoss.SetActive(false);
         currentBoss = data.boss;
 
@@ -175,6 +190,8 @@ public class PhaseManager : MonoBehaviour
 
         currentPlayerMovement = data.playerMovement;
         currentPlayerShooting = data.playerShooting;
+
+        lastPhase = phase;
 
     }
 

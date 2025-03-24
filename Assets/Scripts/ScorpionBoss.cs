@@ -1,7 +1,9 @@
 using UnityEngine;
 using System.Collections;
+using static PhaseManager;
+using DG.Tweening.Core.Easing;
 
-public class ScorpionBoss : MonoBehaviour
+public class ScorpionBoss : MonoBehaviour, BossInterface
 {
     public enum BossState { Idle, Charge, TailAttack, StabAttack, SpikeDown }
     public enum BossDifficulty { Tutorial, Easy, Normal }
@@ -12,7 +14,7 @@ public class ScorpionBoss : MonoBehaviour
     [SerializeField] private float attackCooldown = 2f;
     [SerializeField] private Animator animator;
     [SerializeField] private float rotationSpeed = 5f;
-    [SerializeField] private CameraShake cameraShake;
+    [SerializeField] private PhaseManager phaseManager;
 
     [Header("Charge Attack Settings")]
     [SerializeField] private float chargeSpeed = 15f;
@@ -77,6 +79,40 @@ public class ScorpionBoss : MonoBehaviour
 
     [SerializeField] private Transform targetForWeapoints;
 
+    [SerializeField] private DamageBoss health;
+
+    private Coroutine bossAIcoroutine;
+    public void StartBoss(PhaseManager.SubPhase subPhase)
+    {
+        Debug.Log("Change Scropion phase " + subPhase);
+        switch (subPhase)
+        {
+            case PhaseManager.SubPhase.Tutorial:
+                SetDifficulty(BossDifficulty.Tutorial); // Set initial difficulty
+
+                SpawnWeakpoints(); // Spawn weakpoints at the start
+
+                StartCoroutine(WaitForWeakpointsDestroyed()); // Wait for weakpoints to be destroyed before starting AI
+                break;
+            case PhaseManager.SubPhase.Easy:
+                health.ToggleDamageable(true);
+                SetDifficulty(BossDifficulty.Easy); // Set initial difficulty
+                bossAIcoroutine = StartCoroutine(BossAI());
+                break;
+            case PhaseManager.SubPhase.Normal:
+                health.ToggleDamageable(true);
+                SetDifficulty(BossDifficulty.Normal);
+                bossAIcoroutine = StartCoroutine(BossAI());
+                break;
+        }
+    }
+
+    public void PhaseEnded()
+    {
+        if(bossAIcoroutine != null)
+            StopCoroutine(bossAIcoroutine); 
+    }
+
     public void SetDifficulty(BossDifficulty newDifficulty)
     {
         difficulty = newDifficulty;
@@ -140,11 +176,7 @@ public class ScorpionBoss : MonoBehaviour
         baseGroundSpikesUpDuration = groundSpikesUpDuration;
         baseAnimSpeed = animator.speed;
 
-        SetDifficulty(BossDifficulty.Tutorial); // Set initial difficulty
-
-        SpawnWeakpoints(); // Spawn weakpoints at the start
-
-        StartCoroutine(WaitForWeakpointsDestroyed()); // Wait for weakpoints to be destroyed before starting AI
+        
     }
 
     private void Update()
@@ -249,13 +281,13 @@ public class ScorpionBoss : MonoBehaviour
         // Windup animation before charging
         animator.CrossFade("Charge", 0.1f);
 
-        cameraShake.ShakeCamera(0.5f, chargeWindupTime);
+        phaseManager.CurrentCamera.GetComponent<CameraShake>().ShakeCamera(0.5f, chargeWindupTime);
 
         yield return new WaitForSeconds(chargeWindupTime);
 
         Debug.Log("Scorpion Boss: **Charging at Player!**");
 
-        cameraShake.SmoothShakeCamera(1f, chargeDuration + 0.5f);
+        phaseManager.CurrentCamera.GetComponent<CameraShake>().SmoothShakeCamera(1f, chargeDuration + 0.5f);
 
         // Charge attack animation
         animator.CrossFade("ChargeDash", 0.1f);
@@ -315,7 +347,7 @@ public class ScorpionBoss : MonoBehaviour
 
         Debug.Log("Scorpion Boss: **Dashing Forward!**");
 
-        cameraShake.ShakeCamera(0.3f, dashDuration);
+        phaseManager.CurrentCamera.GetComponent<CameraShake>().ShakeCamera(0.3f, dashDuration);
 
         // Dash windup animation
         animator.CrossFade("SmallDash", 0.1f);
@@ -349,7 +381,7 @@ public class ScorpionBoss : MonoBehaviour
 
         Debug.Log("Scorpion Boss: **Spike Down Attack!**");
 
-        cameraShake.SmoothShakeCamera(1.5f, 2f);
+        phaseManager.CurrentCamera.GetComponent<CameraShake>().SmoothShakeCamera(1.5f, 2f);
 
         // Windup animation before slamming
         animator.CrossFade("JumpToAereal", 0.1f);
@@ -409,7 +441,7 @@ public class ScorpionBoss : MonoBehaviour
     {
         Vector3 startPos = spike.transform.position;
         Vector3 targetPos = startPos + Vector3.up * 2f;
-        cameraShake.SmoothShakeCamera(3, groundSpikesMoveTime + 0.1f);
+        phaseManager.CurrentCamera.GetComponent<CameraShake>().SmoothShakeCamera(3, groundSpikesMoveTime + 0.1f);
 
         // Raise spikes over spikeMoveTime seconds
         float elapsedTime = 0f;
@@ -424,7 +456,7 @@ public class ScorpionBoss : MonoBehaviour
         // Spikes stay up for the configured duration
         yield return new WaitForSeconds(groundSpikesUpDuration);
 
-        cameraShake.SmoothShakeCamera(1.5f, groundSpikesMoveTime + 0.1f);
+        phaseManager.CurrentCamera.GetComponent<CameraShake>().SmoothShakeCamera(1.5f, groundSpikesMoveTime + 0.1f);
 
         // Lower spikes over spikeMoveTime seconds
         elapsedTime = 0f;
@@ -475,7 +507,7 @@ public class ScorpionBoss : MonoBehaviour
         targetRotation *= Quaternion.Euler(0, 180, 0);
         transform.rotation = targetRotation;
 
-        cameraShake.SmoothShakeCamera(0.5f, maxRotationTime);
+        phaseManager.CurrentCamera.GetComponent<CameraShake>().SmoothShakeCamera(0.5f, maxRotationTime);
     }
 
     private void SpawnWeakpoints()
@@ -507,7 +539,8 @@ public class ScorpionBoss : MonoBehaviour
             yield return null;
 
         Debug.Log("Scorpion Boss: **Weakpoints destroyed!**");
-        StartCoroutine(BossAI());
+        // HERE
+        health.ChangePhase();
     }
 
     private void OnWeakpointDestroyed()
@@ -561,6 +594,7 @@ public class ScorpionBoss : MonoBehaviour
 
         WeakPoint wpScript = wp.GetComponent<WeakPoint>();
         wpScript.onDeath.AddListener(OnWeakpointDestroyed);
+        wpScript.SetTarget(targetForWeapoints);
 
         currentExtraWeakpoint = wp;
     }
@@ -591,4 +625,6 @@ public class ScorpionBoss : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, stabAttackMaxRange);
     }
+
+
 }

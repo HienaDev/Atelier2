@@ -11,6 +11,8 @@ public class PlayerHealth : MonoBehaviour
 
     private bool dead = false;
 
+    [SerializeField] private PhaseManager phaseManager;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -25,6 +27,11 @@ public class PlayerHealth : MonoBehaviour
 
     public void DealDamage(int damage)
     {
+
+        CameraShake cameraShake = phaseManager.CurrentCamera.GetComponent<CameraShake>();
+        if (cameraShake != null)
+            cameraShake.ShakeCamera(2f, 0.1f);
+
         if (dead)
         {
             return;

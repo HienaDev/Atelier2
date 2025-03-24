@@ -1,10 +1,13 @@
 using UnityEngine;
 using DG.Tweening;
+using System.Collections;
 
 public class PlayerShootingEverHood : MonoBehaviour
 {
 
     [SerializeField] private Transform topHalf;
+    [SerializeField] private Transform rightArm;
+    [SerializeField] private Transform leftArm;
 
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private ArmRecoil leftArmRecoil;
@@ -20,16 +23,28 @@ public class PlayerShootingEverHood : MonoBehaviour
     [SerializeField] private float bulletSpeed = 20f;
 
 
+    private Rigidbody rb;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
 
+        rb = GetComponent<Rigidbody>();
+        rb.constraints = RigidbodyConstraints.None;
+        topHalf.DORotateQuaternion(Quaternion.LookRotation(transform.forward), 0.5f);
+        rightArm.DORotate(new Vector3(0f, 90f, 0f), 0.5f);
+        leftArm.DORotate(new Vector3(0f, 90f, 0f), 0.5f);
     }
+
+
 
     private void OnEnable()
     {
 
+        rb.constraints = RigidbodyConstraints.None;
         topHalf.DORotateQuaternion(Quaternion.LookRotation(transform.forward), 0.5f);
+        rightArm.DORotate(new Vector3(0f, 90f, 0f), 0.5f);
+        leftArm.DORotate(new Vector3(0f, 90f, 0f), 0.5f);
     }
 
     // Update is called once per frame

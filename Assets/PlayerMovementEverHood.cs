@@ -19,6 +19,8 @@ public class PlayerMovementEverHood : MonoBehaviour
     private bool isJumping = false;
     private float jumpTimer = 0f;
 
+
+
     void OnEnable()
     {
         // Get the starting position when the script is enabled
@@ -27,6 +29,7 @@ public class PlayerMovementEverHood : MonoBehaviour
 
         // Calculate current Z position (assuming middle of grid as default)
         currentZ = gridSize / 2;
+
     }
 
     void Update()

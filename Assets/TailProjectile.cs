@@ -11,6 +11,8 @@ public class TailProjectile : MonoBehaviour
     private float elapsedTime;
     private bool isMoving = true;
 
+    [SerializeField] private PhaseManager phaseManager;
+
     public void Initialize(Vector3 target, float speed)
     {
         startPosition = transform.position;
@@ -45,7 +47,7 @@ public class TailProjectile : MonoBehaviour
     {
         isMoving = false;
 
-        CameraShake cameraShake = FindFirstObjectByType<CameraShake>();
+        CameraShake cameraShake = phaseManager.CurrentCamera.GetComponent<CameraShake>();
         if (cameraShake != null)
             cameraShake.ShakeCamera(2f, 0.1f);
 
