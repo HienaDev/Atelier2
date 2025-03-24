@@ -10114,7 +10114,7 @@ PrefabInstance:
       objectReference: {fileID: 928925445}
     - target: {fileID: 6536184952667945689, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
       propertyPath: requiredWeakpointsToDestroy
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7585908973571757278, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'

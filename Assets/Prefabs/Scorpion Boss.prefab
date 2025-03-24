@@ -730,6 +730,7 @@ GameObject:
   - component: {fileID: 9034320449800660454}
   - component: {fileID: 9026846051029536674}
   - component: {fileID: 1413349931259662245}
+  - component: {fileID: 4345820384764163378}
   m_Layer: 0
   m_Name: 1 _ Stringer
   m_TagString: Untagged
@@ -851,6 +852,128 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2513613198000128181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd63a92395eb87646b415f4aa09009f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: {fileID: 0}
+  partsRenderer:
+  - {fileID: 5286090400607000281}
+  - {fileID: 3377650666297599951}
+  - {fileID: 2303408310574904713}
+  - {fileID: 3927332039262890426}
+  - {fileID: 7585908973571757278}
+  - {fileID: 1725058369150552407}
+  - {fileID: 6309382995061038786}
+  - {fileID: 8240136190622867567}
+  - {fileID: 2488438399896135780}
+  - {fileID: 4104457939082250215}
+  - {fileID: 4686121719740258003}
+  - {fileID: 3717500627878953382}
+  - {fileID: 7655392800440198218}
+  - {fileID: 2836072577403432891}
+  - {fileID: 5285478011563164533}
+  - {fileID: 3175890124488630242}
+  - {fileID: 8664247159226140663}
+  - {fileID: 2796147718335952021}
+  - {fileID: 4494591145019265931}
+  - {fileID: 1625759736592517698}
+--- !u!114 &4345820384764163378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2513613198000128181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd63a92395eb87646b415f4aa09009f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: {fileID: 0}
+  partsRenderer:
+  - {fileID: 5286090400607000281}
+  - {fileID: 3377650666297599951}
+  - {fileID: 2303408310574904713}
+  - {fileID: 3927332039262890426}
+  - {fileID: 7585908973571757278}
+  - {fileID: 1725058369150552407}
+  - {fileID: 6309382995061038786}
+  - {fileID: 8240136190622867567}
+  - {fileID: 2488438399896135780}
+  - {fileID: 4104457939082250215}
+  - {fileID: 4686121719740258003}
+  - {fileID: 3717500627878953382}
+  - {fileID: 7655392800440198218}
+  - {fileID: 2836072577403432891}
+  - {fileID: 5285478011563164533}
+  - {fileID: 3175890124488630242}
+  - {fileID: 8664247159226140663}
+  - {fileID: 2796147718335952021}
+  - {fileID: 4494591145019265931}
+  - {fileID: 1625759736592517698}
+--- !u!1 &2994098285150286030
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7710540156790269093}
+  - component: {fileID: 6879110737680245412}
+  - component: {fileID: 3736313688010632210}
+  m_Layer: 0
+  m_Name: ScorpioBoss Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7710540156790269093
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2994098285150286030}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7431448, y: -0, z: -0, w: 0.6691306}
+  m_LocalPosition: {x: 0, y: -0.8145319, z: 1.5027381}
+  m_LocalScale: {x: 0.8754135, y: 0.9308513, z: 0.5521146}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 877532477197557828}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &6879110737680245412
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2994098285150286030}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1.65, z: 4}
+  m_Center: {x: 0, y: 1.5, z: 1.72}
+--- !u!114 &3736313688010632210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2994098285150286030}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd63a92395eb87646b415f4aa09009f1, type: 3}
@@ -1812,6 +1935,7 @@ Transform:
   - {fileID: 7913540538395088293}
   - {fileID: 6574062565993679172}
   - {fileID: 4222813643569894424}
+  - {fileID: 7710540156790269093}
   m_Father: {fileID: 8181406905126130617}
   m_LocalEulerAnglesHint: {x: 90, y: 90, z: -90}
 --- !u!33 &3944468705885270447
@@ -2258,12 +2382,12 @@ MonoBehaviour:
     uniformScale: 0.5
   - spawnPoint: {fileID: 7913540538395088293}
     uniformScale: 1.2
-  requiredWeakpointsToDestroy: 0
+  requiredWeakpointsToDestroy: 2
   extraWeakpointDelay: 5
   tutorialPercentage: 55
   easyPercentage: 75
   targetForWeapoints: {fileID: 877532477197557828}
-  health: {fileID: 3317602883618973491}
+  health: {fileID: 3736313688010632210}
 --- !u!95 &619536690408866361
 Animator:
   serializedVersion: 7
