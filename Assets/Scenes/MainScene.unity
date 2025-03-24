@@ -5083,7 +5083,7 @@ MonoBehaviour:
     arena: {fileID: 0}
     playerSpawnPoint: {fileID: 287879615}
     bossInterface: {fileID: 0}
-  phases: 01000000020000000100000002000000
+  phases: 02000000010000000200000001000000
   debugMode: 0
 --- !u!114 &624881817
 MonoBehaviour:

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using NUnit.Framework.Constraints;
 
 public class ScorpionBoss : MonoBehaviour, BossInterface
 {
@@ -82,8 +83,8 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
 
     private Coroutine bossAIcoroutine;
 
-    private Vector3 startPosition;
-    private Quaternion startRotation;
+    private Vector3 startPosition = Vector3.zero;
+    private Quaternion startRotation = Quaternion.identity;
     public void StartBoss(PhaseManager.SubPhase subPhase)
     {
         Debug.Log("Change Scorpion phase " + subPhase);
@@ -100,7 +101,7 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
                 health?.ToggleDamageable(true);
                 StopAllCoroutines();
                 animator.Play("Idle", 0, 0.1f);
-
+                SpawnNextWeakpointAfterDelay();
                 transform.position =  startPosition ;
                 transform.rotation = startRotation;
 
@@ -113,10 +114,11 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
                 health?.ToggleDamageable(true);
                 StopAllCoroutines();
                 animator.Play("Idle", 0, 0.1f);
-
+                SpawnNextWeakpointAfterDelay();
                 transform.position = startPosition;
                 transform.rotation = startRotation;
-
+                Debug.Log(transform.position);
+                Debug.Log(transform.rotation);
                 currentState = BossState.Idle;
                 isAttacking = false;
 
@@ -183,8 +185,14 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
         waitingToSpawnNextWeakpoint = false;
         baseAnimSpeed = 1f;
 
-        startPosition = transform.position;
-        startRotation = transform.rotation;
+        if(startPosition == Vector3.zero)
+            startPosition = transform.position;
+
+        if (startRotation == Quaternion.identity)
+            startRotation = transform.rotation;
+
+        Debug.Log("startposition: " + startPosition);
+        Debug.Log("startRotation: " + startRotation);
 
         // Store the base values before modifying them
         baseChargeSpeed = chargeSpeed;
@@ -561,6 +569,7 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
         }
         else if (weakpointsDestroyed > requiredWeakpointsToDestroy)
         {
+            Debug.Log("Spawning new weakpoints");
             currentExtraWeakpoint = null;
 
             if (!waitingToSpawnNextWeakpoint)
@@ -603,7 +612,9 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
         wp.transform.localScale = Vector3.one * slot.uniformScale;
 
         WeakPoint wpScript = wp.GetComponent<WeakPoint>();
+        //wpScript.onDeath.AddListener(OnWeakpointDestroyed);
         wpScript.onDeath.AddListener(DealWeakpointDamage);
+        
         wpScript.SetTarget(targetForWeapoints);
 
         currentExtraWeakpoint = wp;
