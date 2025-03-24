@@ -11,7 +11,7 @@ public class TailProjectile : MonoBehaviour
     private float elapsedTime;
     private bool isMoving = true;
 
-    [SerializeField] private PhaseManager phaseManager;
+    private PhaseManager phaseManager;
 
     public void Initialize(Vector3 target, float speed)
     {
@@ -21,6 +21,8 @@ public class TailProjectile : MonoBehaviour
 
         flightTime = Vector3.Distance(startPosition, targetPosition) / speed;
         elapsedTime = 0f;
+
+        phaseManager = FindAnyObjectByType<PhaseManager>();
     }
 
     private void Update()

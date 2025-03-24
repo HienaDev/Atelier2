@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using static PhaseManager;
 using DG.Tweening.Core.Easing;
+using Unity.VisualScripting;
 
 public class ScorpionBoss : MonoBehaviour, BossInterface
 {
@@ -95,17 +96,19 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
                 StartCoroutine(WaitForWeakpointsDestroyed()); // Wait for weakpoints to be destroyed before starting AI
                 break;
             case PhaseManager.SubPhase.Easy:
-                health.ToggleDamageable(true);
+                health?.ToggleDamageable(true);
                 SetDifficulty(BossDifficulty.Easy); // Set initial difficulty
                 bossAIcoroutine = StartCoroutine(BossAI());
                 break;
             case PhaseManager.SubPhase.Normal:
-                health.ToggleDamageable(true);
+                health?.ToggleDamageable(true);
                 SetDifficulty(BossDifficulty.Normal);
                 bossAIcoroutine = StartCoroutine(BossAI());
                 break;
         }
     }
+
+       
 
     public void PhaseEnded()
     {
@@ -176,7 +179,7 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
         baseGroundSpikesUpDuration = groundSpikesUpDuration;
         baseAnimSpeed = animator.speed;
 
-        
+        //StartBoss(PhaseManager.SubPhase.Easy);
     }
 
     private void Update()
@@ -281,13 +284,13 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
         // Windup animation before charging
         animator.CrossFade("Charge", 0.1f);
 
-        phaseManager.CurrentCamera.GetComponent<CameraShake>().ShakeCamera(0.5f, chargeWindupTime);
+        phaseManager?.CurrentCamera.GetComponent<CameraShake>().ShakeCamera(0.5f, chargeWindupTime);
 
         yield return new WaitForSeconds(chargeWindupTime);
 
         Debug.Log("Scorpion Boss: **Charging at Player!**");
 
-        phaseManager.CurrentCamera.GetComponent<CameraShake>().SmoothShakeCamera(1f, chargeDuration + 0.5f);
+        phaseManager?.CurrentCamera.GetComponent<CameraShake>().SmoothShakeCamera(1f, chargeDuration + 0.5f);
 
         // Charge attack animation
         animator.CrossFade("ChargeDash", 0.1f);
@@ -349,7 +352,7 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
 
         Debug.Log("Scorpion Boss: **Dashing Forward!**");
 
-        phaseManager.CurrentCamera.GetComponent<CameraShake>().ShakeCamera(0.3f, dashDuration);
+        phaseManager?.CurrentCamera.GetComponent<CameraShake>().ShakeCamera(0.3f, dashDuration);
 
         // Dash windup animation
         animator.CrossFade("SmallDash", 0.1f);
@@ -383,7 +386,7 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
 
         Debug.Log("Scorpion Boss: **Spike Down Attack!**");
 
-        phaseManager.CurrentCamera.GetComponent<CameraShake>().SmoothShakeCamera(1.5f, 2f);
+        phaseManager?.CurrentCamera.GetComponent<CameraShake>().SmoothShakeCamera(1.5f, 2f);
 
         // Windup animation before slamming
         animator.CrossFade("JumpToAereal", 0.1f);
@@ -443,7 +446,7 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
     {
         Vector3 startPos = spike.transform.position;
         Vector3 targetPos = startPos + Vector3.up * 2f;
-        phaseManager.CurrentCamera.GetComponent<CameraShake>().SmoothShakeCamera(3, groundSpikesMoveTime + 0.1f);
+        phaseManager?.CurrentCamera.GetComponent<CameraShake>().SmoothShakeCamera(3, groundSpikesMoveTime + 0.1f);
 
         // Raise spikes over spikeMoveTime seconds
         float elapsedTime = 0f;
@@ -458,7 +461,7 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
         // Spikes stay up for the configured duration
         yield return new WaitForSeconds(groundSpikesUpDuration);
 
-        phaseManager.CurrentCamera.GetComponent<CameraShake>().SmoothShakeCamera(1.5f, groundSpikesMoveTime + 0.1f);
+        phaseManager?.CurrentCamera.GetComponent<CameraShake>().SmoothShakeCamera(1.5f, groundSpikesMoveTime + 0.1f);
 
         // Lower spikes over spikeMoveTime seconds
         elapsedTime = 0f;
@@ -509,7 +512,7 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
         targetRotation *= Quaternion.Euler(0, 180, 0);
         transform.rotation = targetRotation;
 
-        phaseManager.CurrentCamera.GetComponent<CameraShake>().SmoothShakeCamera(0.5f, maxRotationTime);
+        phaseManager?.CurrentCamera.GetComponent<CameraShake>().SmoothShakeCamera(0.5f, maxRotationTime);
     }
 
     private void SpawnWeakpoints()
