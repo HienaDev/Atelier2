@@ -391,6 +391,8 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
         // Windup animation before slamming
         animator.CrossFade("JumpToAereal", 0.1f);
 
+        Debug.Log("JUMP UP");
+
         // Move scorpion to high position smoothly
         Vector3 highPos = new Vector3(transform.position.x, transform.position.y, highSpot.position.z);
         while (Vector3.Distance(transform.position, highPos) > 0.1f)
@@ -398,7 +400,7 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
             transform.position = Vector3.MoveTowards(transform.position, highPos, 10f * Time.deltaTime);
             yield return null;
         }
-
+        Debug.Log("START LANDING");
         float jumpAnimDuration = GetAnimationClipLength("JumpToAereal");
         yield return new WaitForSeconds(jumpAnimDuration);
 
