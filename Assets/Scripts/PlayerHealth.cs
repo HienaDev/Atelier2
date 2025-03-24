@@ -19,6 +19,8 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private Renderer starRenderer;
     private Material starMaterial;
 
+    [SerializeField] private GameObject[] livesUI;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -44,6 +46,15 @@ public class PlayerHealth : MonoBehaviour
     public void DealDamage(int damage)
     {
 
+        for (int i = 0; i < livesUI.Length; i++)
+        {
+            livesUI[i].SetActive(false);
+        }
+
+        for (int i = 0; i <= currentLives; i++)
+        {
+            livesUI[i].SetActive(true);
+        }
 
         Sequence sequenceGrid = DOTween.Sequence();
         sequenceGrid.Append(gridMaterial.DOFloat(1f, "_ColorIntensity", 0.05f).SetEase(Ease.InOutSine));
