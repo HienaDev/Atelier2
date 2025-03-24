@@ -46,15 +46,12 @@ public class PlayerHealth : MonoBehaviour
     public void DealDamage(int damage)
     {
 
-        for (int i = 0; i < livesUI.Length; i++)
+        if (dead)
         {
-            livesUI[i].SetActive(false);
+            return;
         }
 
-        for (int i = 0; i < currentLives; i++)
-        {
-            livesUI[i].SetActive(true);
-        }
+
 
         Sequence sequenceGrid = DOTween.Sequence();
         sequenceGrid.Append(gridMaterial.DOFloat(1f, "_ColorIntensity", 0.05f).SetEase(Ease.InOutSine));
@@ -76,12 +73,19 @@ public class PlayerHealth : MonoBehaviour
         if (cameraShake != null)
             cameraShake.ShakeCamera(2f, 0.1f);
 
-        if (dead)
-        {
-            return;
-        }
+
 
         currentLives--;
+
+        for (int i = 0; i < livesUI.Length; i++)
+        {
+            livesUI[i].SetActive(false);
+        }
+
+        for (int i = 0; i < currentLives - 1; i++)
+        {
+            livesUI[i].SetActive(true);
+        }
 
         if (currentLives == 0)
         {
