@@ -108,8 +108,6 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
         }
     }
 
-       
-
     public void PhaseEnded()
     {
         if(bossAIcoroutine != null)
@@ -185,29 +183,6 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
     private void Update()
     {
         FacePlayer();
-
-        // If pressed space key, activate spikes 
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            Debug.Log("Scorpion Boss: **Spikes Activated!**");
-            ActivateArenaSpikes();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            SetDifficulty(BossDifficulty.Tutorial);
-            Debug.Log("Difficulty set to Tutorial");
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            SetDifficulty(BossDifficulty.Easy);
-            Debug.Log("Difficulty set to Easy");
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            SetDifficulty(BossDifficulty.Normal);
-            Debug.Log("Difficulty set to Normal");
-        }
     }
 
     private IEnumerator BossAI()
@@ -632,6 +607,4 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, stabAttackMaxRange);
     }
-
-
 }
