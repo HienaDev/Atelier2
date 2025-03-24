@@ -20,7 +20,7 @@ public class BossHealth : MonoBehaviour
     {
         currentLives = lives;
 
-        GenerateSplits();
+        //GenerateSplits();
     }
 
     public void DealDamage(int damage)
@@ -52,11 +52,11 @@ public class BossHealth : MonoBehaviour
 
         for (int i = 1; i < totalPhases; i++) // Start from 1 (skip 0)
         {
-            float markerX = (510 * (i * percentageToChangePhase)) - 255; // Position based on % of bar
+            float markerX = (495 / 2 * (i * percentageToChangePhase)) - 255; // Position based on % of bar
 
             // Create a new marker instance
             GameObject marker = Instantiate(healthSplit, UIParent.transform);
-            marker.transform.localPosition = new Vector2(markerX, 210); // Set position on bar
+            marker.transform.localPosition = new Vector2(markerX - 246, 189); // Set position on bar
         }
     }
 
