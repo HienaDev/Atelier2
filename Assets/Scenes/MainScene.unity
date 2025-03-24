@@ -5084,7 +5084,7 @@ MonoBehaviour:
     playerSpawnPoint: {fileID: 287879615}
     bossInterface: {fileID: 0}
   phases: 01000000020000000100000002000000
-  debugMode: 1
+  debugMode: 0
 --- !u!114 &624881817
 MonoBehaviour:
   m_ObjectHideFlags: 0
