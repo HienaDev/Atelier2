@@ -17021,6 +17021,10 @@ PrefabInstance:
       value: -51.779
       objectReference: {fileID: 0}
     - target: {fileID: 2447303558361411365, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
+      propertyPath: bulletSpeed
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2447303558361411365, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
       propertyPath: shootingCooldown
       value: 0.1
       objectReference: {fileID: 0}
@@ -17028,6 +17032,10 @@ PrefabInstance:
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 752188154}
+    - target: {fileID: 3079806356452332426, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
+      propertyPath: bulletSpeed
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 3079806356452332426, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
       propertyPath: shootingCooldown
       value: 0.1
@@ -17040,6 +17048,10 @@ PrefabInstance:
       propertyPath: rightArm
       value: 
       objectReference: {fileID: 1572074361}
+    - target: {fileID: 3692297061328858803, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
+      propertyPath: bulletSpeed
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 3692297061328858803, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
       propertyPath: shootingCooldown
       value: 0.1
@@ -17095,6 +17107,10 @@ PrefabInstance:
     - target: {fileID: 5594109249443185664, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
       propertyPath: moveSpeed
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7393047101856437148, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
+      propertyPath: bulletSpeed
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7393047101856437148, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
       propertyPath: shootingCooldown
