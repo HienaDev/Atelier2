@@ -216,6 +216,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 35122891}
+  - {fileID: 453189249}
   - {fileID: 561546172}
   - {fileID: 583569921}
   - {fileID: 2112298001}
@@ -364,7 +365,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &35122890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3308,6 +3309,114 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 639764067571600795, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
   m_PrefabInstance: {fileID: 1439814230}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &453189248
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 453189249}
+  - component: {fileID: 453189252}
+  - component: {fileID: 453189251}
+  - component: {fileID: 453189250}
+  m_Layer: 0
+  m_Name: StartingCamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &453189249
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 453189248}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.17607366, y: -0.8149925, z: 0.3372964, w: 0.43705434}
+  m_LocalPosition: {x: 12.241768, y: 17.106445, z: 26.837067}
+  m_LocalScale: {x: 1, y: 0.9989607, z: 1.0000699}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 14730936}
+  m_LocalEulerAnglesHint: {x: 13.873, y: 89.999, z: -0.003}
+--- !u!114 &453189250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 453189248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b3da812d132c5e4fa1fe77dc454e65d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultShakeIntensity: 1
+  defaultShakeDuration: 1
+--- !u!114 &453189251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 453189248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  PivotOffset: {x: 0, y: 0, z: 0}
+  AmplitudeGain: 1
+  FrequencyGain: 1
+  m_NoiseOffsets: {x: 421.52783, y: 178.00513, z: -14.003174}
+--- !u!114 &453189252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 453189248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Priority:
+    Enabled: 0
+    m_Value: 0
+  OutputChannel: 1
+  StandbyUpdate: 2
+  m_StreamingVersion: 20241001
+  m_LegacyPriority: 0
+  Target:
+    TrackingTarget: {fileID: 0}
+    LookAtTarget: {fileID: 0}
+    CustomLookAtTarget: 0
+  Lens:
+    FieldOfView: 60.000004
+    OrthographicSize: 5
+    NearClipPlane: 0.3
+    FarClipPlane: 1000
+    Dutch: 0
+    ModeOverride: 0
+    PhysicalProperties:
+      GateFit: 2
+      SensorSize: {x: 21.946, y: 16.002}
+      LensShift: {x: 0, y: 0}
+      FocusDistance: 10
+      Iso: 200
+      ShutterSpeed: 0.005
+      Aperture: 16
+      BladeCount: 5
+      Curvature: {x: 2, y: 11}
+      BarrelClipping: 0.25
+      Anamorphism: 0
+  BlendHint: 0
 --- !u!4 &461734534 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 32938ca456502644c8fb7bc8d3551a81, type: 3}
@@ -6525,8 +6634,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 752188152}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0853801, y: 0.7019286, z: -0.08541685, w: 0.7019334}
-  m_LocalPosition: {x: -3.7, y: 4.3, z: 12.2}
+  m_LocalRotation: {x: 0.17607366, y: -0.8149925, z: 0.3372964, w: 0.43705434}
+  m_LocalPosition: {x: 12.241768, y: 17.106445, z: 26.837067}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6620,7 +6729,7 @@ MonoBehaviour:
     DefaultMode: 2
   DefaultBlend:
     Style: 7
-    Time: 2
+    Time: 3
     CustomCurve:
       serializedVersion: 2
       m_Curve:
@@ -10291,7 +10400,7 @@ MonoBehaviour:
     - {x: 0, y: 1, z: 0}
     - {x: 1, y: 1, z: 1}
     - {x: 0, y: 1, z: 0}
-  numberOfWeakspointsToDestroy: 3
+  numberOfWeakspointsToDestroy: 2
 --- !u!1 &1188504607
 GameObject:
   m_ObjectHideFlags: 0
