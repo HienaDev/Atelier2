@@ -24,7 +24,7 @@ public class DamageBoss : MonoBehaviour
         {
             Sequence sequence = DOTween.Sequence();
             sequence.Append(renderer.material.DOFloat(15f, "_ColorBrightness", 0.05f).SetEase(Ease.InOutSine));
-            sequence.Join(renderer.material.DOFloat(0.05f + damage * 0.5f, "_PulseRatio", 0.05f).SetEase(Ease.InOutSine));
+            sequence.Join(renderer.material.DOFloat(0.15f + damage * 0.5f, "_PulseRatio", 0.05f).SetEase(Ease.InOutSine));
             sequence.Append(renderer.material.DOFloat(1f, "_ColorBrightness", 0.05f).SetEase(Ease.InOutSine));
             sequence.Join(renderer.material.DOFloat(0f, "_PulseRatio", 0.05f).SetEase(Ease.InOutSine));
 
