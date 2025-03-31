@@ -11,6 +11,13 @@ public class PlayerHealth : MonoBehaviour
     private bool dead = false;
 
     private bool invulnerable = false;
+    private float gracePeriodTimer = 0f;
+    private bool inGracePeriod = false;
+    [SerializeField] private float gracePeriodDuration = 1f;
+    [SerializeField] private float blinkInterval = 0.1f; // Time between blinks
+    private float blinkTimer = 0f;
+    private bool isBlinkingOn = false;
+    private Color originalColor; // Store original color
 
     [SerializeField] private Renderer gridRenderer;
     private Material gridMaterial;
@@ -23,7 +30,6 @@ public class PlayerHealth : MonoBehaviour
 
     private Sequence sequence;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         currentLives = lives;
@@ -31,12 +37,44 @@ public class PlayerHealth : MonoBehaviour
         gridMaterial = gridRenderer.sharedMaterial;
         mountainMaterial = mountainRenderer.sharedMaterial;
         starMaterial = starRenderer.sharedMaterial;
+
+        // Store original color from the first renderer (assuming all have same color)
+        if (renderers.Length > 0)
+        {
+            originalColor = renderers[0].material.GetColor("_Color");
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
+        if (inGracePeriod)
+        {
+            gracePeriodTimer -= Time.deltaTime;
+            blinkTimer -= Time.deltaTime;
 
+            if (blinkTimer <= 0f)
+            {
+                isBlinkingOn = !isBlinkingOn;
+                blinkTimer = blinkInterval;
+
+                // Toggle blink effect
+                Color targetColor = isBlinkingOn ? Color.white : originalColor;
+                foreach (var renderer in renderers)
+                {
+                    renderer.material.SetColor("_Color", targetColor);
+                }
+            }
+
+            if (gracePeriodTimer <= 0f)
+            {
+                inGracePeriod = false;
+                // Ensure we return to original color when grace period ends
+                foreach (var renderer in renderers)
+                {
+                    renderer.material.SetColor("_Color", originalColor);
+                }
+            }
+        }
     }
 
     public void ToggleInvulnerable()
@@ -44,15 +82,20 @@ public class PlayerHealth : MonoBehaviour
         invulnerable = !invulnerable;
     }
 
+    public void StartGracePeriod()
+    {
+        inGracePeriod = true;
+        gracePeriodTimer = gracePeriodDuration;
+        blinkTimer = blinkInterval;
+        isBlinkingOn = false; // Start with original color
+    }
+
     public void DealDamage(int damage)
     {
-
-        if (dead)
+        if (dead || invulnerable || inGracePeriod)
         {
             return;
         }
-
-
 
         Sequence sequenceGrid = DOTween.Sequence();
         sequenceGrid.Append(gridMaterial.DOFloat(1f, "_ColorIntensity", 0.05f).SetEase(Ease.InOutSine));
@@ -68,13 +111,8 @@ public class PlayerHealth : MonoBehaviour
 
         CameraShake cameraShake = phaseManager.CurrentCamera.GetComponent<CameraShake>();
 
-        if (invulnerable)
-            return;
-        
         if (cameraShake != null)
             cameraShake.ShakeCamera(2f, 0.1f);
-
-
 
         currentLives--;
 
@@ -101,6 +139,8 @@ public class PlayerHealth : MonoBehaviour
             sequence.Append(renderer.material.DOFloat(3f, "_PulseRatio", 0.05f).SetEase(Ease.InOutSine));
             sequence.Append(renderer.material.DOFloat(0f, "_PulseRatio", 0.5f).SetEase(Ease.InOutSine));
         }
+
+        StartGracePeriod();
     }
 
     public void Death()

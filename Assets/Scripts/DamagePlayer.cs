@@ -24,7 +24,8 @@ public class DamagePlayer : MonoBehaviour
 
         if(disableMesh)
         {
-            colliderTrigger.enabled = false;
+            if(colliderTrigger != null)
+                colliderTrigger.enabled = false;
             GetComponent<Renderer>().enabled = false;
 
         }

@@ -37,7 +37,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Basetickness: 0.005
+    - _Basetickness: 0.0025
+    - _Color: 0
     - _ColorResolution: 0.1
     - _Depthline: 10
     - _DepthlineBias: 0.8
@@ -45,5 +46,6 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Offset: {r: 0.01, g: 0.01, b: 0, a: 0}
+    - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
