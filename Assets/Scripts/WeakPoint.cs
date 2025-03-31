@@ -48,7 +48,6 @@ public class WeakPoint : MonoBehaviour
         {
             dying = true;
             col.enabled = false;
-            onDeath.Invoke();
             Destroy(gameObject);
         }
     }

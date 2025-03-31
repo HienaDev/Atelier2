@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63bcff711ae21564ba4b8fee8d3a7843, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intensitySteps: 0.3
+  intensitySteps: 0.5
   lives: 10
   isTriggerWeakPoint: 0
   extrusionIntensitySteps: 0.1

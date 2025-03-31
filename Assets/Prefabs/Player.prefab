@@ -69,8 +69,8 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
+  m_Interpolate: 1
+  m_Constraints: 80
   m_CollisionDetection: 1
 --- !u!114 &8156704611051244190
 MonoBehaviour:
@@ -110,8 +110,8 @@ MonoBehaviour:
   leftArmFirePoint: {fileID: 6906752598772349947}
   rightArmRecoil: {fileID: 8478053187224658297}
   rightArmFirePoint: {fileID: 3897990426993566007}
-  shootingCooldown: 0.15
-  bulletSpeed: 30
+  shootingCooldown: 0.1
+  bulletSpeed: 50
   topHalf: {fileID: 3343757072927067586}
   rotationSpeed: 10
 --- !u!114 &926096131667842086
@@ -126,6 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a48fd446e72f9aa49b76fa4aed4b8532, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 8377950777459884386}
   bottomHalf: {fileID: 6605667912589767585}
   rotationSpeed: 10
   movSpeed: 5
@@ -155,8 +156,8 @@ MonoBehaviour:
   rightArm: {fileID: 3207599982717256390}
   topHalf: {fileID: 2149995248865937525}
   mainCamera: {fileID: 0}
-  shootingCooldown: 0.15
-  bulletSpeed: 30
+  shootingCooldown: 0.1
+  bulletSpeed: 50
   armRotationSpeed: 15
 --- !u!114 &5594109249443185664
 MonoBehaviour:
@@ -170,12 +171,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b0383b4578e0df4a9546bc8117efd61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 10
   jumpHeight: 1.5
   jumpDuration: 0.5
   gridSize: 5
-  cellDistance: 1.5
   jumpEnabled: 0
+  cellDistance: 1.5
 --- !u!114 &3692297061328858803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,13 +190,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   topHalf: {fileID: 2149995248865937525}
+  rightArm: {fileID: 3207599982717256390}
+  leftArm: {fileID: 4614962282286782919}
   bulletPrefab: {fileID: 3061902347931598462, guid: 2c93060c57978fa408d8422f90be5bb9, type: 3}
   leftArmRecoil: {fileID: 190918021007095120}
   leftArmFirePoint: {fileID: 4064717090330041584}
   rightArmRecoil: {fileID: 8478053187224658297}
   rightArmFirePoint: {fileID: 1713491256170656024}
-  shootingCooldown: 0.15
-  bulletSpeed: 30
+  bulletSpeed: 50
+  shootingCooldown: 0.1
 --- !u!114 &495869513505543081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,8 +232,8 @@ MonoBehaviour:
   leftArmFirePoint: {fileID: 0}
   rightArmFirePoint: {fileID: 0}
   rotationSpeed: 10
-  bulletSpeed: 30
-  shootingCooldown: 0.15
+  bulletSpeed: 50
+  shootingCooldown: 0.1
 --- !u!114 &4517615133449452451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,6 +253,16 @@ MonoBehaviour:
   - {fileID: 8599622594489498260}
   - {fileID: 5081249578425241947}
   lives: 3
+  phaseManager: {fileID: 0}
+  gracePeriodDuration: 1.5
+  blinkInterval: 0.1
+  gridRenderer: {fileID: 0}
+  mountainRenderer: {fileID: 0}
+  starRenderer: {fileID: 0}
+  livesUI:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!136 &6395650202015916675
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -728,7 +741,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3343757072927067586}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 5.8207654e-11, y: -0.43663597, z: -1.45519135e-11, w: 0.8996383}
   m_LocalPosition: {x: 0, y: 0.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -737,7 +750,7 @@ Transform:
   - {fileID: 3207599982717256390}
   - {fileID: 3020041381154918705}
   m_Father: {fileID: 1584095261345323439}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -51.779, z: 0}
 --- !u!1 &3483077319056916747
 GameObject:
   m_ObjectHideFlags: 0
