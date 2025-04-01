@@ -8,6 +8,8 @@ public class DamagePlayer : MonoBehaviour
 
     private Collider colliderTrigger;
 
+    public bool dealsDamage = true;
+
     void Start()
     {
         colliderTrigger = GetComponent<Collider>();
@@ -20,7 +22,8 @@ public class DamagePlayer : MonoBehaviour
         if (playerHealth == null)
             return;
 
-        playerHealth.DealDamage(1);
+        if(dealsDamage)
+            playerHealth.DealDamage(1);
 
         if(disableMesh)
         {

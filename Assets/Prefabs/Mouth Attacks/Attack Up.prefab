@@ -67,14 +67,14 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 17d75bfbfa7474d4fb7543a9405ab94d, type: 2}
+      objectReference: {fileID: 2100000, guid: 116e4b8ccc8deeb49a300b1148bd1c15, type: 2}
     - target: {fileID: -5754084199372789682, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: -7691300609363347970, guid: 32938ca456502644c8fb7bc8d3551a81, type: 3}
     - target: {fileID: 919132149155446097, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
       propertyPath: m_Name
-      value: Attack Mouth
+      value: Attack Up
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
       propertyPath: m_Layer
@@ -99,6 +99,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5453097197730018239}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6282886859810065977}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -6556193457423120143}
   m_SourcePrefab: {fileID: 100100000, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
 --- !u!1 &3522871406645740575 stripped
 GameObject:
@@ -145,6 +151,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleSystemExplosion: {fileID: 2189343201534266977}
+  disableMesh: 1
+  destroy: 1
+  dealsDamage: 1
 --- !u!199 &8172159972999397866
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -5020,8 +5029,45 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -7691300609363347970, guid: 32938ca456502644c8fb7bc8d3551a81, type: 3}
+--- !u!65 &6282886859810065977
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3522871406645740575}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.0000005, y: 2.0000005, z: 2}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-6556193457423120143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3522871406645740575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27e1ceef3c1298d46bf691315360011b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveUpDistance: 4
+  moveDuration: 0.5
+  pauseDuration: 0.5
+  startPosition: 1

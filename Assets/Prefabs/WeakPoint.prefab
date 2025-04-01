@@ -34,7 +34,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 50dd710cb6eea6b4bbd66669b0035685, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 50dd710cb6eea6b4bbd66669b0035685, type: 3}
       propertyPath: m_LocalRotation.x
@@ -42,11 +42,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 50dd710cb6eea6b4bbd66669b0035685, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 50dd710cb6eea6b4bbd66669b0035685, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 50dd710cb6eea6b4bbd66669b0035685, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -58,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 50dd710cb6eea6b4bbd66669b0035685, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 50dd710cb6eea6b4bbd66669b0035685, type: 3}
       propertyPath: m_ConstrainProportionsScale
@@ -136,7 +136,7 @@ MonoBehaviour:
   disableLifetime: 0
   amplitude: 0.1
   period: 0.5
-  flyingDuration: 2
+  flyingDuration: 0.3
   onDeath:
     m_PersistentCalls:
       m_Calls: []
@@ -5063,3 +5063,4 @@ MonoBehaviour:
   particleSystemExplosion: {fileID: 8881244261015604869}
   disableMesh: 1
   destroy: 1
+  dealsDamage: 1

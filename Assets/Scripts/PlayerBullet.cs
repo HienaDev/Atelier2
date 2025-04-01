@@ -55,6 +55,6 @@ public class PlayerBullet : MonoBehaviour
         Instantiate(particleExplosion, hitPoint, rotation);
 
         // Destroy the bullet on impact
-        Destroy(gameObject);
+        Destroy(gameObject, 0.1f);
     }
 }

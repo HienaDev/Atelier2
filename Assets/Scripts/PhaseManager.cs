@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using System;
+using Unity.Cinemachine;
 
 public class PhaseManager : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class PhaseManager : MonoBehaviour
         Normal
     }
 
+    [SerializeField] private CinemachineBrain cinemachineBrainCamera;
+
     private GameObject currentCamera;
     public GameObject CurrentCamera { get => currentCamera; }
 
@@ -29,6 +32,7 @@ public class PhaseManager : MonoBehaviour
     {
         public int number;
         public GameObject camera;
+        public CinemachineCamera cinemachineCamera;
         public GameObject boss;
         public MonoBehaviour playerMovement;
         public MonoBehaviour playerShooting;
@@ -65,7 +69,7 @@ public class PhaseManager : MonoBehaviour
     private IEnumerator Start()
     {
         currentPhase = phases[0];
-
+        
         // Initialize just to avoid nulls but will be replaced right after
         currentCamera = phaseMonkeyHell.camera;
         currentBoss = phaseMonkeyHell.boss;
@@ -121,6 +125,7 @@ public class PhaseManager : MonoBehaviour
 
     public void ChangePhase()
     {
+        
         Debug.Log("Phase changing");
         Debug.Log(currentPhase);
         Debug.Log(subPhaseData[currentPhase]);
@@ -171,6 +176,7 @@ public class PhaseManager : MonoBehaviour
         currentCamera.SetActive(false);
         currentCamera = data.camera;
         currentCamera.SetActive(true);
+        //StartCoroutine(ChangeCameraFOV(cinemachineBrainCamera.DefaultBlend.Time/2, data.cinemachineCamera));
 
         BossInterface bossInterfaceAux = data.bossInterface as BossInterface;
         bossInterfaceAux.PhaseEnded();
@@ -188,5 +194,32 @@ public class PhaseManager : MonoBehaviour
         currentPlayerShooting = data.playerShooting;
 
         lastPhase = phase;
+    }
+
+    private IEnumerator ChangeCameraFOV(float time, CinemachineCamera camera)
+    {
+        float currentFOV = camera.Lens.FieldOfView;
+
+        camera.Lens.FieldOfView = 180;
+
+        float lerp = 0;
+
+        while (lerp < 1)
+        {
+            lerp += Time.deltaTime * time;
+            camera.Lens.FieldOfView = Mathf.Lerp(currentFOV, 500, lerp);
+            yield return null;
+        }
+
+        lerp = 0;
+
+        while (lerp < 1)
+        {
+            lerp += Time.deltaTime * time;
+            camera.Lens.FieldOfView = Mathf.Lerp(500, currentFOV, lerp);
+            yield return null;
+        }
+
+        camera.Lens.FieldOfView = currentFOV;
     }
 }
