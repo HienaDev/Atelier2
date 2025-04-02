@@ -52,7 +52,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _ColorChangeSpeed: 0.1
-    - _ColorIntensity: 0.100000024
+    - _ColorIntensity: 0.099999905
     - _Double: 1
     - _Gradient: 1
     - _Inverse: 0

@@ -21,10 +21,16 @@ public class PlayerHealth : MonoBehaviour
 
     [SerializeField] private Renderer gridRenderer;
     private Material gridMaterial;
+    [SerializeField] private float gridMaterialIntensityIncrease = 0.5f;
+    private float gridMaterialDefaultIntensity;
     [SerializeField] private Renderer mountainRenderer;
     private Material mountainMaterial;
+    [SerializeField] private float mountainMaterialIntensityIncrease = 0.5f;
+    private float mountainMaterialDefaultIntensity;
     [SerializeField] private Renderer starRenderer;
     private Material starMaterial;
+    [SerializeField] private float starMaterialIntensityIncrease = 0.5f;
+    private float starMaterialDefaultIntensity;
 
     [SerializeField] private GameObject[] livesUI;
 
@@ -35,8 +41,11 @@ public class PlayerHealth : MonoBehaviour
         currentLives = lives;
 
         gridMaterial = gridRenderer.sharedMaterial;
+        gridMaterialDefaultIntensity = gridMaterial.GetFloat("_ColorIntensity");
         mountainMaterial = mountainRenderer.sharedMaterial;
+        mountainMaterialDefaultIntensity = mountainMaterial.GetFloat("_ColorIntensity");
         starMaterial = starRenderer.sharedMaterial;
+        starMaterialDefaultIntensity = starMaterial.GetFloat("_ColorIntensity");
 
         // Store original color from the first renderer (assuming all have same color)
         if (renderers.Length > 0)
@@ -98,16 +107,16 @@ public class PlayerHealth : MonoBehaviour
         }
 
         Sequence sequenceGrid = DOTween.Sequence();
-        sequenceGrid.Append(gridMaterial.DOFloat(1f, "_ColorIntensity", 0.05f).SetEase(Ease.InOutSine));
-        sequenceGrid.Append(gridMaterial.DOFloat(0.1f, "_ColorIntensity", 0.2f).SetEase(Ease.InOutSine));
+        sequenceGrid.Append(gridMaterial.DOFloat(gridMaterialDefaultIntensity + gridMaterialIntensityIncrease, "_ColorIntensity", 0.05f).SetEase(Ease.InOutSine));
+        sequenceGrid.Append(gridMaterial.DOFloat(gridMaterialDefaultIntensity, "_ColorIntensity", 0.2f).SetEase(Ease.InOutSine));
 
         Sequence sequenceMountain = DOTween.Sequence();
-        sequenceMountain.Append(mountainMaterial.DOFloat(1f, "_ColorIntensity", 0.05f).SetEase(Ease.InOutSine));
-        sequenceMountain.Append(mountainMaterial.DOFloat(0.2f, "_ColorIntensity", 0.2f).SetEase(Ease.InOutSine));
+        sequenceMountain.Append(mountainMaterial.DOFloat(mountainMaterialDefaultIntensity + mountainMaterialIntensityIncrease, "_ColorIntensity", 0.05f).SetEase(Ease.InOutSine));
+        sequenceMountain.Append(mountainMaterial.DOFloat(mountainMaterialDefaultIntensity, "_ColorIntensity", 0.2f).SetEase(Ease.InOutSine));
 
         Sequence sequenceStar = DOTween.Sequence();
-        sequenceStar.Append(starMaterial.DOFloat(1f, "_ColorIntensity", 0.05f).SetEase(Ease.InOutSine));
-        sequenceStar.Append(starMaterial.DOFloat(0.1f, "_ColorIntensity", 0.05f).SetEase(Ease.InOutSine));
+        sequenceStar.Append(starMaterial.DOFloat(starMaterialDefaultIntensity + starMaterialIntensityIncrease, "_ColorIntensity", 0.05f).SetEase(Ease.InOutSine));
+        sequenceStar.Append(starMaterial.DOFloat(starMaterialDefaultIntensity, "_ColorIntensity", 0.2f).SetEase(Ease.InOutSine));
 
         CameraShake cameraShake = phaseManager.CurrentCamera.GetComponent<CameraShake>();
 

@@ -56,6 +56,7 @@ Material:
     - _AlphaToMask: 0
     - _Blend: 0
     - _CastShadows: 1
+    - _ColorBrightness: 3
     - _Cull: 0
     - _DstBlend: 0
     - _ExtrusionAmount: 1.5

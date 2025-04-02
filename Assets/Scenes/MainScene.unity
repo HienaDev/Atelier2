@@ -17248,6 +17248,18 @@ PrefabInstance:
       propertyPath: 'livesUI.Array.data[2]'
       value: 
       objectReference: {fileID: 1651219411}
+    - target: {fileID: 4517615133449452451, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
+      propertyPath: gridMaterialIntensityIncrease
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4517615133449452451, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
+      propertyPath: starMaterialIntensityIncrease
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4517615133449452451, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
+      propertyPath: mountainMaterialIntensityIncrease
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 7393047101856437148, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
       propertyPath: bulletSpeed
       value: 40
