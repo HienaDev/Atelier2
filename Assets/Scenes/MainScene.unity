@@ -6642,6 +6642,52 @@ MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: dd7838bbf2de0394c949fedd71b75e03, type: 3}
   m_PrefabInstance: {fileID: 1136449315}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &746363206
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 746363208}
+  - component: {fileID: 746363207}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &746363207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 746363206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4ac83797831c2e43b6f7cb196c97265, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxAudioSources: 20
+  _allowOneShotInterruption: 1
+--- !u!4 &746363208
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 746363206}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &748732355 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: dd7838bbf2de0394c949fedd71b75e03, type: 3}
@@ -17221,6 +17267,10 @@ PrefabInstance:
       value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 4517615133449452451, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
+      propertyPath: hurtSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 448e8978f11c4ba4298401d658efd4eb, type: 3}
+    - target: {fileID: 4517615133449452451, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
       propertyPath: gridRenderer
       value: 
       objectReference: {fileID: 922868013}
@@ -17329,6 +17379,7 @@ SceneRoots:
   - {fileID: 1220796746}
   - {fileID: 624881815}
   - {fileID: 790325805}
+  - {fileID: 746363208}
   - {fileID: 793038624}
   - {fileID: 1035727091}
   - {fileID: 331638079}

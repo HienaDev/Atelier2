@@ -36,6 +36,7 @@ public class PlayerHealth : MonoBehaviour
 
     private Sequence sequence;
 
+    [SerializeField] private AudioClip hurtSound;
     void Start()
     {
         currentLives = lives;
@@ -105,6 +106,8 @@ public class PlayerHealth : MonoBehaviour
         {
             return;
         }
+
+        AudioManager.Instance.PlaySound(hurtSound, volume:0.6f, pitch: 0.3f, true);
 
         Sequence sequenceGrid = DOTween.Sequence();
         sequenceGrid.Append(gridMaterial.DOFloat(gridMaterialDefaultIntensity + gridMaterialIntensityIncrease, "_ColorIntensity", 0.05f).SetEase(Ease.InOutSine));
