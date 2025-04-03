@@ -127,15 +127,11 @@ public class PhaseManager : MonoBehaviour
     {
         
         Debug.Log("Phase changing");
-        Debug.Log(currentPhase);
-        Debug.Log(subPhaseData[currentPhase]);
+        Debug.Log("lastPhase: " + lastPhase + "currentPhase: " + currentPhase);
+        lastPhase = currentPhase;
         if (subPhaseData[currentPhase] == SubPhase.Tutorial)
         {
             subPhaseData[currentPhase] = SubPhase.Easy;
-        }
-        else if(subPhaseData[currentPhase] == SubPhase.Easy && lastPhase != currentPhase)
-        {
-            subPhaseData[currentPhase] = SubPhase.Normal;
         }
         else
         {
@@ -146,7 +142,15 @@ public class PhaseManager : MonoBehaviour
                 return;
             }
             currentPhase = phases[currentPhaseIndex];
+
+            if (subPhaseData[currentPhase] == SubPhase.Easy && lastPhase != currentPhase)
+            {
+                subPhaseData[currentPhase] = SubPhase.Normal;
+            }
         }
+
+        Debug.Log(currentPhase);
+        Debug.Log(subPhaseData[currentPhase]);
 
         ChangePhaseDictionary(phases[currentPhaseIndex], subPhaseData[phases[currentPhaseIndex]]);
     }
@@ -193,7 +197,7 @@ public class PhaseManager : MonoBehaviour
         currentPlayerMovement = data.playerMovement;
         currentPlayerShooting = data.playerShooting;
 
-        lastPhase = phase;
+        //currentPhase = phase;
     }
 
     private IEnumerator ChangeCameraFOV(float time, CinemachineCamera camera)
