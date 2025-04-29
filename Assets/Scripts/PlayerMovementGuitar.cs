@@ -13,34 +13,43 @@ public class PlayerMovementGuitar : MonoBehaviour
     private float dashTimer = 0f;
     private float dashCooldownTimer = 0f;
 
-    void Awake()
+    private void Awake()
     {
         rb.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
-    void Update()
+    private void Update()
     {
-        if (!isDashing)
-        {
-            HandleMovement();
-            HandleDashInput();
-        }
-        else
-        {
-            HandleDash();
-        }
+        HandleMovementInput();
+        HandleDashInput();
 
         dashCooldownTimer -= Time.deltaTime;
     }
 
-    private void HandleMovement()
+    private void FixedUpdate()
+    {
+        if (isDashing)
+        {
+            HandleDash();
+        }
+        else
+        {
+            HandleMovement();
+        }
+    }
+
+    private void HandleMovementInput()
     {
         float moveZ = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
 
-        moveDirection = new Vector3(0, moveY, moveZ).normalized;
+        moveDirection = new Vector3(0f, moveY, moveZ).normalized;
+    }
 
-        transform.position += moveDirection * movSpeed * Time.deltaTime;
+    private void HandleMovement()
+    {
+        Vector3 targetPosition = rb.position + moveDirection * movSpeed * Time.fixedDeltaTime;
+        rb.MovePosition(targetPosition);
     }
 
     private void HandleDashInput()
@@ -55,9 +64,10 @@ public class PlayerMovementGuitar : MonoBehaviour
 
     private void HandleDash()
     {
-        transform.position += moveDirection * dashSpeed * Time.deltaTime;
-        dashTimer -= Time.deltaTime;
+        Vector3 dashPosition = rb.position + moveDirection * dashSpeed * Time.fixedDeltaTime;
+        rb.MovePosition(dashPosition);
 
+        dashTimer -= Time.deltaTime;
         if (dashTimer <= 0f)
         {
             isDashing = false;
