@@ -324,7 +324,7 @@ Transform:
   m_GameObject: {fileID: 111770366}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -7.3, z: 20}
+  m_LocalPosition: {x: 0, y: -7, z: 20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2370,7 +2370,7 @@ Transform:
   m_GameObject: {fileID: 1285037126}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 37.2}
+  m_LocalPosition: {x: 0, y: 0, z: 37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3285,7 +3285,7 @@ Transform:
   m_GameObject: {fileID: 1727411670}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 5}
+  m_LocalPosition: {x: 0, y: 0, z: 5.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8077,14 +8077,7 @@ MonoBehaviour:
   - {fileID: 1001826325}
   - {fileID: 1497078020}
   player: {fileID: 1558839905354300641}
-  bossCollider: {fileID: 3341494654070540613}
   delayBetweenLaunches: 0.3
-  evasiveMoveSpeed: 3
-  evasiveMoveRadius: 5
-  timeBetweenRandomMoves: 1.5
-  wallLayerMask:
-    serializedVersion: 2
-    m_Bits: 8
 --- !u!4 &7641595841701292346
 Transform:
   m_ObjectHideFlags: 0

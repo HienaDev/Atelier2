@@ -30,11 +30,16 @@ public class PlayerMovementGuitar : MonoBehaviour
     {
         if (isDashing)
         {
-            HandleDash();
+            rb.linearVelocity = moveDirection * dashSpeed;
+            dashTimer -= Time.fixedDeltaTime;
+            if (dashTimer <= 0f)
+            {
+                isDashing = false;
+            }
         }
         else
         {
-            HandleMovement();
+            rb.linearVelocity = moveDirection * movSpeed;
         }
     }
 
@@ -46,12 +51,6 @@ public class PlayerMovementGuitar : MonoBehaviour
         moveDirection = new Vector3(0f, moveY, moveZ).normalized;
     }
 
-    private void HandleMovement()
-    {
-        Vector3 targetPosition = rb.position + moveDirection * movSpeed * Time.fixedDeltaTime;
-        rb.MovePosition(targetPosition);
-    }
-
     private void HandleDashInput()
     {
         if (Input.GetButtonDown("Jump") && dashCooldownTimer <= 0f && moveDirection != Vector3.zero)
@@ -59,18 +58,6 @@ public class PlayerMovementGuitar : MonoBehaviour
             isDashing = true;
             dashTimer = dashDuration;
             dashCooldownTimer = dashCooldown;
-        }
-    }
-
-    private void HandleDash()
-    {
-        Vector3 dashPosition = rb.position + moveDirection * dashSpeed * Time.fixedDeltaTime;
-        rb.MovePosition(dashPosition);
-
-        dashTimer -= Time.deltaTime;
-        if (dashTimer <= 0f)
-        {
-            isDashing = false;
         }
     }
 }
