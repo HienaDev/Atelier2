@@ -5062,8 +5062,8 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 118
+  m_Interpolate: 2
+  m_Constraints: 114
   m_CollisionDetection: 1
 --- !u!4 &756155043435759040
 Transform:
@@ -5992,7 +5992,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
@@ -8077,7 +8077,15 @@ MonoBehaviour:
   - {fileID: 1001826325}
   - {fileID: 1497078020}
   player: {fileID: 1558839905354300641}
+  rb: {fileID: 676240245591795744}
+  bossCollider: {fileID: 3341494654070540613}
   delayBetweenLaunches: 0.3
+  evasiveMoveSpeed: 5
+  evasiveMoveRadius: 5
+  timeBetweenRandomMoves: 1.5
+  wallLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!4 &7641595841701292346
 Transform:
   m_ObjectHideFlags: 0

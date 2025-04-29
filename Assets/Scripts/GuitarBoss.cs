@@ -16,11 +16,29 @@ public class GuitarBoss : MonoBehaviour
     [SerializeField] private List<FirePointSlot> firePointSlots;
     [SerializeField] private List<OvalPath> availablePaths;
     [SerializeField] private Transform player;
+    [SerializeField] private Rigidbody rb;
+    [SerializeField] private Collider bossCollider;
 
     [Header("Attack Settings")]
     [SerializeField] private float delayBetweenLaunches = 0.3f;
+    [SerializeField] private float evasiveMoveSpeed = 3f;
+    [SerializeField] private float evasiveMoveRadius = 5f;
+    [SerializeField] private float timeBetweenRandomMoves = 1.5f;
+    [SerializeField] private LayerMask wallLayerMask;
 
     private bool isAttacking = false;
+    private bool isEvading = false;
+    private Vector3 originalPosition;
+    private Vector3 targetPosition;
+    private Vector3 moveDirection;
+    private float evadeTimer = 0f;
+    private bool returning = false;
+
+    private void Awake()
+    {
+        if (rb == null) rb = GetComponent<Rigidbody>();
+        if (bossCollider == null) bossCollider = GetComponent<Collider>();
+    }
 
     private void Update()
     {
@@ -30,15 +48,33 @@ public class GuitarBoss : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (isEvading)
+        {
+            EvadeMovement();
+        }
+        else if (returning)
+        {
+            ReturnToOriginalPositionMovement();
+        }
+        else
+        {
+            rb.linearVelocity = Vector3.zero;
+        }
+    }
+
     private void StartFlyingPartsAttack()
     {
         if (!isAttacking)
-            StartCoroutine(LaunchAndReturnSequence());
+            StartCoroutine(LaunchAndEvadeSequence());
     }
 
-    private IEnumerator LaunchAndReturnSequence()
+    private IEnumerator LaunchAndEvadeSequence()
     {
         isAttacking = true;
+        originalPosition = transform.position;
+        StartEvading();
 
         foreach (FirePointSlot slot in firePointSlots)
         {
@@ -60,6 +96,68 @@ public class GuitarBoss : MonoBehaviour
             yield return new WaitForSeconds(delayBetweenLaunches);
         }
 
+        yield return new WaitForSeconds(4f);
+
+        StopEvading();
         isAttacking = false;
+    }
+
+    private void StartEvading()
+    {
+        isEvading = true;
+        returning = false;
+        PickNewEvadeTarget();
+    }
+
+    private void StopEvading()
+    {
+        isEvading = false;
+        returning = true;
+    }
+
+    private void EvadeMovement()
+    {
+        evadeTimer += Time.fixedDeltaTime;
+
+        rb.linearVelocity = moveDirection * evasiveMoveSpeed;
+
+        if (Vector3.Distance(transform.position, targetPosition) < 0.5f || evadeTimer >= timeBetweenRandomMoves)
+        {
+            PickNewEvadeTarget();
+        }
+    }
+
+    private void ReturnToOriginalPositionMovement()
+    {
+        Vector3 returnDirection = (originalPosition - transform.position).normalized;
+        rb.linearVelocity = returnDirection * evasiveMoveSpeed;
+
+        if (Vector3.Distance(transform.position, originalPosition) < 0.2f)
+        {
+            rb.linearVelocity = Vector3.zero;
+            returning = false;
+        }
+    }
+
+    private void PickNewEvadeTarget()
+    {
+        evadeTimer = 0f;
+
+        Vector3 randomDirection = (transform.position - player.position).normalized;
+        randomDirection += new Vector3(Random.Range(-0.7f, 0.7f), Random.Range(-0.3f, 0.3f), Random.Range(-0.7f, 0.7f));
+        randomDirection.Normalize();
+
+        moveDirection = randomDirection;
+        targetPosition = transform.position + randomDirection * evasiveMoveRadius;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!isEvading) return;
+
+        if (((1 << collision.gameObject.layer) & wallLayerMask) != 0)
+        {
+            PickNewEvadeTarget();
+        }
     }
 }
