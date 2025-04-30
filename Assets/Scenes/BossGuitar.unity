@@ -2258,6 +2258,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7291591075514259708, guid: 571cf00091cb9c442890e69c5ce087d9, type: 3}
+      propertyPath: numberOfPhases
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 8609498628971494952, guid: 571cf00091cb9c442890e69c5ce087d9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -7075,6 +7079,7 @@ MonoBehaviour:
   gridSize: 5
   jumpEnabled: 0
   cellDistance: 1.5
+  inputBufferTime: 0.25
 --- !u!4 &4592085861721977085
 Transform:
   m_ObjectHideFlags: 0

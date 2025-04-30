@@ -566,9 +566,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chargeTime: 3
+  activeDuration: 4
   projectilePrefab: {fileID: 8460287776679972660, guid: 03003ea7cf1d16c4a99cfc28343c39f0, type: 3}
-  projectileSpeed: 10
-  projectilesPerPoint: 20
-  intervalBetweenProjectiles: 0.2
+  projectileSpeed: 7
   numberOfFirePoints: 32
   firePointRadius: 1
+  burstInterval: 0.2
+  switchPhaseInterval: 2
