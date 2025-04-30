@@ -47,7 +47,10 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
     [SerializeField] private ShotPattern[] attackPatternEasy5;
     [SerializeField] private ShotPattern[] attackPatternNormal5;
 
-    [SerializeField] private ShotPattern[] attackPatterns;
+    [SerializeField] private ShotPattern[] attackPattern1Easy;
+    [SerializeField] private ShotPattern[] attackPattern2Easy;
+    [SerializeField] private ShotPattern[] attackPattern3Easy;
+    [SerializeField] private ShotPattern[] attackPattern4Easy;
 
     private int currentPatternIndex = 0;
     private ShotPattern[] currentPatterns;
