@@ -62,15 +62,14 @@ public class EnergyCore : MonoBehaviour
             if (useEvenPoints && isEven || !useEvenPoints && !isEven)
             {
                 Transform firePoint = firePoints[i];
+                Vector3 dir = (firePoint.position - transform.position).normalized;
+                Quaternion rot = Quaternion.LookRotation(dir);
 
-                GameObject proj = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
+                GameObject proj = Instantiate(projectilePrefab, firePoint.position, rot);
                 Rigidbody rb = proj.GetComponent<Rigidbody>();
 
                 if (rb != null)
-                {
-                    Vector3 dir = (firePoint.position - transform.position).normalized;
                     rb.linearVelocity = dir * projectileSpeed;
-                }
             }
         }
     }
