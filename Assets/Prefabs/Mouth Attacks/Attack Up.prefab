@@ -5068,6 +5068,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveUpDistance: 4
-  moveDuration: 0.5
-  pauseDuration: 0.5
+  moveDuration: 0.4
+  pauseDuration: 0.4
   startPosition: 1

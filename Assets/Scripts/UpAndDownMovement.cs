@@ -10,6 +10,7 @@ public class UpDownMovement : MonoBehaviour
     [SerializeField] float moveDuration = 0.33f;      // How long each movement takes
     [SerializeField] float pauseDuration = 1f;       // How long to pause at each position
     [SerializeField] Position startPosition = Position.Bottom; // Where to start the movement
+    private Position currentPosition; // Current position of the object
 
 
     private Vector3 originalPosition;
@@ -20,6 +21,8 @@ public class UpDownMovement : MonoBehaviour
     {
         originalPosition = transform.position;
         topPosition = originalPosition + Vector3.up * moveUpDistance;
+
+        currentPosition = startPosition;
 
         // Set initial position based on startPosition choice
         if (startPosition == Position.Top)
@@ -61,6 +64,23 @@ public class UpDownMovement : MonoBehaviour
 
         // Set the sequence to loop indefinitely
         movementSequence.SetLoops(-1);
+
+        // Create a new sequence
+        movementSequence = DOTween.Sequence();
+
+        //// If starting at bottom (default)
+        //if (currentPosition == Position.Bottom)
+        //{
+        //    // Move up quickly
+        //    movementSequence.Append(transform.DOMoveY(topPosition.y, moveDuration).SetEase(Ease.InOutSine));
+        //    currentPosition = Position.Top;
+        //}
+        //else // If starting at top
+        //{
+        //    // Move down quickly
+        //    movementSequence.Append(transform.DOMoveY(originalPosition.y, moveDuration).SetEase(Ease.InOutSine));
+        //    currentPosition = Position.Bottom;
+        //}
     }
 
     void OnDestroy()

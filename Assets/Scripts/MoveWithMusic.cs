@@ -16,6 +16,8 @@ public class MoveWithMusic : MonoBehaviour
     private Sequence sequenceVertical;
     private Sequence sequenceColor;
 
+    public float timeUntilBop = 0f;
+
     void Awake()
     {
         Instance = this;
@@ -31,6 +33,8 @@ public class MoveWithMusic : MonoBehaviour
     {
         if (bop)
             bop = false;
+
+        timeUntilBop = timeBetweenNotes - (Time.timeSinceLevelLoad - justBopped);
 
         if (Time.timeSinceLevelLoad - justBopped > timeBetweenNotes)
         {
