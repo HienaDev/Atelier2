@@ -3,13 +3,15 @@ using DG.Tweening;
 
 public class UpDownMovement : MonoBehaviour
 {
-    public enum StartPosition { Bottom, Top }
+    public enum Position { Bottom, Top }
 
     [Header("Movement Settings")]
-    public float moveUpDistance = 2f;       // How far up the object moves
-    public float moveDuration = 0.5f;      // How long each movement takes
-    public float pauseDuration = 1f;       // How long to pause at each position
-    public StartPosition startPosition = StartPosition.Bottom; // Where to start the movement
+    [SerializeField] float moveUpDistance = 2f;       // How far up the object moves
+    [SerializeField] float moveDuration = 0.33f;      // How long each movement takes
+    [SerializeField] float pauseDuration = 1f;       // How long to pause at each position
+    [SerializeField] Position startPosition = Position.Bottom; // Where to start the movement
+    private Position currentPosition; // Current position of the object
+
 
     private Vector3 originalPosition;
     private Vector3 topPosition;
@@ -20,8 +22,10 @@ public class UpDownMovement : MonoBehaviour
         originalPosition = transform.position;
         topPosition = originalPosition + Vector3.up * moveUpDistance;
 
+        currentPosition = startPosition;
+
         // Set initial position based on startPosition choice
-        if (startPosition == StartPosition.Top)
+        if (startPosition == Position.Top)
         {
             transform.position = topPosition;
         }
@@ -35,7 +39,7 @@ public class UpDownMovement : MonoBehaviour
         movementSequence = DOTween.Sequence();
 
         // If starting at bottom (default)
-        if (startPosition == StartPosition.Bottom)
+        if (startPosition == Position.Bottom)
         {
             // Move up quickly
             movementSequence.Append(transform.DOMoveY(topPosition.y, moveDuration).SetEase(Ease.InOutSine));
@@ -60,6 +64,23 @@ public class UpDownMovement : MonoBehaviour
 
         // Set the sequence to loop indefinitely
         movementSequence.SetLoops(-1);
+
+        // Create a new sequence
+        movementSequence = DOTween.Sequence();
+
+        //// If starting at bottom (default)
+        //if (currentPosition == Position.Bottom)
+        //{
+        //    // Move up quickly
+        //    movementSequence.Append(transform.DOMoveY(topPosition.y, moveDuration).SetEase(Ease.InOutSine));
+        //    currentPosition = Position.Top;
+        //}
+        //else // If starting at top
+        //{
+        //    // Move down quickly
+        //    movementSequence.Append(transform.DOMoveY(originalPosition.y, moveDuration).SetEase(Ease.InOutSine));
+        //    currentPosition = Position.Bottom;
+        //}
     }
 
     void OnDestroy()
