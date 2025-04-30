@@ -2,8 +2,13 @@ using UnityEngine;
 
 public class LegProjectile : MonoBehaviour
 {
-    [SerializeField] private float speed = 10f;
+    private float speed;
     [SerializeField] private float lifeTime = 5f;
+
+    public void SetSpeed(float newSpeed)
+    {
+        speed = newSpeed;
+    }
 
     private void Start()
     {

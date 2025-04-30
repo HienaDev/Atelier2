@@ -1006,7 +1006,7 @@ Transform:
   m_GameObject: {fileID: 467167902}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 10.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1675,7 +1675,7 @@ Transform:
   m_GameObject: {fileID: 842874739}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 9.08}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2040,7 +2040,7 @@ Transform:
   m_GameObject: {fileID: 1001826323}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.1899998, z: 18.7}
+  m_LocalPosition: {x: 0, y: 3.1899998, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2804,7 +2804,7 @@ Transform:
   m_GameObject: {fileID: 1497078018}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.8599999, z: 18.7}
+  m_LocalPosition: {x: 0, y: 0.8599999, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4850,7 +4850,7 @@ Transform:
   m_GameObject: {fileID: 2124861622}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.02, z: 18.7}
+  m_LocalPosition: {x: 0, y: 2.02, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5297,7 +5297,7 @@ Transform:
   m_GameObject: {fileID: 7590239055136324920}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.05, z: 27.67}
+  m_LocalPosition: {x: 0, y: -0.05, z: 20.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8207,16 +8207,22 @@ MonoBehaviour:
   player: {fileID: 1558839905354300641}
   rb: {fileID: 676240245591795744}
   bossCollider: {fileID: 3341494654070540613}
+  flyingPartMoveSpeed: 20
+  flyingPartRotationSpeed: 180
+  flyingPartScaleDuration: 1
+  flyingPartLifetimeOnPath: 4
+  flyingPartPathDetectionThreshold: 0.3
   delayBetweenLaunches: 0.3
-  evasiveMoveSpeed: 5
-  evasiveMoveRadius: 5
-  timeBetweenRandomMoves: 1.5
+  evasiveMoveSpeed: 10
+  evasiveMoveRadius: 10
+  timeBetweenRandomMoves: 1
   wallLayerMask:
     serializedVersion: 2
     m_Bits: 0
   legProjectilePrefab: {fileID: 8460287776679972660, guid: 95811fb55ac27e641bb4498ef4e36bfc, type: 3}
-  legFireInterval: 0.4
-  legRegrowTime: 2
+  legProjectileSpeed: 20
+  legFireInterval: 0.3
+  legRegrowTime: 1
   airborneLegs:
   - firePoint: {fileID: 726790208}
     visual: {fileID: 7542066872398227543}
@@ -8226,12 +8232,14 @@ MonoBehaviour:
   energyCoreSpawnPoint: {fileID: 1871027255}
   energyCoreChargeTime: 3
   energyCoreActiveDuration: 4
-  energyCorePhases: 2
+  energyCorePhases: 4
   energyCoreProjectilePrefab: {fileID: 8460287776679972660, guid: 03003ea7cf1d16c4a99cfc28343c39f0, type: 3}
   energyCoreProjectileSpeed: 10
   energyCoreFirePoints: 32
   energyCoreFireRadius: 1.5
   energyCoreBurstInterval: 0.2
+  tutorialPercentage: 50
+  easyPercentage: 75
 --- !u!4 &7641595841701292346
 Transform:
   m_ObjectHideFlags: 0

@@ -20,6 +20,11 @@ public class GuitarBoss : MonoBehaviour
     [SerializeField] private Collider bossCollider;
 
     [Header("Encircling Assault")]
+    [SerializeField] private float flyingPartMoveSpeed = 5f;
+    [SerializeField] private float flyingPartRotationSpeed = 180f;
+    [SerializeField] private float flyingPartScaleDuration = 1f;
+    [SerializeField] private float flyingPartLifetimeOnPath = 4f;
+    [SerializeField] private float flyingPartPathDetectionThreshold = 0.3f;
     [SerializeField] private float delayBetweenLaunches = 0.3f;
     [SerializeField] private float evasiveMoveSpeed = 3f;
     [SerializeField] private float evasiveMoveRadius = 5f;
@@ -28,6 +33,7 @@ public class GuitarBoss : MonoBehaviour
 
     [Header("Leg Barrage")]
     [SerializeField] private GameObject legProjectilePrefab;
+    [SerializeField] private float legProjectileSpeed = 10f;
     [SerializeField] private float legFireInterval = 0.4f;
     [SerializeField] private float legRegrowTime = 2f;
     [SerializeField] private List<FirePointSlot> airborneLegs;
@@ -46,6 +52,14 @@ public class GuitarBoss : MonoBehaviour
     [SerializeField] private float energyCoreFireRadius = 1.5f;
     [SerializeField] private float energyCoreBurstInterval = 0.2f;
 
+    [Header("Difficulty Settings")]
+    [SerializeField] [Range(10, 200)] private float tutorialPercentage = 50f;
+    [SerializeField] [Range(10, 200)] private float easyPercentage = 75f;
+
+    public enum BossDifficulty { Tutorial, Easy, Normal }
+
+    private BossDifficulty currentDifficulty = BossDifficulty.Normal;
+
     private bool isAttacking = false;
     private bool isEvading = false;
     private bool isLegAttackActive = false;
@@ -55,6 +69,46 @@ public class GuitarBoss : MonoBehaviour
     private Vector3 targetPosition;
     private Vector3 moveDirection;
     private float evadeTimer = 0f;
+
+    private float baseFlyingPartMoveSpeed;
+    private float baseFlyingPartRotationSpeed;
+    private float baseFlyingPartScaleDuration;
+    private float baseFlyingPartLifetimeOnPath;
+    private float baseDelayBetweenLaunches;
+    private float baseEvasiveMoveSpeed;
+    private float baseEvasiveMoveRadius;
+    private float baseTimeBetweenRandomMoves;
+    private float baseLegProjectileSpeed;
+    private float baseLegFireInterval;
+    private float baseLegRegrowTime;
+    private float baseCoreChargeTime;
+    private float baseCoreActiveDuration;
+    private int baseEnergyCorePhases;
+    private float baseCoreProjectileSpeed;
+    private int baseEnergyCoreFirePoints;
+    private float baseCoreBurstInterval;
+
+    private void Start()
+    {
+        baseFlyingPartMoveSpeed = flyingPartMoveSpeed;
+        baseFlyingPartRotationSpeed = flyingPartRotationSpeed;
+        baseFlyingPartScaleDuration = flyingPartScaleDuration;
+        baseFlyingPartLifetimeOnPath = flyingPartLifetimeOnPath;
+        baseDelayBetweenLaunches = delayBetweenLaunches;
+        baseEvasiveMoveSpeed = evasiveMoveSpeed;
+        baseEvasiveMoveRadius = evasiveMoveRadius;
+        baseTimeBetweenRandomMoves = timeBetweenRandomMoves;
+        baseLegProjectileSpeed = legProjectileSpeed;
+        baseLegFireInterval = legFireInterval;
+        baseLegRegrowTime = legRegrowTime;
+        baseCoreChargeTime = energyCoreChargeTime;
+        baseCoreActiveDuration = energyCoreActiveDuration;
+        baseEnergyCorePhases = energyCorePhases;
+        baseCoreProjectileSpeed = energyCoreProjectileSpeed;
+        baseEnergyCoreFirePoints = energyCoreFirePoints;
+        baseCoreBurstInterval = energyCoreBurstInterval;
+    }
+
 
     private void Awake()
     {
@@ -76,6 +130,18 @@ public class GuitarBoss : MonoBehaviour
         {
             StartEnergyCoreAttack();
         }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            SetDifficulty(BossDifficulty.Tutorial);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            SetDifficulty(BossDifficulty.Easy);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            SetDifficulty(BossDifficulty.Normal);
+        }
     }
 
     private void FixedUpdate()
@@ -92,6 +158,43 @@ public class GuitarBoss : MonoBehaviour
         {
             rb.linearVelocity = Vector3.zero;
         }
+    }
+
+    public void SetDifficulty(BossDifficulty difficulty)
+    {
+        currentDifficulty = difficulty;
+        ApplyDifficultySettings();
+    }
+
+    private void ApplyDifficultySettings()
+    {
+        float percent = currentDifficulty switch
+        {
+            BossDifficulty.Tutorial => tutorialPercentage,
+            BossDifficulty.Easy => easyPercentage,
+            _ => 100f,
+        };
+
+        float multiplier = percent / 100f;
+        float inverseMultiplier = 200f / (percent + 100f);
+
+        flyingPartMoveSpeed = baseFlyingPartMoveSpeed * multiplier;
+        flyingPartRotationSpeed = baseFlyingPartRotationSpeed * multiplier;
+        flyingPartScaleDuration = baseFlyingPartScaleDuration * inverseMultiplier;
+        flyingPartLifetimeOnPath = baseFlyingPartLifetimeOnPath * multiplier;
+        delayBetweenLaunches = baseDelayBetweenLaunches * inverseMultiplier;
+        evasiveMoveSpeed = baseEvasiveMoveSpeed * multiplier;
+        evasiveMoveRadius = baseEvasiveMoveRadius * multiplier;
+        timeBetweenRandomMoves = baseTimeBetweenRandomMoves * inverseMultiplier;
+        legProjectileSpeed = baseLegProjectileSpeed * multiplier;
+        legFireInterval = baseLegFireInterval * inverseMultiplier;
+        legRegrowTime = baseLegRegrowTime * inverseMultiplier;
+        energyCoreChargeTime = baseCoreChargeTime * inverseMultiplier;
+        energyCoreActiveDuration = baseCoreActiveDuration * multiplier;
+        energyCorePhases = Mathf.Max(1, Mathf.RoundToInt(baseEnergyCorePhases * multiplier));
+        energyCoreProjectileSpeed = baseCoreProjectileSpeed * multiplier;
+        energyCoreFirePoints = Mathf.Max(1, Mathf.RoundToInt(baseEnergyCoreFirePoints * multiplier));
+        energyCoreBurstInterval = baseCoreBurstInterval * inverseMultiplier;
     }
 
     // ========== Encircling Assault ==========
@@ -116,11 +219,22 @@ public class GuitarBoss : MonoBehaviour
 
             GameObject part = Instantiate(bodyPartPrefab, slot.firePoint.position, Quaternion.identity);
             FlyingBodyPart flyingScript = part.GetComponent<FlyingBodyPart>();
-            flyingScript.Initialize(chosenPath, slot.firePoint, () =>
-            {
-                if (slot.visual != null)
-                    slot.visual.SetActive(true);
-            });
+
+            flyingScript.Initialize(
+                chosenPath,
+                slot.firePoint,
+                () =>
+                {
+                    if (slot.visual != null)
+                        slot.visual.SetActive(true);
+                },
+                flyingPartMoveSpeed,
+                flyingPartRotationSpeed,
+                flyingPartScaleDuration,
+                flyingPartLifetimeOnPath,
+                flyingPartPathDetectionThreshold,
+                slot.visual?.transform
+            );
 
             if (slot.visual != null)
                 slot.visual.SetActive(false);
@@ -230,7 +344,12 @@ public class GuitarBoss : MonoBehaviour
             leg.visual.SetActive(false);
 
         Quaternion rotation = Quaternion.LookRotation(leg.firePoint.up);
-        Instantiate(legProjectilePrefab, leg.firePoint.position, rotation);
+        GameObject proj = Instantiate(legProjectilePrefab, leg.firePoint.position, rotation);
+
+        LegProjectile lp = proj.GetComponent<LegProjectile>();
+        if (lp != null)
+            lp.SetSpeed(legProjectileSpeed);
+
         StartCoroutine(RegrowLeg(leg));
     }
 
