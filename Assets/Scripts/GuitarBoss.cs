@@ -36,6 +36,16 @@ public class GuitarBoss : MonoBehaviour
     [SerializeField] private GameObject energyCorePrefab;
     [SerializeField] private Transform energyCoreSpawnPoint;
 
+    [Header("Energy Core Attack Parameters")]
+    [SerializeField] private float energyCoreChargeTime = 3f;
+    [SerializeField] private float energyCoreActiveDuration = 4f;
+    [SerializeField] private int energyCorePhases = 2;
+    [SerializeField] private GameObject energyCoreProjectilePrefab;
+    [SerializeField] private float energyCoreProjectileSpeed = 10f;
+    [SerializeField] private int energyCoreFirePoints = 32;
+    [SerializeField] private float energyCoreFireRadius = 1.5f;
+    [SerializeField] private float energyCoreBurstInterval = 0.2f;
+
     private bool isAttacking = false;
     private bool isEvading = false;
     private bool isLegAttackActive = false;
@@ -236,9 +246,23 @@ public class GuitarBoss : MonoBehaviour
 
     public void StartEnergyCoreAttack()
     {
-        if (energyCorePrefab != null && energyCoreSpawnPoint != null)
+        if (energyCorePrefab == null || energyCoreSpawnPoint == null) return;
+
+        GameObject core = Instantiate(energyCorePrefab, energyCoreSpawnPoint.position, Quaternion.identity);
+        EnergyCore energyCore = core.GetComponent<EnergyCore>();
+
+        if (energyCore != null)
         {
-            Instantiate(energyCorePrefab, energyCoreSpawnPoint.position, Quaternion.identity);
+            energyCore.Initialize(
+                energyCoreChargeTime,
+                energyCoreActiveDuration,
+                energyCorePhases,
+                energyCoreProjectilePrefab,
+                energyCoreProjectileSpeed,
+                energyCoreFirePoints,
+                energyCoreFireRadius,
+                energyCoreBurstInterval
+            );
         }
     }
 }

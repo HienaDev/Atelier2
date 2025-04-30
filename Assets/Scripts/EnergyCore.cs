@@ -4,23 +4,31 @@ using System.Collections.Generic;
 
 public class EnergyCore : MonoBehaviour
 {
-    [Header("Core Settings")]
-    [SerializeField] private float chargeTime = 3f;
-    [SerializeField] private float activeDuration = 4f;
-    [SerializeField] private int numberOfPhases = 2;
-    [SerializeField] private GameObject projectilePrefab;
-    [SerializeField] private float projectileSpeed = 10f;
-
-    [Header("Fire Point Settings")]
-    [SerializeField] private int numberOfFirePoints = 32;
-    [SerializeField] private float firePointRadius = 1.5f;
-    [SerializeField] private float burstInterval = 0.2f;
+    private float chargeTime;
+    private float activeDuration;
+    private int numberOfPhases;
+    private GameObject projectilePrefab;
+    private float projectileSpeed;
+    private int numberOfFirePoints;
+    private float firePointRadius;
+    private float burstInterval;
 
     private List<Transform> firePoints = new List<Transform>();
     private bool useEvenPoints = true;
 
-    private void Start()
+    public void Initialize(float chargeTime, float activeDuration, int numberOfPhases,
+                           GameObject projectilePrefab, float projectileSpeed,
+                           int numberOfFirePoints, float firePointRadius, float burstInterval)
     {
+        this.chargeTime = chargeTime;
+        this.activeDuration = activeDuration;
+        this.numberOfPhases = numberOfPhases;
+        this.projectilePrefab = projectilePrefab;
+        this.projectileSpeed = projectileSpeed;
+        this.numberOfFirePoints = numberOfFirePoints;
+        this.firePointRadius = firePointRadius;
+        this.burstInterval = burstInterval;
+
         GenerateFirePointsOnYZ();
         StartCoroutine(ExecuteCorePattern());
     }
@@ -59,7 +67,7 @@ public class EnergyCore : MonoBehaviour
         {
             bool isEven = i % 2 == 0;
 
-            if (useEvenPoints && isEven || !useEvenPoints && !isEven)
+            if ((useEvenPoints && isEven) || (!useEvenPoints && !isEven))
             {
                 Transform firePoint = firePoints[i];
                 Vector3 dir = (firePoint.position - transform.position).normalized;
@@ -67,7 +75,6 @@ public class EnergyCore : MonoBehaviour
 
                 GameObject proj = Instantiate(projectilePrefab, firePoint.position, rot);
                 Rigidbody rb = proj.GetComponent<Rigidbody>();
-
                 if (rb != null)
                     rb.linearVelocity = dir * projectileSpeed;
             }
