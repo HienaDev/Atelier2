@@ -47,6 +47,8 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
     [SerializeField] private ShotPattern[] attackPatternEasy5;
     [SerializeField] private ShotPattern[] attackPatternNormal5;
 
+    [SerializeField] private ShotPattern[] attackPatterns;
+
     private int currentPatternIndex = 0;
     private ShotPattern[] currentPatterns;
     private ShotPattern currentPattern;
@@ -117,7 +119,7 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
         if (moveWithMusic.bop)
         {
 
-                SendAttack();
+            SendAttack();
         }
     }
 
@@ -141,12 +143,12 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
         if (justChangedPattern)
         {
             justChangedPattern = false;
-            return;
+            //return;
         }
- 
 
-            // 2 - 4
-            int attackPosition = UnityEngine.Random.Range(2, playerMovement.GridSize);
+
+        // 2 - 4
+        int attackPosition = UnityEngine.Random.Range(2, playerMovement.GridSize);
 
         bool weakPointActive = UnityEngine.Random.Range(0, 100) < weakpointChance;
         int weakPointPosition = UnityEngine.Random.Range(-1, 2);
@@ -200,7 +202,7 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
         if (currentPatternRow < 0)
         {
             currentPatternIndex++;
-            if(currentPatternIndex >= currentPatterns.Length)
+            if (currentPatternIndex >= currentPatterns.Length)
             {
                 currentPatterns.Shuffle();
                 currentPatternIndex = 0;
