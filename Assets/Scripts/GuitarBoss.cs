@@ -19,20 +19,28 @@ public class GuitarBoss : MonoBehaviour
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Collider bossCollider;
 
-    [Header("Attack Settings")]
+    [Header("Encircling Assault")]
     [SerializeField] private float delayBetweenLaunches = 0.3f;
     [SerializeField] private float evasiveMoveSpeed = 3f;
     [SerializeField] private float evasiveMoveRadius = 5f;
     [SerializeField] private float timeBetweenRandomMoves = 1.5f;
     [SerializeField] private LayerMask wallLayerMask;
 
+    [Header("Leg Barrage")]
+    [SerializeField] private GameObject legProjectilePrefab;
+    [SerializeField] private float legFireInterval = 0.4f;
+    [SerializeField] private float legRegrowTime = 2f;
+    [SerializeField] private List<FirePointSlot> airborneLegs;
+
     private bool isAttacking = false;
     private bool isEvading = false;
+    private bool isLegAttackActive = false;
+    private bool returning = false;
+
     private Vector3 originalPosition;
     private Vector3 targetPosition;
     private Vector3 moveDirection;
     private float evadeTimer = 0f;
-    private bool returning = false;
 
     private void Awake()
     {
@@ -45,6 +53,10 @@ public class GuitarBoss : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             StartFlyingPartsAttack();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            StartAirborneLegAttack();
         }
     }
 
@@ -157,7 +169,55 @@ public class GuitarBoss : MonoBehaviour
 
         if (((1 << collision.gameObject.layer) & wallLayerMask) != 0)
         {
+            rb.linearVelocity = Vector3.zero;
             PickNewEvadeTarget();
         }
+    }
+
+    public void StartAirborneLegAttack()
+    {
+        if (!isLegAttackActive)
+            StartCoroutine(FireLegsLoop());
+    }
+
+    public void StopAirborneLegAttack()
+    {
+        isLegAttackActive = false;
+    }
+
+    private IEnumerator FireLegsLoop()
+    {
+        isLegAttackActive = true;
+
+        foreach (var leg in airborneLegs)
+        {
+            if (leg.visual != null && leg.visual.activeSelf)
+            {
+                FireLeg(leg);
+            }
+        }
+
+        yield return new WaitForSeconds(legRegrowTime);
+
+        isLegAttackActive = false;
+    }
+
+    private void FireLeg(FirePointSlot leg)
+    {
+        if (leg.visual != null)
+            leg.visual.SetActive(false);
+
+        Quaternion rotation = Quaternion.LookRotation(leg.firePoint.up);
+
+        Instantiate(legProjectilePrefab, leg.firePoint.position, rotation);
+        StartCoroutine(RegrowLeg(leg));
+    }
+
+    private IEnumerator RegrowLeg(FirePointSlot leg)
+    {
+        yield return new WaitForSeconds(legRegrowTime);
+
+        if (leg.visual != null)
+            leg.visual.SetActive(true);
     }
 }
