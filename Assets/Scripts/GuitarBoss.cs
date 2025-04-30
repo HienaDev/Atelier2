@@ -32,6 +32,10 @@ public class GuitarBoss : MonoBehaviour
     [SerializeField] private float legRegrowTime = 2f;
     [SerializeField] private List<FirePointSlot> airborneLegs;
 
+    [Header("Energy Core Attack")]
+    [SerializeField] private GameObject energyCorePrefab;
+    [SerializeField] private Transform energyCoreSpawnPoint;
+
     private bool isAttacking = false;
     private bool isEvading = false;
     private bool isLegAttackActive = false;
@@ -58,6 +62,10 @@ public class GuitarBoss : MonoBehaviour
         {
             StartAirborneLegAttack();
         }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            StartEnergyCoreAttack();
+        }
     }
 
     private void FixedUpdate()
@@ -75,6 +83,8 @@ public class GuitarBoss : MonoBehaviour
             rb.linearVelocity = Vector3.zero;
         }
     }
+
+    // ========== Encircling Assault ==========
 
     private void StartFlyingPartsAttack()
     {
@@ -174,10 +184,12 @@ public class GuitarBoss : MonoBehaviour
         }
     }
 
+    // ========== Leg Barrage ==========
+
     public void StartAirborneLegAttack()
     {
         if (!isLegAttackActive)
-            StartCoroutine(FireLegsLoop());
+            StartCoroutine(FireLegsOnce());
     }
 
     public void StopAirborneLegAttack()
@@ -185,7 +197,7 @@ public class GuitarBoss : MonoBehaviour
         isLegAttackActive = false;
     }
 
-    private IEnumerator FireLegsLoop()
+    private IEnumerator FireLegsOnce()
     {
         isLegAttackActive = true;
 
@@ -208,7 +220,6 @@ public class GuitarBoss : MonoBehaviour
             leg.visual.SetActive(false);
 
         Quaternion rotation = Quaternion.LookRotation(leg.firePoint.up);
-
         Instantiate(legProjectilePrefab, leg.firePoint.position, rotation);
         StartCoroutine(RegrowLeg(leg));
     }
@@ -219,5 +230,15 @@ public class GuitarBoss : MonoBehaviour
 
         if (leg.visual != null)
             leg.visual.SetActive(true);
+    }
+
+    // ========== Energy Core Attack ==========
+
+    public void StartEnergyCoreAttack()
+    {
+        if (energyCorePrefab != null && energyCoreSpawnPoint != null)
+        {
+            Instantiate(energyCorePrefab, energyCoreSpawnPoint.position, Quaternion.identity);
+        }
     }
 }
