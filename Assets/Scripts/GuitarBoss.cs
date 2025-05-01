@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class GuitarBoss : MonoBehaviour
 {
+    public enum BossState { Idle, EncirclingAssault, LegBarrage, EnergyCoreAttack }
+    public enum BossDifficulty { Tutorial, Easy, Normal }
+
     [System.Serializable]
     private class FirePointSlot
     {
@@ -18,6 +21,12 @@ public class GuitarBoss : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Collider bossCollider;
+    [SerializeField] private Animator animator;
+    // [SerializeField] private DamageBoss health;
+
+    [Header("Boss Attack Settings")]
+    [SerializeField] private float attackCooldown = 3f;
+    [SerializeField] private float rotationSpeed = 5f;
 
     [Header("Encircling Assault")]
     [SerializeField] private float flyingPartMoveSpeed = 5f;
@@ -29,7 +38,6 @@ public class GuitarBoss : MonoBehaviour
     [SerializeField] private float evasiveMoveSpeed = 3f;
     [SerializeField] private float evasiveMoveRadius = 5f;
     [SerializeField] private float timeBetweenRandomMoves = 1.5f;
-    [SerializeField] private LayerMask wallLayerMask;
 
     [Header("Leg Barrage")]
     [SerializeField] private GameObject legProjectilePrefab;
@@ -37,12 +45,11 @@ public class GuitarBoss : MonoBehaviour
     [SerializeField] private float legFireInterval = 0.4f;
     [SerializeField] private float legRegrowTime = 2f;
     [SerializeField] private List<FirePointSlot> airborneLegs;
+    [SerializeField] private float legAttackDuration = 5f;
 
     [Header("Energy Core Attack")]
     [SerializeField] private GameObject energyCorePrefab;
     [SerializeField] private Transform energyCoreSpawnPoint;
-
-    [Header("Energy Core Attack Parameters")]
     [SerializeField] private float energyCoreChargeTime = 3f;
     [SerializeField] private float energyCoreActiveDuration = 4f;
     [SerializeField] private int energyCorePhases = 2;
@@ -51,25 +58,45 @@ public class GuitarBoss : MonoBehaviour
     [SerializeField] private int energyCoreFirePoints = 32;
     [SerializeField] private float energyCoreFireRadius = 1.5f;
     [SerializeField] private float energyCoreBurstInterval = 0.2f;
+    [SerializeField] private float energyCoreAttackDuration = 8f;
+
+    [Header("Weakpoint Settings")]
+    [SerializeField] private GameObject weakpointPrefab;
+    [SerializeField] private WeakpointSlot[] weakpointSpawnPoints;
+    [SerializeField] private int requiredWeakpointsToDestroy = 2;
+    [SerializeField] private float extraWeakpointDelay = 5f;
+    [SerializeField] private Transform targetForWeakpoints;
+
+    [System.Serializable]
+    public struct WeakpointSlot
+    {
+        public Transform spawnPoint;
+        [Min(0.01f)] public float uniformScale; // single value for X, Y, Z
+    }
 
     [Header("Difficulty Settings")]
-    [SerializeField] [Range(10, 200)] private float tutorialPercentage = 50f;
-    [SerializeField] [Range(10, 200)] private float easyPercentage = 75f;
-
-    public enum BossDifficulty { Tutorial, Easy, Normal }
+    [SerializeField][Range(10, 200)] private float tutorialPercentage = 50f;
+    [SerializeField][Range(10, 200)] private float easyPercentage = 75f;
 
     private BossDifficulty currentDifficulty = BossDifficulty.Normal;
-
     private bool isAttacking = false;
     private bool isEvading = false;
     private bool isLegAttackActive = false;
     private bool returning = false;
-
     private Vector3 originalPosition;
     private Vector3 targetPosition;
     private Vector3 moveDirection;
     private float evadeTimer = 0f;
+    private BossState currentState = BossState.Idle;
+    private int weakpointsDestroyed = 0;
+    private bool extraSpawnLoopStarted = false;
+    private bool waitingToSpawnNextWeakpoint = false;
+    private GameObject currentExtraWeakpoint;
+    private Coroutine bossAICoroutine;
+    private Vector3 startPosition = Vector3.zero;
+    private Quaternion startRotation = Quaternion.identity;
 
+    // Base value storage for difficulty scaling
     private float baseFlyingPartMoveSpeed;
     private float baseFlyingPartRotationSpeed;
     private float baseFlyingPartScaleDuration;
@@ -87,8 +114,39 @@ public class GuitarBoss : MonoBehaviour
     private float baseCoreProjectileSpeed;
     private int baseEnergyCoreFirePoints;
     private float baseCoreBurstInterval;
+    private float baseAttackCooldown;
+    private float baseAnimSpeed;
+    private float baseLegAttackDuration;
+    private float baseEnergyCoreAttackDuration;
+
+    private void Awake()
+    {
+        if (rb == null) rb = GetComponent<Rigidbody>();
+        if (bossCollider == null) bossCollider = GetComponent<Collider>();
+        if (player == null) player = FindAnyObjectByType<PlayerMovementQuark>()?.transform;
+        if (animator == null) animator = GetComponent<Animator>();
+
+        // Store original position and rotation
+        startPosition = transform.position;
+        startRotation = transform.rotation;
+    }
 
     private void Start()
+    {
+        currentState = BossState.Idle;
+        weakpointsDestroyed = 0;
+        extraSpawnLoopStarted = false;
+        waitingToSpawnNextWeakpoint = false;
+
+        // Store base values for difficulty scaling
+        StoreBaseValues();
+
+        // Placeholder: Wait for weakpoints to be destroyed before starting AI
+        SpawnWeakpoints();
+        StartCoroutine(WaitForWeakpointsDestroyed());
+    }
+
+    private void StoreBaseValues()
     {
         baseFlyingPartMoveSpeed = flyingPartMoveSpeed;
         baseFlyingPartRotationSpeed = flyingPartRotationSpeed;
@@ -107,17 +165,15 @@ public class GuitarBoss : MonoBehaviour
         baseCoreProjectileSpeed = energyCoreProjectileSpeed;
         baseEnergyCoreFirePoints = energyCoreFirePoints;
         baseCoreBurstInterval = energyCoreBurstInterval;
-    }
-
-
-    private void Awake()
-    {
-        if (rb == null) rb = GetComponent<Rigidbody>();
-        if (bossCollider == null) bossCollider = GetComponent<Collider>();
+        baseAttackCooldown = attackCooldown;
+        baseAnimSpeed = animator ? animator.speed : 1f;
+        baseLegAttackDuration = legAttackDuration;
+        baseEnergyCoreAttackDuration = energyCoreAttackDuration;
     }
 
     private void Update()
     {
+        // For debug/testing
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             StartFlyingPartsAttack();
@@ -141,6 +197,12 @@ public class GuitarBoss : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
             SetDifficulty(BossDifficulty.Normal);
+        }
+
+        // Face player
+        if (!isAttacking)
+        {
+            FacePlayer();
         }
     }
 
@@ -178,6 +240,7 @@ public class GuitarBoss : MonoBehaviour
         float multiplier = percent / 100f;
         float inverseMultiplier = 200f / (percent + 100f);
 
+        // Apply difficulty adjustments
         flyingPartMoveSpeed = baseFlyingPartMoveSpeed * multiplier;
         flyingPartRotationSpeed = baseFlyingPartRotationSpeed * multiplier;
         flyingPartScaleDuration = baseFlyingPartScaleDuration * inverseMultiplier;
@@ -195,14 +258,179 @@ public class GuitarBoss : MonoBehaviour
         energyCoreProjectileSpeed = baseCoreProjectileSpeed * multiplier;
         energyCoreFirePoints = Mathf.Max(1, Mathf.RoundToInt(baseEnergyCoreFirePoints * multiplier));
         energyCoreBurstInterval = baseCoreBurstInterval * inverseMultiplier;
+        attackCooldown = baseAttackCooldown * inverseMultiplier;
+        legAttackDuration = baseLegAttackDuration * multiplier;
+        energyCoreAttackDuration = baseEnergyCoreAttackDuration * multiplier;
+
+        if (animator != null)
+        {
+            animator.speed = baseAnimSpeed * multiplier;
+        }
     }
 
-    // ========== Encircling Assault ==========
+    // ====================== BossInterface Implementation ======================
+    /*public void StartBoss(PhaseManager.SubPhase subPhase)
+    {
+        Debug.Log("Guitar Boss: Starting phase " + subPhase);
+        switch (subPhase)
+        {
+            case PhaseManager.SubPhase.Tutorial:
+                SetDifficulty(BossDifficulty.Tutorial);
+                SpawnWeakpoints();
+                StartCoroutine(WaitForWeakpointsDestroyed());
+                break;
+            case PhaseManager.SubPhase.Easy:
+                health?.ToggleDamageable(true);
+                StopAllCoroutines();
+                animator?.Play("Idle", 0, 0f);
+                SpawnNextWeakpointAfterDelay();
+                SetDifficulty(BossDifficulty.Easy);
+                bossAICoroutine = StartCoroutine(BossAI());
+                break;
+            case PhaseManager.SubPhase.Normal:
+                health?.ToggleDamageable(true);
+                StopAllCoroutines();
+                animator?.Play("Idle", 0, 0f);
+                SpawnNextWeakpointAfterDelay();
+                SetDifficulty(BossDifficulty.Normal);
+                bossAICoroutine = StartCoroutine(BossAI());
+                break;
+        }
+    }
 
+    public void PhaseEnded()
+    {
+        if (bossAICoroutine != null)
+        {
+            StopCoroutine(bossAICoroutine);
+            bossAICoroutine = null;
+        }
+        StopAllCoroutines();
+        isAttacking = false;
+        isEvading = false;
+        returning = false;
+        currentState = BossState.Idle;
+    }*/
+
+    // ====================== Boss AI Logic ======================
+    private IEnumerator BossAI()
+    {
+        Debug.Log("Guitar Boss: Starting AI behavior");
+
+        while (true)
+        {
+            if (!isAttacking)
+            {
+                BossState[] availableAttacks = new BossState[]
+                {
+                    BossState.EncirclingAssault,
+                    BossState.LegBarrage,
+                    BossState.EnergyCoreAttack
+                };
+
+                BossState chosenAttack = availableAttacks[Random.Range(0, availableAttacks.Length)];
+
+                switch (chosenAttack)
+                {
+                    case BossState.EncirclingAssault:
+                        Debug.Log("Guitar Boss: Preparing **Encircling Assault**");
+                        yield return StartCoroutine(EncirclingAssaultSequence());
+                        break;
+
+                    case BossState.LegBarrage:
+                        Debug.Log("Guitar Boss: Preparing **Leg Barrage**");
+                        yield return StartCoroutine(LegBarrageSequence());
+                        break;
+
+                    case BossState.EnergyCoreAttack:
+                        Debug.Log("Guitar Boss: Preparing **Energy Core Attack**");
+                        yield return StartCoroutine(EnergyCoreSequence());
+                        break;
+                }
+
+                // Wait for the cooldown before the next attack
+                yield return new WaitForSeconds(attackCooldown);
+            }
+
+            yield return null;
+        }
+    }
+
+    private IEnumerator EncirclingAssaultSequence()
+    {
+        isAttacking = true;
+        currentState = BossState.EncirclingAssault;
+
+        StartFlyingPartsAttack();
+
+        // Wait for the attack to complete
+        // Play animation
+        // animator?.CrossFade("EncirclingAssaultStart", 0.2f);
+
+        Debug.Log("Guitar Boss: Starting **Encircling Assault**");
+        float launchTime = delayBetweenLaunches * firePointSlots.Count;
+        float orbitTime = flyingPartLifetimeOnPath;
+        float returnTime = evasiveMoveRadius / flyingPartMoveSpeed;
+        float returnToPositionTime = evasiveMoveRadius / evasiveMoveSpeed;
+
+        float totalDuration = launchTime + orbitTime + returnTime + returnToPositionTime;
+        yield return new WaitForSeconds(totalDuration);
+
+        Debug.Log("Guitar Boss: **Encircling Assault** completed");
+
+        currentState = BossState.Idle;
+        isAttacking = false;
+    }
+
+    private IEnumerator LegBarrageSequence()
+    {
+        isAttacking = true;
+        currentState = BossState.LegBarrage;
+
+        // Play animation
+        // animator?.CrossFade("LegBarrageStart", 0.2f);
+        // yield return new WaitForSeconds(GetAnimationClipLength("LegBarrageStart"));
+        Debug.Log("Guitar Boss: Starting **Leg Barrage** animation");
+        yield return new WaitForSeconds(0.5f); // Simulate animation time
+
+        // Start the actual attack
+        StartAirborneLegAttack();
+
+        // Wait for the attack duration
+        yield return new WaitForSeconds(legAttackDuration);
+
+        // Stop the attack
+        StopAirborneLegAttack();
+
+        currentState = BossState.Idle;
+        isAttacking = false;
+    }
+
+    private IEnumerator EnergyCoreSequence()
+    {
+        isAttacking = true;
+        currentState = BossState.EnergyCoreAttack;
+
+        // Play animation
+        // animator?.CrossFade("EnergyCoreStart", 0.2f);
+        // yield return new WaitForSeconds(GetAnimationClipLength("EnergyCoreStart"));
+        Debug.Log("Guitar Boss: Starting **Energy Core Attack** animation");
+        yield return new WaitForSeconds(0.5f); // Simulate animation time
+
+        // Start the actual attack
+        StartEnergyCoreAttack();
+
+        // Wait for the attack duration
+        yield return new WaitForSeconds(energyCoreAttackDuration);
+
+        currentState = BossState.Idle;
+        isAttacking = false;
+    }
+
+    // ====================== Encircling Assault Logic ======================
     private void StartFlyingPartsAttack()
     {
-        if (!isAttacking)
-            StartCoroutine(LaunchAndEvadeSequence());
+        StartCoroutine(LaunchAndEvadeSequence());
     }
 
     private IEnumerator LaunchAndEvadeSequence()
@@ -216,7 +444,6 @@ public class GuitarBoss : MonoBehaviour
             if (availablePaths.Count == 0) break;
 
             OvalPath chosenPath = availablePaths[Random.Range(0, availablePaths.Count)];
-
             GameObject part = Instantiate(bodyPartPrefab, slot.firePoint.position, Quaternion.identity);
             FlyingBodyPart flyingScript = part.GetComponent<FlyingBodyPart>();
 
@@ -242,10 +469,17 @@ public class GuitarBoss : MonoBehaviour
             yield return new WaitForSeconds(delayBetweenLaunches);
         }
 
-        yield return new WaitForSeconds(4f);
-
+        yield return new WaitForSeconds(flyingPartLifetimeOnPath);
         StopEvading();
-        isAttacking = false;
+        
+        if (Vector3.Distance(transform.position, originalPosition) < 0.2f)
+        {
+            rb.linearVelocity = Vector3.zero;
+            returning = false;
+
+            currentState = BossState.Idle;
+            isAttacking = false;
+        }
     }
 
     private void StartEvading()
@@ -264,7 +498,6 @@ public class GuitarBoss : MonoBehaviour
     private void EvadeMovement()
     {
         evadeTimer += Time.fixedDeltaTime;
-
         rb.linearVelocity = moveDirection * evasiveMoveSpeed;
 
         if (Vector3.Distance(transform.position, targetPosition) < 0.5f || evadeTimer >= timeBetweenRandomMoves)
@@ -288,32 +521,20 @@ public class GuitarBoss : MonoBehaviour
     private void PickNewEvadeTarget()
     {
         evadeTimer = 0f;
-
         Vector3 randomDirection = (transform.position - player.position).normalized;
         randomDirection += new Vector3(Random.Range(-0.7f, 0.7f), Random.Range(-0.3f, 0.3f), Random.Range(-0.7f, 0.7f));
         randomDirection.Normalize();
-
         moveDirection = randomDirection;
         targetPosition = transform.position + randomDirection * evasiveMoveRadius;
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (!isEvading) return;
-
-        if (((1 << collision.gameObject.layer) & wallLayerMask) != 0)
-        {
-            rb.linearVelocity = Vector3.zero;
-            PickNewEvadeTarget();
-        }
-    }
-
-    // ========== Leg Barrage ==========
-
+    // ====================== Leg Barrage Logic ======================
     public void StartAirborneLegAttack()
     {
         if (!isLegAttackActive)
-            StartCoroutine(FireLegsOnce());
+        {
+            StartCoroutine(FireLegsSequence());
+        }
     }
 
     public void StopAirborneLegAttack()
@@ -321,21 +542,26 @@ public class GuitarBoss : MonoBehaviour
         isLegAttackActive = false;
     }
 
-    private IEnumerator FireLegsOnce()
+    private IEnumerator FireLegsSequence()
     {
         isLegAttackActive = true;
 
-        foreach (var leg in airborneLegs)
+        // Continuous firing while active
+        while (isLegAttackActive)
         {
-            if (leg.visual != null && leg.visual.activeSelf)
+            foreach (var leg in airborneLegs)
             {
-                FireLeg(leg);
+                if (leg.visual != null && leg.visual.activeSelf)
+                {
+                    FireLeg(leg);
+                    // Small delay between each leg firing
+                    yield return new WaitForSeconds(legFireInterval);
+                }
             }
+
+            // Wait a bit before starting the next volley
+            yield return new WaitForSeconds(1f);
         }
-
-        yield return new WaitForSeconds(legRegrowTime);
-
-        isLegAttackActive = false;
     }
 
     private void FireLeg(FirePointSlot leg)
@@ -345,8 +571,8 @@ public class GuitarBoss : MonoBehaviour
 
         Quaternion rotation = Quaternion.LookRotation(leg.firePoint.up);
         GameObject proj = Instantiate(legProjectilePrefab, leg.firePoint.position, rotation);
-
         LegProjectile lp = proj.GetComponent<LegProjectile>();
+
         if (lp != null)
             lp.SetSpeed(legProjectileSpeed);
 
@@ -361,8 +587,7 @@ public class GuitarBoss : MonoBehaviour
             leg.visual.SetActive(true);
     }
 
-    // ========== Energy Core Attack ==========
-
+    // ====================== Energy Core Attack Logic ======================
     public void StartEnergyCoreAttack()
     {
         if (energyCorePrefab == null || energyCoreSpawnPoint == null) return;
@@ -383,5 +608,143 @@ public class GuitarBoss : MonoBehaviour
                 energyCoreBurstInterval
             );
         }
+    }
+
+    // ====================== Weakpoint Logic ======================
+    private void SpawnWeakpoints()
+    {
+        for (int i = 0; i < requiredWeakpointsToDestroy; i++)
+        {
+            if (i >= weakpointSpawnPoints.Length) break;
+
+            WeakpointSlot slot = weakpointSpawnPoints[i];
+            GameObject wp = Instantiate(weakpointPrefab, slot.spawnPoint.position, Quaternion.identity);
+
+            // Attach to the spawn point to follow it
+            wp.transform.SetParent(slot.spawnPoint, worldPositionStays: true);
+
+            // Apply uniform scale
+            wp.transform.localScale = Vector3.one * slot.uniformScale;
+
+            WeakPoint wpScript = wp.GetComponent<WeakPoint>();
+            wpScript.onDeath.AddListener(OnWeakpointDestroyed);
+
+            if (targetForWeakpoints != null)
+                wpScript.SetTarget(targetForWeakpoints);
+
+            // First weakpoints never expire
+            wpScript.DisableLifetime();
+        }
+    }
+
+    private IEnumerator WaitForWeakpointsDestroyed()
+    {
+        while (weakpointsDestroyed < requiredWeakpointsToDestroy)
+            yield return null;
+
+        Debug.Log("Guitar Boss: **Weakpoints destroyed!**");
+
+        // Placeholder for health change or phase change
+        StartCoroutine(BossAI());
+
+        //health?.ChangePhase();
+    }
+
+    private void OnWeakpointDestroyed()
+    {
+        weakpointsDestroyed++;
+        Debug.Log("Weakpoint destroyed! Total destroyed: " + weakpointsDestroyed);
+
+        if (weakpointsDestroyed == requiredWeakpointsToDestroy && !extraSpawnLoopStarted)
+        {
+            extraSpawnLoopStarted = true;
+            SpawnNextWeakpointAfterDelay();
+        }
+        else if (weakpointsDestroyed > requiredWeakpointsToDestroy)
+        {
+            Debug.Log("Spawning new weakpoints");
+            currentExtraWeakpoint = null;
+
+            if (!waitingToSpawnNextWeakpoint)
+            {
+                SpawnNextWeakpointAfterDelay();
+            }
+        }
+    }
+
+    private void SpawnNextWeakpointAfterDelay()
+    {
+        StartCoroutine(DelayedWeakpointSpawn());
+    }
+
+    private IEnumerator DelayedWeakpointSpawn()
+    {
+        waitingToSpawnNextWeakpoint = true;
+        yield return new WaitForSeconds(extraWeakpointDelay);
+
+        // Check if the current extra weakpoint is still alive
+        if (currentExtraWeakpoint == null)
+        {
+            SpawnRandomWeakpoint();
+        }
+
+        waitingToSpawnNextWeakpoint = false;
+    }
+
+    public void DealWeakpointDamage()
+    {
+        //health?.DealDamage(30);
+    }
+
+    private void SpawnRandomWeakpoint()
+    {
+        if (weakpointSpawnPoints.Length == 0) return;
+
+        int randomIndex = Random.Range(0, weakpointSpawnPoints.Length);
+        WeakpointSlot slot = weakpointSpawnPoints[randomIndex];
+
+        GameObject wp = Instantiate(weakpointPrefab, slot.spawnPoint.position, Quaternion.identity);
+        wp.transform.SetParent(slot.spawnPoint, worldPositionStays: true);
+        wp.transform.localScale = Vector3.one * slot.uniformScale;
+
+        WeakPoint wpScript = wp.GetComponent<WeakPoint>();
+        wpScript.onDeath.AddListener(DealWeakpointDamage);
+
+        if (targetForWeakpoints != null)
+            wpScript.SetTarget(targetForWeakpoints);
+
+        currentExtraWeakpoint = wp;
+    }
+
+    // ====================== Utility Functions ======================
+    private void FacePlayer()
+    {
+        if (player == null) return;
+
+        Vector3 directionToPlayer = (player.position - transform.position).normalized;
+
+        if (directionToPlayer.sqrMagnitude > 0.001f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+            targetRotation *= Quaternion.Euler(0, 180f, 0);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+        }
+    }
+
+    private float GetAnimationClipLength(string clipName)
+    {
+        if (animator == null) return 1f;
+
+        foreach (var clip in animator.runtimeAnimatorController.animationClips)
+        {
+            if (clip.name == clipName)
+            {
+                return clip.length;
+            }
+        }
+
+        Debug.LogWarning($"Animation '{clipName}' not found! Using default duration.");
+        return 1f;
     }
 }

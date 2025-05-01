@@ -8207,10 +8207,14 @@ MonoBehaviour:
   player: {fileID: 1558839905354300641}
   rb: {fileID: 676240245591795744}
   bossCollider: {fileID: 3341494654070540613}
+  animator: {fileID: 619536689533390959}
+  model: {fileID: 8181406905867518447}
+  attackCooldown: 1.5
+  rotationSpeed: 1
   flyingPartMoveSpeed: 20
   flyingPartRotationSpeed: 180
   flyingPartScaleDuration: 1
-  flyingPartLifetimeOnPath: 4
+  flyingPartLifetimeOnPath: 8
   flyingPartPathDetectionThreshold: 0.3
   delayBetweenLaunches: 0.3
   evasiveMoveSpeed: 10
@@ -8218,7 +8222,7 @@ MonoBehaviour:
   timeBetweenRandomMoves: 1
   wallLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   legProjectilePrefab: {fileID: 8460287776679972660, guid: 95811fb55ac27e641bb4498ef4e36bfc, type: 3}
   legProjectileSpeed: 20
   legFireInterval: 0.3
@@ -8228,6 +8232,7 @@ MonoBehaviour:
     visual: {fileID: 7542066872398227543}
   - firePoint: {fileID: 1298223408}
     visual: {fileID: 6213847518694847779}
+  legAttackDuration: 5
   energyCorePrefab: {fileID: 8948869955802014866, guid: 571cf00091cb9c442890e69c5ce087d9, type: 3}
   energyCoreSpawnPoint: {fileID: 1871027255}
   energyCoreChargeTime: 3
@@ -8238,6 +8243,16 @@ MonoBehaviour:
   energyCoreFirePoints: 32
   energyCoreFireRadius: 1.5
   energyCoreBurstInterval: 0.2
+  energyCoreAttackDuration: 8
+  weakpointPrefab: {fileID: 8336133669464535913, guid: 1d46df66a09acf242a675382ac6a416d, type: 3}
+  weakpointSpawnPoints:
+  - spawnPoint: {fileID: 7913540539815856115}
+    uniformScale: 0.5
+  - spawnPoint: {fileID: 6574062567397710610}
+    uniformScale: 0.5
+  requiredWeakpointsToDestroy: 2
+  extraWeakpointDelay: 5
+  targetForWeakpoints: {fileID: 877532475816636946}
   tutorialPercentage: 50
   easyPercentage: 75
 --- !u!4 &7641595841701292346
