@@ -19,9 +19,4 @@ public class LegProjectile : MonoBehaviour
     {
         transform.position += transform.forward * speed * Time.deltaTime;
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Destroy(gameObject);
-    }
 }

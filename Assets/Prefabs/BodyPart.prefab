@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 8735986240773417062}
   - component: {fileID: 2557830886930427045}
   - component: {fileID: 6453038258596983700}
-  m_Layer: 0
+  - component: {fileID: 609758037716464965}
+  m_Layer: 11
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 885380792041738481}
   serializedVersion: 2
   m_LocalRotation: {x: -0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -2.794944, y: -0.8887847, z: 0.1964488}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -86,6 +87,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &609758037716464965
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 885380792041738481}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7691300609363347970, guid: 32938ca456502644c8fb7bc8d3551a81, type: 3}
 --- !u!1 &8460287776679972660
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,7 +119,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2760130761398195113}
   - component: {fileID: 5544289130515730961}
-  m_Layer: 0
+  - component: {fileID: -4289067777972078088}
+  m_Layer: 11
   m_Name: BodyPart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,7 +136,7 @@ Transform:
   m_GameObject: {fileID: 8460287776679972660}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 5.891}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -131,8 +155,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5f4f7c146b25654e825b2e7f25ebd96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 15
-  rotationSpeed: 180
-  scaleDuration: 0.5
-  lifetimeOnPath: 4
-  model: {fileID: 8735986240773417062}
+--- !u!114 &-4289067777972078088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8460287776679972660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d7cc8dcc109f9f48b63628297be2939, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleSystemExplosion: {fileID: 0}
+  disableMesh: 0
+  destroy: 0
+  dealsDamage: 1

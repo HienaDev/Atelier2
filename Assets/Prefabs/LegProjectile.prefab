@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 8735986240773417062}
   - component: {fileID: 2557830886930427045}
   - component: {fileID: 6453038258596983700}
-  m_Layer: 0
+  - component: {fileID: 1547353536434611220}
+  m_Layer: 11
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,6 +87,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &1547353536434611220
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 885380792041738481}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7691300609363347970, guid: 32938ca456502644c8fb7bc8d3551a81, type: 3}
 --- !u!1 &8460287776679972660
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,7 +119,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2760130761398195113}
   - component: {fileID: 4690013948839845637}
-  m_Layer: 0
+  - component: {fileID: 6641800705140421061}
+  m_Layer: 11
   m_Name: LegProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -131,5 +155,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f00a176f5a624794ba9e2631ba4dbfe8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  lifeTime: 5
+  lifeTime: 4
+--- !u!114 &6641800705140421061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8460287776679972660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d7cc8dcc109f9f48b63628297be2939, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleSystemExplosion: {fileID: 0}
+  disableMesh: 1
+  destroy: 1
+  dealsDamage: 1

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7188433615979253164}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Fire Point 6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7917934309702885060}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Fire Point 11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2049214589390197086}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Fire Point 10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8165957935948189131}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Fire Point 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8966639835665808541}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Fire Point 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -164,7 +164,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9136607007015735067}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Fire Point 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -195,7 +195,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4426784803326893085}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Fire Point 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -226,7 +226,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1049629502065322118}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Fire Point 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -257,7 +257,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7838062902525344042}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Fire Point 12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -288,7 +288,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8730519920396462294}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Fire Point 8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -319,7 +319,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5160502867394475987}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Fire Point 9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -350,7 +350,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 237049124872429505}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Fire Point 7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -381,7 +381,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1403317027858907928}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Fire Points
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -429,7 +429,7 @@ GameObject:
   - component: {fileID: 7285066365096745461}
   - component: {fileID: -1149569724422240512}
   - component: {fileID: 7291591075514259708}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Energy Core
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -565,11 +565,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bfead7699e04b9479b0721fa303bca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chargeTime: 3
-  activeDuration: 4
-  numberOfPhases: 4
-  projectilePrefab: {fileID: 8460287776679972660, guid: 03003ea7cf1d16c4a99cfc28343c39f0, type: 3}
-  projectileSpeed: 7
-  numberOfFirePoints: 30
-  firePointRadius: 1
-  burstInterval: 0.2

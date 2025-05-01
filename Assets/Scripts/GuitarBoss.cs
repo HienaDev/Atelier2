@@ -198,12 +198,6 @@ public class GuitarBoss : MonoBehaviour
         {
             SetDifficulty(BossDifficulty.Normal);
         }
-
-        // Face player
-        if (!isAttacking)
-        {
-            FacePlayer();
-        }
     }
 
     private void FixedUpdate()
@@ -498,7 +492,9 @@ public class GuitarBoss : MonoBehaviour
     private void EvadeMovement()
     {
         evadeTimer += Time.fixedDeltaTime;
-        rb.linearVelocity = moveDirection * evasiveMoveSpeed;
+
+        Vector3 move = new Vector3(0f, moveDirection.y, moveDirection.z).normalized;
+        rb.linearVelocity = move * evasiveMoveSpeed;
 
         if (Vector3.Distance(transform.position, targetPosition) < 0.5f || evadeTimer >= timeBetweenRandomMoves)
         {
@@ -717,21 +713,6 @@ public class GuitarBoss : MonoBehaviour
     }
 
     // ====================== Utility Functions ======================
-    private void FacePlayer()
-    {
-        if (player == null) return;
-
-        Vector3 directionToPlayer = (player.position - transform.position).normalized;
-
-        if (directionToPlayer.sqrMagnitude > 0.001f)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
-            targetRotation *= Quaternion.Euler(0, 180f, 0);
-
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-        }
-    }
-
     private float GetAnimationClipLength(string clipName)
     {
         if (animator == null) return 1f;

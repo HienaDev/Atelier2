@@ -8,9 +8,4 @@ public class EnergyCoreProjectile : MonoBehaviour
     {
         Destroy(gameObject, lifeTime);
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Destroy(gameObject);
-    }
 }

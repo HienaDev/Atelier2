@@ -308,7 +308,7 @@ GameObject:
   m_Component:
   - component: {fileID: 111770367}
   - component: {fileID: 111770368}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Wall (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2121,7 +2121,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1044515916}
   - component: {fileID: 1044515917}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Wall (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2385,7 +2385,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1285037127}
   - component: {fileID: 1285037128}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Wall (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8208,8 +8208,7 @@ MonoBehaviour:
   rb: {fileID: 676240245591795744}
   bossCollider: {fileID: 3341494654070540613}
   animator: {fileID: 619536689533390959}
-  model: {fileID: 8181406905867518447}
-  attackCooldown: 1.5
+  attackCooldown: 5
   rotationSpeed: 1
   flyingPartMoveSpeed: 20
   flyingPartRotationSpeed: 180
@@ -8220,9 +8219,6 @@ MonoBehaviour:
   evasiveMoveSpeed: 10
   evasiveMoveRadius: 10
   timeBetweenRandomMoves: 1
-  wallLayerMask:
-    serializedVersion: 2
-    m_Bits: 8
   legProjectilePrefab: {fileID: 8460287776679972660, guid: 95811fb55ac27e641bb4498ef4e36bfc, type: 3}
   legProjectileSpeed: 20
   legFireInterval: 0.3
