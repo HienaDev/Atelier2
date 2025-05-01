@@ -3,12 +3,12 @@ using System;
 
 public class FlyingBodyPart : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float rotationSpeed = 180f;
-    [SerializeField] private float scaleDuration = 1f;
-    [SerializeField] private float lifetimeOnPath = 4f;
-    [SerializeField] private float pathDetectionThreshold = 0.3f;
-    [SerializeField] private Transform model;
+    private float moveSpeed;
+    private float rotationSpeed;
+    private float scaleDuration;
+    private float lifetimeOnPath;
+    private float pathDetectionThreshold;
+    private Transform model;
 
     private OvalPath path;
     private Transform origin;
@@ -25,12 +25,28 @@ public class FlyingBodyPart : MonoBehaviour
     private float bestDistance = float.MaxValue;
     private float bestT = -1f;
 
-    public void Initialize(OvalPath selectedPath, Transform originPoint, Action onComplete = null)
+    public void Initialize(
+        OvalPath selectedPath,
+        Transform originPoint,
+        Action onComplete = null,
+        float moveSpeed = 5f,
+        float rotationSpeed = 180f,
+        float scaleDuration = 1f,
+        float lifetimeOnPath = 4f,
+        float pathDetectionThreshold = 0.3f,
+        Transform model = null)
     {
         path = selectedPath;
         origin = originPoint;
-        initialScale = transform.localScale;
         onReturnComplete = onComplete;
+        this.moveSpeed = moveSpeed;
+        this.rotationSpeed = rotationSpeed;
+        this.scaleDuration = scaleDuration;
+        this.lifetimeOnPath = lifetimeOnPath;
+        this.pathDetectionThreshold = pathDetectionThreshold;
+        this.model = model;
+
+        initialScale = transform.localScale;
         initialized = true;
     }
 

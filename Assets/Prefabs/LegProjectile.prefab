@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8735986240773417062}
   - component: {fileID: 2557830886930427045}
   - component: {fileID: 6453038258596983700}
-  - component: {fileID: 609758037716464965}
+  - component: {fileID: 1547353536434611220}
   m_Layer: 11
   m_Name: Model
   m_TagString: Untagged
@@ -27,13 +27,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 885380792041738481}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.5, y: 0.5, z: -0.5, w: 0.5}
+  m_LocalRotation: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2760130761398195113}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: -90}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 90}
 --- !u!33 &2557830886930427045
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -87,7 +87,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &609758037716464965
+--- !u!64 &1547353536434611220
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,10 +118,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2760130761398195113}
-  - component: {fileID: 5544289130515730961}
-  - component: {fileID: -4289067777972078088}
+  - component: {fileID: 4690013948839845637}
+  - component: {fileID: 6641800705140421061}
   m_Layer: 11
-  m_Name: BodyPart
+  m_Name: LegProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143,7 +143,7 @@ Transform:
   - {fileID: 8735986240773417062}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5544289130515730961
+--- !u!114 &4690013948839845637
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -152,10 +152,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8460287776679972660}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5f4f7c146b25654e825b2e7f25ebd96, type: 3}
+  m_Script: {fileID: 11500000, guid: f00a176f5a624794ba9e2631ba4dbfe8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-4289067777972078088
+  lifeTime: 4
+--- !u!114 &6641800705140421061
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,6 +169,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleSystemExplosion: {fileID: 0}
-  disableMesh: 0
-  destroy: 0
+  disableMesh: 1
+  destroy: 1
   dealsDamage: 1
