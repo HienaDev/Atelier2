@@ -15,9 +15,6 @@ public class GuitarBoss : MonoBehaviour
     }
 
     [Header("References")]
-    [SerializeField] private GameObject bodyPartPrefab;
-    [SerializeField] private List<FirePointSlot> firePointSlots;
-    [SerializeField] private List<OvalPath> availablePaths;
     [SerializeField] private Transform player;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Collider bossCollider;
@@ -26,9 +23,11 @@ public class GuitarBoss : MonoBehaviour
 
     [Header("Boss Attack Settings")]
     [SerializeField] private float attackCooldown = 3f;
-    [SerializeField] private float rotationSpeed = 5f;
 
     [Header("Encircling Assault")]
+    [SerializeField] private GameObject bodyPartPrefab;
+    [SerializeField] private List<FirePointSlot> firePointSlots;
+    [SerializeField] private List<OvalPath> availablePaths;
     [SerializeField] private float flyingPartMoveSpeed = 5f;
     [SerializeField] private float flyingPartRotationSpeed = 180f;
     [SerializeField] private float flyingPartScaleDuration = 1f;
@@ -42,8 +41,8 @@ public class GuitarBoss : MonoBehaviour
     [Header("Leg Barrage")]
     [SerializeField] private GameObject legProjectilePrefab;
     [SerializeField] private float legProjectileSpeed = 10f;
-    [SerializeField] private float legFireInterval = 0.4f;
     [SerializeField] private float legRegrowTime = 2f;
+    [SerializeField] private float legTimeBetweenLaunches = 1.5f;
     [SerializeField] private List<FirePointSlot> airborneLegs;
     [SerializeField] private float legAttackDuration = 5f;
 
@@ -106,8 +105,8 @@ public class GuitarBoss : MonoBehaviour
     private float baseEvasiveMoveRadius;
     private float baseTimeBetweenRandomMoves;
     private float baseLegProjectileSpeed;
-    private float baseLegFireInterval;
     private float baseLegRegrowTime;
+    private float baseTimeBetweenLegLaunches;
     private float baseCoreChargeTime;
     private float baseCoreActiveDuration;
     private int baseEnergyCorePhases;
@@ -157,8 +156,8 @@ public class GuitarBoss : MonoBehaviour
         baseEvasiveMoveRadius = evasiveMoveRadius;
         baseTimeBetweenRandomMoves = timeBetweenRandomMoves;
         baseLegProjectileSpeed = legProjectileSpeed;
-        baseLegFireInterval = legFireInterval;
         baseLegRegrowTime = legRegrowTime;
+        baseTimeBetweenLegLaunches = legTimeBetweenLaunches;
         baseCoreChargeTime = energyCoreChargeTime;
         baseCoreActiveDuration = energyCoreActiveDuration;
         baseEnergyCorePhases = energyCorePhases;
@@ -244,8 +243,8 @@ public class GuitarBoss : MonoBehaviour
         evasiveMoveRadius = baseEvasiveMoveRadius * multiplier;
         timeBetweenRandomMoves = baseTimeBetweenRandomMoves * inverseMultiplier;
         legProjectileSpeed = baseLegProjectileSpeed * multiplier;
-        legFireInterval = baseLegFireInterval * inverseMultiplier;
         legRegrowTime = baseLegRegrowTime * inverseMultiplier;
+        legTimeBetweenLaunches = baseTimeBetweenLegLaunches * inverseMultiplier;
         energyCoreChargeTime = baseCoreChargeTime * inverseMultiplier;
         energyCoreActiveDuration = baseCoreActiveDuration * multiplier;
         energyCorePhases = Mathf.Max(1, Mathf.RoundToInt(baseEnergyCorePhases * multiplier));
@@ -441,6 +440,12 @@ public class GuitarBoss : MonoBehaviour
             GameObject part = Instantiate(bodyPartPrefab, slot.firePoint.position, Quaternion.identity);
             FlyingBodyPart flyingScript = part.GetComponent<FlyingBodyPart>();
 
+            GameObject flyingVisual = Instantiate(slot.visual);
+            flyingVisual.transform.SetParent(part.transform, worldPositionStays: false);
+            flyingVisual.transform.localPosition = Vector3.zero;
+            flyingVisual.transform.localRotation = Quaternion.identity;
+            flyingVisual.transform.localScale = slot.visual.transform.localScale;
+
             flyingScript.Initialize(
                 chosenPath,
                 slot.firePoint,
@@ -448,13 +453,14 @@ public class GuitarBoss : MonoBehaviour
                 {
                     if (slot.visual != null)
                         slot.visual.SetActive(true);
+                    Destroy(part);
                 },
                 flyingPartMoveSpeed,
                 flyingPartRotationSpeed,
                 flyingPartScaleDuration,
                 flyingPartLifetimeOnPath,
                 flyingPartPathDetectionThreshold,
-                slot.visual?.transform
+                flyingVisual.transform
             );
 
             if (slot.visual != null)
@@ -550,13 +556,11 @@ public class GuitarBoss : MonoBehaviour
                 if (leg.visual != null && leg.visual.activeSelf)
                 {
                     FireLeg(leg);
-                    // Small delay between each leg firing
-                    yield return new WaitForSeconds(legFireInterval);
                 }
             }
 
             // Wait a bit before starting the next volley
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(legTimeBetweenLaunches);
         }
     }
 
@@ -577,10 +581,24 @@ public class GuitarBoss : MonoBehaviour
 
     private IEnumerator RegrowLeg(FirePointSlot leg)
     {
-        yield return new WaitForSeconds(legRegrowTime);
+        yield return new WaitForSeconds(legTimeBetweenLaunches - 0.5f);
 
+        // Gradually regrow the leg from 0 to its original scale
         if (leg.visual != null)
+        {
             leg.visual.SetActive(true);
+            Vector3 originalScale = leg.visual.transform.localScale;
+            leg.visual.transform.localScale = Vector3.zero;
+
+            float elapsedTime = 0f;
+            while (elapsedTime < legRegrowTime)
+            {
+                elapsedTime += Time.deltaTime;
+                float t = Mathf.Clamp01(elapsedTime / legRegrowTime);
+                leg.visual.transform.localScale = Vector3.Lerp(Vector3.zero, originalScale, t);
+                yield return null;
+            }
+        }
     }
 
     // ====================== Energy Core Attack Logic ======================
