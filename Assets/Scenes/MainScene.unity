@@ -8037,6 +8037,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 589335925}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &594405722 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4614962282286782919, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
+  m_PrefabInstance: {fileID: 8321138272810845182}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &596120054
 GameObject:
   m_ObjectHideFlags: 0
@@ -17936,6 +17941,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1913876165}
   m_SourcePrefab: {fileID: 100100000, guid: dd7838bbf2de0394c949fedd71b75e03, type: 3}
+--- !u!4 &1396859456 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3207599982717256390, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
+  m_PrefabInstance: {fileID: 8321138272810845182}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1404039046
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28980,19 +28990,9 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2149995248865937525, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
   m_PrefabInstance: {fileID: 8321138272810845182}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &8321138272810845184 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1713491256170656024, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
-  m_PrefabInstance: {fileID: 8321138272810845182}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8321138272810845185 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3897990426993566007, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
-  m_PrefabInstance: {fileID: 8321138272810845182}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &8321138272810845186 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4064717090330041584, guid: cdca2e0c00f97a04db4a856c9ad05c7a, type: 3}
   m_PrefabInstance: {fileID: 8321138272810845182}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &8321138272810845187 stripped
@@ -29020,8 +29020,8 @@ MonoBehaviour:
   bulletPrefab: {fileID: 3061902347931598462, guid: 2c93060c57978fa408d8422f90be5bb9, type: 3}
   leftArmFirePoint: {fileID: 8321138272810845187}
   rightArmFirePoint: {fileID: 8321138272810845185}
-  leftArm: {fileID: 8321138272810845186}
-  rightArm: {fileID: 8321138272810845184}
+  leftArm: {fileID: 594405722}
+  rightArm: {fileID: 1396859456}
   topHalf: {fileID: 8321138272810845183}
   mainCamera: {fileID: 752188154}
   shootingCooldown: 0.1
