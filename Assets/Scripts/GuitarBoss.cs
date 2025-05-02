@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class GuitarBoss : MonoBehaviour
+public class GuitarBoss : MonoBehaviour, BossInterface
 {
     public enum BossState { Idle, EncirclingAssault, LegBarrage, EnergyCoreAttack }
     public enum BossDifficulty { Tutorial, Easy, Normal }
@@ -117,6 +117,17 @@ public class GuitarBoss : MonoBehaviour
     private float baseAnimSpeed;
     private float baseLegAttackDuration;
     private float baseEnergyCoreAttackDuration;
+
+    public void PhaseEnded()
+    {
+        
+    }
+
+    public void SetDifficulty(BossDifficulty newDifficulty)
+    {
+        currentDifficulty = newDifficulty;
+        ApplyDifficultySettings();
+    }
 
     private void Awake()
     {
@@ -746,4 +757,6 @@ public class GuitarBoss : MonoBehaviour
         Debug.LogWarning($"Animation '{clipName}' not found! Using default duration.");
         return 1f;
     }
+
+
 }
