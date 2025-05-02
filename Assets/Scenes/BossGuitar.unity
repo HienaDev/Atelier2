@@ -655,7 +655,7 @@ PrefabInstance:
       objectReference: {fileID: 1626232659367728000, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
     - target: {fileID: 919132149155446097, guid: dd7838bbf2de0394c949fedd71b75e03, type: 3}
       propertyPath: m_Name
-      value: 1 _ pyramide3
+      value: 2 _ pyramide3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4829,6 +4829,7 @@ MonoBehaviour:
   rb: {fileID: 1206016849}
   bossCollider: {fileID: 505009864}
   animator: {fileID: 619536689533390959}
+  health: {fileID: 0}
   attackCooldown: 1
   bodyPartPrefab: {fileID: 8460287776679972660, guid: 0a300d8c262a6c8468fb16edfb2a4a0a, type: 3}
   firePointSlots:
@@ -11920,6 +11921,7 @@ MonoBehaviour:
   rb: {fileID: 676240245591795744}
   bossCollider: {fileID: 3341494654070540613}
   animator: {fileID: 619536689533390959}
+  health: {fileID: 0}
   attackCooldown: 5
   bodyPartPrefab: {fileID: 8460287776679972660, guid: 0a300d8c262a6c8468fb16edfb2a4a0a, type: 3}
   firePointSlots:
