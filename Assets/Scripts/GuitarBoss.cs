@@ -19,7 +19,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Collider bossCollider;
     [SerializeField] private Animator animator;
-    // [SerializeField] private DamageBoss health;
+    [SerializeField] private DamageBoss health;
 
     [Header("Boss Attack Settings")]
     [SerializeField] private float attackCooldown = 3f;
@@ -118,17 +118,6 @@ public class GuitarBoss : MonoBehaviour, BossInterface
     private float baseLegAttackDuration;
     private float baseEnergyCoreAttackDuration;
 
-    public void PhaseEnded()
-    {
-        
-    }
-
-    public void SetDifficulty(BossDifficulty newDifficulty)
-    {
-        currentDifficulty = newDifficulty;
-        ApplyDifficultySettings();
-    }
-
     private void Awake()
     {
         if (rb == null) rb = GetComponent<Rigidbody>();
@@ -152,8 +141,8 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         StoreBaseValues();
 
         // Placeholder: Wait for weakpoints to be destroyed before starting AI
-        SpawnWeakpoints();
-        StartCoroutine(WaitForWeakpointsDestroyed());
+        //SpawnWeakpoints();
+        //StartCoroutine(WaitForWeakpointsDestroyed());
     }
 
     private void StoreBaseValues()
@@ -273,7 +262,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
     }
 
     // ====================== BossInterface Implementation ======================
-    /*public void StartBoss(PhaseManager.SubPhase subPhase)
+    public void StartBoss(PhaseManager.SubPhase subPhase)
     {
         Debug.Log("Guitar Boss: Starting phase " + subPhase);
         switch (subPhase)
@@ -286,7 +275,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
             case PhaseManager.SubPhase.Easy:
                 health?.ToggleDamageable(true);
                 StopAllCoroutines();
-                animator?.Play("Idle", 0, 0f);
+                //animator?.Play("Idle", 0, 0f);
                 SpawnNextWeakpointAfterDelay();
                 SetDifficulty(BossDifficulty.Easy);
                 bossAICoroutine = StartCoroutine(BossAI());
@@ -294,7 +283,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
             case PhaseManager.SubPhase.Normal:
                 health?.ToggleDamageable(true);
                 StopAllCoroutines();
-                animator?.Play("Idle", 0, 0f);
+                //animator?.Play("Idle", 0, 0f);
                 SpawnNextWeakpointAfterDelay();
                 SetDifficulty(BossDifficulty.Normal);
                 bossAICoroutine = StartCoroutine(BossAI());
@@ -314,7 +303,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         isEvading = false;
         returning = false;
         currentState = BossState.Idle;
-    }*/
+    }
 
     // ====================== Boss AI Logic ======================
     private IEnumerator BossAI()
@@ -670,9 +659,9 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         Debug.Log("Guitar Boss: **Weakpoints destroyed!**");
 
         // Placeholder for health change or phase change
-        StartCoroutine(BossAI());
+        //StartCoroutine(BossAI());
 
-        //health?.ChangePhase();
+        health?.ChangePhase();
     }
 
     private void OnWeakpointDestroyed()
@@ -718,7 +707,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
 
     public void DealWeakpointDamage()
     {
-        //health?.DealDamage(30);
+        health?.DealDamage(30);
     }
 
     private void SpawnRandomWeakpoint()

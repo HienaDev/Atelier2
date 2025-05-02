@@ -26,7 +26,7 @@ public class PlayerBullet : MonoBehaviour
     {
         DamageBoss damageBoss = other.GetComponent<DamageBoss>();
 
-        Debug.Log(other.name);
+        //Debug.Log(other.name);
         if (damageBoss != null)
         {
             damageBoss.DealDamage(1);
@@ -48,8 +48,16 @@ public class PlayerBullet : MonoBehaviour
             impactNormal = (hitPoint - transform.position).normalized;
         }
 
-        // Make the particle system's Z-axis face the impact normal
-        Quaternion rotation = Quaternion.LookRotation(impactNormal);
+        Quaternion rotation;
+        if (impactNormal != Vector3.zero)
+        {   // Make the particle system's Z-axis face the impact normal
+            rotation = Quaternion.LookRotation(impactNormal);
+        }
+        else
+        {
+            // Fallback to default rotation if normal is not available
+            rotation = Quaternion.identity;
+        }
 
         // Instantiate the particle system with the correct rotation
         Instantiate(particleExplosion, hitPoint, rotation);
