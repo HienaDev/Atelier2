@@ -15650,9 +15650,9 @@ MonoBehaviour:
   evasiveMoveRadius: 10
   timeBetweenRandomMoves: 1
   legProjectilePrefab: {fileID: 8460287776679972660, guid: 95811fb55ac27e641bb4498ef4e36bfc, type: 3}
-  legProjectileSpeed: 40
-  legRegrowTime: 0.45
-  legTimeBetweenLaunches: 0.75
+  legProjectileSpeed: 21
+  legRegrowTime: 0.2
+  legTimeBetweenLaunches: 0.4
   airborneLegs:
   - firePoint: {fileID: 488542936}
     visual: {fileID: 822005878}
@@ -15662,10 +15662,6 @@ MonoBehaviour:
     visual: {fileID: 1512063551}
   - firePoint: {fileID: 1950102118}
     visual: {fileID: 658162752}
-  - firePoint: {fileID: 0}
-    visual: {fileID: 0}
-  - firePoint: {fileID: 0}
-    visual: {fileID: 0}
   legAttackDuration: 5
   energyCorePrefab: {fileID: 8948869955802014866, guid: 571cf00091cb9c442890e69c5ce087d9, type: 3}
   energyCoreSpawnPoint: {fileID: 451316568}
