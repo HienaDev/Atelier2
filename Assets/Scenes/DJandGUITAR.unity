@@ -832,6 +832,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 37765687}
+  - component: {fileID: 37765688}
   m_Layer: 0
   m_Name: DJ
   m_TagString: Untagged
@@ -861,6 +862,28 @@ Transform:
   - {fileID: 1320299723}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &37765688
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 37765686}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 50642d1b2571e8f40aaef0a184a02972, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &47191342
 GameObject:
   m_ObjectHideFlags: 0
@@ -5487,7 +5510,7 @@ Transform:
   m_LocalRotation: {x: 0.0065372325, y: -0.7070766, z: 0.0065372335, w: 0.7070766}
   m_LocalPosition: {x: -1.79, y: 1.8, z: 0.14185572}
   m_LocalScale: {x: 1.1856002, y: 1.1856003, z: 1.1856003}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 325604749}
   m_Father: {fileID: 460485276}
@@ -10458,7 +10481,7 @@ Transform:
   m_GameObject: {fileID: 1224582783}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
-  m_LocalPosition: {x: -0.020000458, y: -2.49, z: 0.28524375}
+  m_LocalPosition: {x: -0.020000458, y: -2.49, z: 0.2852437}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -19326,7 +19349,7 @@ Transform:
   m_LocalRotation: {x: 0.0033381314, y: 0.70709896, z: -0.0033381314, w: 0.70709896}
   m_LocalPosition: {x: 2.0999994, y: 1.76, z: 0.14185524}
   m_LocalScale: {x: 1.1856002, y: 1.1856003, z: 1.1856}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2025285118}
   m_Father: {fileID: 460485276}
