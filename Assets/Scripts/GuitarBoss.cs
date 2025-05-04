@@ -183,7 +183,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            StartEnergyCoreAttack();
+            StartCoroutine(EnergyCoreSequence());
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
@@ -408,16 +408,21 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         currentState = BossState.EnergyCoreAttack;
 
         // Play animation
-        // animator?.CrossFade("EnergyCoreStart", 0.2f);
-        // yield return new WaitForSeconds(GetAnimationClipLength("EnergyCoreStart"));
-        Debug.Log("Guitar Boss: Starting **Energy Core Attack** animation");
-        yield return new WaitForSeconds(0.5f); // Simulate animation time
+        animator?.CrossFade("Guitar_Core", 0.2f);
+        yield return new WaitForSeconds(GetAnimationClipLength("Guitar_Core") + 1f);
 
-        // Start the actual attack
-        StartEnergyCoreAttack();
+        animator.enabled = false;
 
-        // Wait for the attack duration
+        // Wait for the core to stop charging
         yield return new WaitForSeconds(energyCoreAttackDuration);
+
+        animator.enabled = true;
+
+        animator?.CrossFade("Guitar_CoreToIdle", 0.2f);
+
+        yield return new WaitForSeconds(GetAnimationClipLength("Guitar_CoreToIdle"));
+
+        animator?.CrossFade("Guitar_idle", 0.2f);
 
         currentState = BossState.Idle;
         isAttacking = false;
