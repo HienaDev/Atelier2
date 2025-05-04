@@ -47,6 +47,9 @@ public class FlyingBodyPart : MonoBehaviour
         this.model = model;
 
         initialScale = transform.localScale;
+        
+        transform.position = new Vector3(0f, transform.position.y, transform.position.z);
+        
         initialized = true;
     }
 
@@ -56,12 +59,13 @@ public class FlyingBodyPart : MonoBehaviour
 
         if (goingToPath)
         {
-            transform.position += Vector3.back * moveSpeed * Time.deltaTime;
+            transform.position += new Vector3(0f, 0f, -moveSpeed * Time.deltaTime);
 
             for (int i = 0; i <= 100; i++)
             {
                 float t = i / 100f;
                 Vector3 p = path.GetPointOnPath(t);
+                p.x = 0f;
                 float dist = Vector3.Distance(transform.position, p);
 
                 if (dist < bestDistance)
@@ -74,14 +78,18 @@ public class FlyingBodyPart : MonoBehaviour
             if (bestDistance <= pathDetectionThreshold)
             {
                 pathProgress = bestT;
-                transform.position = path.GetPointOnPath(pathProgress);
+                Vector3 pathPoint = path.GetPointOnPath(pathProgress);
+                pathPoint.x = 0f;
+                transform.position = pathPoint;
                 goingToPath = false;
                 orbiting = true;
             }
             else if (bestDistance < 0.5f && Vector3.Distance(transform.position, path.GetPointOnPath(bestT)) > bestDistance + 0.05f)
             {
                 pathProgress = bestT;
-                transform.position = path.GetPointOnPath(pathProgress);
+                Vector3 pathPoint = path.GetPointOnPath(pathProgress);
+                pathPoint.x = 0f;
+                transform.position = pathPoint;
                 goingToPath = false;
                 orbiting = true;
             }
@@ -90,7 +98,10 @@ public class FlyingBodyPart : MonoBehaviour
         {
             timer += Time.deltaTime;
             pathProgress += (moveSpeed / path.GetApproximateLength()) * Time.deltaTime;
-            transform.position = path.GetPointOnPath(pathProgress % 1f);
+            
+            Vector3 pathPoint = path.GetPointOnPath(pathProgress % 1f);
+            pathPoint.x = 0f;
+            transform.position = pathPoint;
 
             if (timer >= lifetimeOnPath)
             {
@@ -100,10 +111,24 @@ public class FlyingBodyPart : MonoBehaviour
         }
         else if (returning)
         {
-            Vector3 dir = (origin.position - transform.position).normalized;
+            Vector3 originPos = origin.position;
+            originPos.x = 0f;
+            
+            Vector3 dir = (originPos - transform.position).normalized;
+            dir.x = 0f;
+            if (dir.magnitude < 0.01f)
+            {
+                dir = Vector3.back;
+            }
+            else
+            {
+                dir = dir.normalized;
+            }
+            
             transform.position += dir * moveSpeed * Time.deltaTime;
 
-            if (Vector3.Distance(transform.position, origin.position) < 0.2f)
+            if (Vector3.Distance(new Vector3(0f, transform.position.y, transform.position.z), 
+                                new Vector3(0f, originPos.y, originPos.z)) < 0.2f)
             {
                 onReturnComplete?.Invoke();
                 Destroy(gameObject);
@@ -120,6 +145,16 @@ public class FlyingBodyPart : MonoBehaviour
         {
             float scaleMultiplier = Mathf.Clamp01(timer / scaleDuration);
             transform.localScale = Vector3.Lerp(initialScale, Vector3.one, scaleMultiplier);
+        }
+        
+        transform.position = new Vector3(0f, transform.position.y, transform.position.z);
+    }
+    
+    private void LateUpdate()
+    {
+        if (transform.position.x != 0f)
+        {
+            transform.position = new Vector3(0f, transform.position.y, transform.position.z);
         }
     }
 }

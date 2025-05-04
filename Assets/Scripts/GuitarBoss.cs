@@ -175,7 +175,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         // For debug/testing
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            StartFlyingPartsAttack();
+            StartCoroutine(EncirclingAssaultSequence());
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
@@ -354,22 +354,29 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         isAttacking = true;
         currentState = BossState.EncirclingAssault;
 
+        animator?.CrossFade("Guitar_Assault", 0.2f);
+
         StartFlyingPartsAttack();
 
-        // Wait for the attack to complete
-        // Play animation
-        // animator?.CrossFade("EncirclingAssaultStart", 0.2f);
+        // Wait for the animation to finish
+        yield return new WaitForSeconds(GetAnimationClipLength("Guitar_Assault"));
 
-        Debug.Log("Guitar Boss: Starting **Encircling Assault**");
+        // Turn off animator
+        animator.enabled = false;
+
         float launchTime = delayBetweenLaunches * firePointSlots.Count;
         float orbitTime = flyingPartLifetimeOnPath;
         float returnTime = evasiveMoveRadius / flyingPartMoveSpeed;
-        float returnToPositionTime = evasiveMoveRadius / evasiveMoveSpeed;
+        float returnToPositionTime = evasiveMoveRadius / evasiveMoveSpeed - timeBetweenRandomMoves;
 
         float totalDuration = launchTime + orbitTime + returnTime + returnToPositionTime;
         yield return new WaitForSeconds(totalDuration);
+        Debug.Log("Guitar Boss: **Encircling Assault** finished");
 
-        Debug.Log("Guitar Boss: **Encircling Assault** completed");
+        // Turn animator back on
+        animator.enabled = true;
+
+        animator?.CrossFade("Guitar_idle", 0.2f);
 
         currentState = BossState.Idle;
         isAttacking = false;
@@ -467,7 +474,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
 
         yield return new WaitForSeconds(flyingPartLifetimeOnPath);
         StopEvading();
-        
+
         if (Vector3.Distance(transform.position, originalPosition) < 0.2f)
         {
             rb.linearVelocity = Vector3.zero;
