@@ -22,7 +22,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: VertexPulse Boss WHITE
   m_Shader: {fileID: -6465566751694194690, guid: 967f251a6eb8b954cac5001aba2e6f89, type: 3}
-  m_Parent: {fileID: 0}
+  m_Parent: {fileID: 2100000, guid: a70763f1b6a149e488f4d7ed850bc76d, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -37,45 +37,10 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs:
-    - unity_Lightmaps:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_LightmapsInd:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - unity_ShadowMasks:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+    m_TexEnvs: []
     m_Ints: []
-    m_Floats:
-    - _AlphaClip: 0
-    - _AlphaToMask: 0
-    - _Blend: 0
-    - _CastShadows: 1
-    - _ColorBrightness: 1
-    - _Cull: 0
-    - _DstBlend: 0
-    - _ExtrusionAmount: 1.5
-    - _FresnelAmount: 0.3
-    - _Pulse: 1
-    - _PulseRatio: 0
-    - _PulseSpeed: 10
-    - _PulseTime: 0
-    - _QueueControl: 0
-    - _QueueOffset: 0
-    - _SrcBlend: 1
-    - _Surface: 0
-    - _ZTest: 4
-    - _ZWrite: 1
-    - _ZWriteControl: 0
+    m_Floats: []
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 0}
-    - _Normal: {r: 1, g: 1, b: 1, a: 0}
-    - _Position: {r: 0, g: 0, b: 0, a: 0}
-    - _Tangent: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
