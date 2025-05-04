@@ -414,7 +414,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         animator.enabled = false;
 
         // Wait for the core to stop charging
-        yield return new WaitForSeconds(energyCoreAttackDuration);
+        yield return new WaitForSeconds(energyCoreAttackDuration - energyCoreActiveDuration);
 
         animator.enabled = true;
 

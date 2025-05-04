@@ -15716,7 +15716,7 @@ MonoBehaviour:
   energyCorePhases: 4
   energyCoreProjectilePrefab: {fileID: 8460287776679972660, guid: 03003ea7cf1d16c4a99cfc28343c39f0, type: 3}
   energyCoreProjectileSpeed: 10
-  energyCoreFirePoints: 32
+  energyCoreFirePoints: 40
   energyCoreFireRadius: 1.5
   energyCoreBurstInterval: 0.2
   energyCoreAttackDuration: 8
