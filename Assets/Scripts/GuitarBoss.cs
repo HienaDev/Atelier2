@@ -175,11 +175,11 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         // For debug/testing
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            StartFlyingPartsAttack();
+            StartCoroutine(EncirclingAssaultSequence());
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            StartAirborneLegAttack();
+            StartCoroutine(LegBarrageSequence());
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
@@ -354,22 +354,29 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         isAttacking = true;
         currentState = BossState.EncirclingAssault;
 
+        animator?.CrossFade("Guitar_Assault", 0.2f);
+
         StartFlyingPartsAttack();
 
-        // Wait for the attack to complete
-        // Play animation
-        // animator?.CrossFade("EncirclingAssaultStart", 0.2f);
+        // Wait for the animation to finish
+        yield return new WaitForSeconds(GetAnimationClipLength("Guitar_Assault"));
 
-        Debug.Log("Guitar Boss: Starting **Encircling Assault**");
+        // Turn off animator
+        animator.enabled = false;
+
         float launchTime = delayBetweenLaunches * firePointSlots.Count;
         float orbitTime = flyingPartLifetimeOnPath;
         float returnTime = evasiveMoveRadius / flyingPartMoveSpeed;
-        float returnToPositionTime = evasiveMoveRadius / evasiveMoveSpeed;
+        float returnToPositionTime = evasiveMoveRadius / evasiveMoveSpeed - timeBetweenRandomMoves;
 
         float totalDuration = launchTime + orbitTime + returnTime + returnToPositionTime;
         yield return new WaitForSeconds(totalDuration);
+        Debug.Log("Guitar Boss: **Encircling Assault** finished");
 
-        Debug.Log("Guitar Boss: **Encircling Assault** completed");
+        // Turn animator back on
+        animator.enabled = true;
+
+        animator?.CrossFade("Guitar_idle", 0.2f);
 
         currentState = BossState.Idle;
         isAttacking = false;
@@ -381,18 +388,14 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         currentState = BossState.LegBarrage;
 
         // Play animation
-        // animator?.CrossFade("LegBarrageStart", 0.2f);
-        // yield return new WaitForSeconds(GetAnimationClipLength("LegBarrageStart"));
-        Debug.Log("Guitar Boss: Starting **Leg Barrage** animation");
-        yield return new WaitForSeconds(0.5f); // Simulate animation time
+        animator?.CrossFade("Guitar_LegBarrage", 0.2f);
 
-        // Start the actual attack
+        yield return new WaitForSeconds(0.2f);
+
         StartAirborneLegAttack();
 
-        // Wait for the attack duration
-        yield return new WaitForSeconds(legAttackDuration);
+        yield return new WaitForSeconds(GetAnimationClipLength("Guitar_LegBarrage"));
 
-        // Stop the attack
         StopAirborneLegAttack();
 
         currentState = BossState.Idle;
@@ -471,7 +474,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
 
         yield return new WaitForSeconds(flyingPartLifetimeOnPath);
         StopEvading();
-        
+
         if (Vector3.Distance(transform.position, originalPosition) < 0.2f)
         {
             rb.linearVelocity = Vector3.zero;
@@ -541,14 +544,13 @@ public class GuitarBoss : MonoBehaviour, BossInterface
 
     public void StopAirborneLegAttack()
     {
+        animator?.CrossFade("Guitar_idle", 0.2f);
         isLegAttackActive = false;
     }
 
     private IEnumerator FireLegsSequence()
     {
         isLegAttackActive = true;
-
-        // Continuous firing while active
         while (isLegAttackActive)
         {
             foreach (var leg in airborneLegs)
@@ -558,8 +560,6 @@ public class GuitarBoss : MonoBehaviour, BossInterface
                     FireLeg(leg);
                 }
             }
-
-            // Wait a bit before starting the next volley
             yield return new WaitForSeconds(legTimeBetweenLaunches);
         }
     }
@@ -568,28 +568,33 @@ public class GuitarBoss : MonoBehaviour, BossInterface
     {
         if (leg.visual != null)
             leg.visual.SetActive(false);
-
-        Quaternion rotation = Quaternion.LookRotation(leg.firePoint.up);
+        
+        Vector3 forward = new Vector3(0, leg.firePoint.forward.y, leg.firePoint.forward.z).normalized;
+        
+        if (forward.magnitude < 0.01f)
+        {
+            forward = Vector3.forward;
+        }
+        
+        Quaternion rotation = Quaternion.LookRotation(forward, Vector3.up);
+        
         GameObject proj = Instantiate(legProjectilePrefab, leg.firePoint.position, rotation);
         LegProjectile lp = proj.GetComponent<LegProjectile>();
-
         if (lp != null)
             lp.SetSpeed(legProjectileSpeed);
-
+        
         StartCoroutine(RegrowLeg(leg));
     }
 
     private IEnumerator RegrowLeg(FirePointSlot leg)
     {
-        yield return new WaitForSeconds(legTimeBetweenLaunches - 0.5f);
-
-        // Gradually regrow the leg from 0 to its original scale
+        yield return new WaitForSeconds(legTimeBetweenLaunches - 0.3f);
+        
         if (leg.visual != null)
         {
             leg.visual.SetActive(true);
             Vector3 originalScale = leg.visual.transform.localScale;
             leg.visual.transform.localScale = Vector3.zero;
-
             float elapsedTime = 0f;
             while (elapsedTime < legRegrowTime)
             {
@@ -746,6 +751,4 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         Debug.LogWarning($"Animation '{clipName}' not found! Using default duration.");
         return 1f;
     }
-
-
 }
