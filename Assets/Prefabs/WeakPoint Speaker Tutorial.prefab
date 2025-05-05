@@ -74,7 +74,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 4a479c49ffce8a7469d581b90492c717, type: 2}
     - target: {fileID: 919132149155446097, guid: 50dd710cb6eea6b4bbd66669b0035685, type: 3}
       propertyPath: m_Name
-      value: WeakPoint Speaker
+      value: WeakPoint Speaker Tutorial
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 50dd710cb6eea6b4bbd66669b0035685, type: 3}
       propertyPath: m_Layer
@@ -125,15 +125,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63bcff711ae21564ba4b8fee8d3a7843, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intensitySteps: 0.5
-  lives: 10
+  intensitySteps: 1
+  lives: 5
   isTriggerWeakPoint: 0
   extrusionIntensitySteps: 0.1
   col: {fileID: 6779117755271713210}
   particles: {fileID: 8881244261015604869}
   numberOfParticles: 5
   timeAlive: 10
-  disableLifetime: 0
+  disableLifetime: 1
   amplitude: 0.1
   period: 0.5
   flyingDuration: 0.3

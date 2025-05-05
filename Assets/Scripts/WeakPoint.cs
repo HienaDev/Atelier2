@@ -31,6 +31,7 @@ public class WeakPoint : MonoBehaviour
     [SerializeField] private float flyingDuration = 2f;
 
     public UnityEvent onDeath;
+    public UnityEvent onLifetime;
 
     void Start()
     {
@@ -48,7 +49,7 @@ public class WeakPoint : MonoBehaviour
         {
             dying = true;
             col.enabled = false;
-            Destroy(gameObject);
+            BlowDown();
         }
     }
 
@@ -73,6 +74,8 @@ public class WeakPoint : MonoBehaviour
         }
     }
 
+
+
     private void HandleHit()
     {
         currentLives--;
@@ -93,6 +96,7 @@ public class WeakPoint : MonoBehaviour
         }
     }
 
+
     public void BlowUp()
     {
         col.enabled = false;
@@ -111,6 +115,45 @@ public class WeakPoint : MonoBehaviour
                 Destroy(gameObject, 0.3f);
 
             });
+        });
+    }
+
+    public void BlowDown()
+    {
+        col.enabled = true;
+        dying = true;
+        sequence?.Kill();
+        transform.DOKill();
+
+        Sequence deflateSequence = DOTween.Sequence();
+
+        // Optional: small shake to signal it's about to "blow down"
+        deflateSequence.Append(
+            transform.DOShakeScale(0.2f, 0.1f, 4, 20, false, ShakeRandomnessMode.Harmonic)
+                .SetEase(Ease.InOutSine)
+        );
+
+        // Deflate the visual pulse via shader parameter (from current to 0)
+        deflateSequence.Append(
+            mat.DOFloat(0f, "_PulseRatio", 0.6f)
+                .SetEase(Ease.InOutSine)
+        );
+
+        // Simultaneous soft scaling down and rotation for visual effect
+        deflateSequence.Join(
+            transform.DOScale(Vector3.one * 0.2f, 0.6f)
+                .SetEase(Ease.InBack)
+        );
+
+        deflateSequence.Join(
+            transform.DORotate(new Vector3(0f, 0f, 30f), 0.6f, RotateMode.FastBeyond360)
+                .SetEase(Ease.InOutQuad)
+        );
+
+        deflateSequence.AppendCallback(() =>
+        {
+            onLifetime.Invoke();
+            Destroy(gameObject, 0.3f);
         });
     }
     

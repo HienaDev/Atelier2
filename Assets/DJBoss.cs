@@ -2,8 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 using static PhaseManager;
-using UnityEditor.ShaderGraph.Internal;
-using static UnityEditor.PlayerSettings;
+
 
 public class DJBoss : MonoBehaviour, BossInterface
 {
@@ -24,6 +23,9 @@ public class DJBoss : MonoBehaviour, BossInterface
 
     private bool normalDifficulty = false;
 
+    [Header("Weakpoint")]
+    [SerializeField] private GameObject weakpoint;
+
     [Header("Spike Attack")]
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private int[] projectileCount = { 3, 4, 5};
@@ -35,6 +37,19 @@ public class DJBoss : MonoBehaviour, BossInterface
     [SerializeField] private ClearProjectiles clearProjectiles;
     [SerializeField] private DamageBoss damageBoss;
     private bool fightStarted = false;
+
+    private Animator animator;
+
+    public void DamageAnimation()
+    {
+        animator.SetTrigger("Damage");
+    }
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     public void PhaseEnded()
     {
 
@@ -46,7 +61,7 @@ public class DJBoss : MonoBehaviour, BossInterface
         switch (subphase)
         {
             case PhaseManager.SubPhase.Tutorial:
-                //StartCoroutine(SpawnTutorialWeakpoints());
+                SpawnTutorialWeakpoints();
                 break;
             case PhaseManager.SubPhase.Easy:
                 fightStarted = true;
@@ -64,6 +79,27 @@ public class DJBoss : MonoBehaviour, BossInterface
         }
     }
 
+    private void SpawnTutorialWeakpoints()
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            GameObject weakpointClone = Instantiate(weakpoint, collumns[i].collumn.transform.position, Quaternion.identity);
+            clearProjectiles.AddProjectile(weakpointClone);
+            weakpointClone.GetComponent<WeakPoint>().onDeath.AddListener(WeakpointTutorialDestroyed);
+            weakpointClone.GetComponent<WeakPoint>().onDeath.AddListener(DamageAnimation);
+            weakpointClone.GetComponent<WeakPoint>().SetTarget(damageBoss.gameObject.transform);
+        }
+    }
+
+    public void WeakpointTutorialDestroyed()
+    {
+        tutorialWeakpointsDestroyed++;
+        if (tutorialWeakpointsDestroyed >= numberOfWeakspointsToDestroy)
+        {
+            damageBoss.ChangePhase();
+        }
+    }
+
     private void SpawnCollumn(int pos)
     {
         Collumn collumn = collumns[0];
@@ -75,10 +111,15 @@ public class DJBoss : MonoBehaviour, BossInterface
                 break;
             }
         }
-
+        animator.SetTrigger("Button");
         collumn.collumn.SetActive(true);
-        collumn.collumn.GetComponent<BlowCollumnUp>().Initialize(damageBoss, 50);
+        collumn.collumn.GetComponent<BlowCollumnUp>().Initialize(damageBoss, pos, 50);
     }
+
+    public void SpawnCollum0() => SpawnCollumn(0);
+    public void SpawnCollum1() => SpawnCollumn(1);
+    public void SpawnCollum2() => SpawnCollumn(2);
+    public void SpawnCollum3() => SpawnCollumn(3);
 
     public void NormalDifficulty()
     {
@@ -93,7 +134,7 @@ public class DJBoss : MonoBehaviour, BossInterface
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        StartAttack(PhaseManager.SubPhase.Easy);
+        //StartAttack(PhaseManager.SubPhase.Easy);
     }
 
     // Update is called once per frame
@@ -175,7 +216,7 @@ public class DJBoss : MonoBehaviour, BossInterface
         // Initialize the spike shot
         SpikeShot spikeShot = projectile.GetComponent<SpikeShot>();
 
-        spikeShot.Initialize(speed, 20f); // 20f is the maxDistance - adjust as needed
+        spikeShot.Initialize(speed, 30f); // 20f is the maxDistance - adjust as needed
 
 
     }
@@ -196,10 +237,18 @@ public class DJBoss : MonoBehaviour, BossInterface
             }
         }
 
-        if (collumn.scaleWithMusic != null)
+        collumn.scaleWithMusic.Pulse();
+
+        if (randomIndex == 0 || randomIndex == 2)
         {
-            collumn.scaleWithMusic.Pulse();
+            //animator.SetTrigger("LeftArm");
         }
+        else if(randomIndex == 1 || randomIndex == 3)
+        {
+            //animator.SetTrigger("RightArm");
+        }
+
+
 
 
 

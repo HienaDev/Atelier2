@@ -155,6 +155,10 @@ public class PhaseManager : MonoBehaviour
         ChangePhaseDictionary(phases[currentPhaseIndex], subPhaseData[phases[currentPhaseIndex]]);
     }
 
+    public SubPhase GetCurrentSubPhase()
+    {
+        return subPhaseData[currentPhase];
+    }
     public void ChangePhaseDictionary(Phase phase, SubPhase subphase = SubPhase.Normal)
     {
         if (!phaseData.ContainsKey(phase))

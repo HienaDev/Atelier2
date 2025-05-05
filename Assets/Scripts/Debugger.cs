@@ -31,7 +31,7 @@ public class Debugger : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.F3))
         {
-            bossHealth.DealDamage(250);
+            bossHealth.SkipPhase();
         }
 
         if (Input.GetKeyDown(KeyCode.F4))

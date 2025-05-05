@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
+using static PhaseManager;
 
 public class BossHealth : MonoBehaviour
 {
     [SerializeField] private int lives = 2000;
-    [SerializeField] private float percentageToChangePhase = 0.1f;
+    private float percentageToChangePhase = 0.1f;
     [SerializeField] private PhaseManager phaseManager;
     [SerializeField] private ClearProjectiles projectiles;
     [SerializeField] private Image healthBarFill;
@@ -20,19 +22,32 @@ public class BossHealth : MonoBehaviour
     {
         currentLives = lives;
 
+        percentageToChangePhase = 1f/(float)phaseManager.phases.Length;
+
         //GenerateSplits();
+    }
+
+    public void SkipPhase()
+    {
+        projectiles.ClearAllProjectiles();
+        if (phaseManager.GetCurrentSubPhase() == SubPhase.Tutorial)
+        {
+            phaseManager.ChangePhase();
+        }
+        DealDamage((int)(lives * percentageToChangePhase) + 5); // Skip to the next phase
     }
 
     public void DealCritDamage()
     {
         // Add an extra 5 to account for division and rounding errors, so that the boss changes after 3 crits
-        DealDamage((lives/ phaseManager.phases.Length / 3) + 5); 
+        DealDamage(((lives/ phaseManager.phases.Length) / 3) + 5); 
     }
 
     public void DealDamage(int damage)
     {
         currentLives -= damage;
 
+        Debug.Log(damage + " damage dealt to boss");
         Debug.Log("currentLives = " + currentLives);
 
         healthBarFill.fillAmount = (float)currentLives / (float)lives;
@@ -43,10 +58,13 @@ public class BossHealth : MonoBehaviour
             GameOver();
         }
 
+        // 1800, 2000 * (1f - 0.1667) - (1 * 2000 * 0.1667) = 1500
         if (currentLives < (lives * (1f - percentageToChangePhase)) - (numberOfPhasesSwapped * lives * percentageToChangePhase))
         {
+            Debug.Log(currentLives + " < " + (lives * (1f - percentageToChangePhase)) + " - (" + numberOfPhasesSwapped + " * " + lives * percentageToChangePhase + ")");
             projectiles.ClearAllProjectiles();
             numberOfPhasesSwapped++;
+            Debug.Log("Phase changed because of HP");
             ChangePhase();
         }
     }

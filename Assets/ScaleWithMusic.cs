@@ -9,6 +9,8 @@ public class ScaleWithMusic : MonoBehaviour
     [SerializeField] private Vector3 scaleAmount = new Vector3(0.3f, 0.3f, 0.3f);
     [SerializeField] private float duration = 0.4f;
 
+    [SerializeField] private bool moveWithoutCall = true;
+
     void Awake()
     {
         originalScale = transform.localScale;
@@ -16,18 +18,19 @@ public class ScaleWithMusic : MonoBehaviour
 
     private void Update()
     {
-        if (MoveWithMusic.Instance.bop)
+        if (MoveWithMusic.Instance.bop && moveWithoutCall)
         {
-            //Pulse();
+
+            Pulse();
         }
     }
 
     public void Pulse()
     {
-        Pulse(scaleAmount, duration);
+        PulseTween(scaleAmount, duration);
     }
 
-    public void Pulse(Vector3 scaleAmount, float duration)
+    public void PulseTween(Vector3 scaleAmount, float duration)
     {
         currentTween?.Kill();
 
