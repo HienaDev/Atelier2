@@ -12,6 +12,8 @@ public class BossHealth : MonoBehaviour
     [SerializeField] private Transform UIParent;
     [SerializeField] private GameObject healthSplit;
 
+    [SerializeField] private GameObject winScreen;
+
     private int currentLives;
     private int currentPhase = 0;
     private int numberOfPhasesSwapped = 0;
@@ -85,7 +87,7 @@ public class BossHealth : MonoBehaviour
 
     private void GameOver()
     {
-
+        winScreen.SetActive(true);
     }
 
     public void ChangePhase()
