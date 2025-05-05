@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using static PhaseManager;
 
 public class DJBoss : MonoBehaviour, BossInterface
@@ -38,6 +39,11 @@ public class DJBoss : MonoBehaviour, BossInterface
     private bool fightStarted = false;
 
     private Animator animator;
+
+    private HashSet<int> deactivatedSpeakers = new HashSet<int>();
+
+    public void AddSpeakerToList(int layerIndex) => deactivatedSpeakers.Add(layerIndex);
+    public void RemoveSpeakerFromList(int layerIndex) => deactivatedSpeakers.Remove(layerIndex);
 
     public void DamageAnimation()
     {
