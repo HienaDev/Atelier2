@@ -73,6 +73,7 @@ public class EnergyCore : MonoBehaviour
                 Vector3 dir = (firePoint.position - transform.position).normalized;
                 Quaternion rot = Quaternion.LookRotation(dir);
 
+                // Instantiate the projectile at the fire point's position and rotation
                 GameObject proj = Instantiate(projectilePrefab, firePoint.position, rot);
                 Rigidbody rb = proj.GetComponent<Rigidbody>();
                 if (rb != null)
