@@ -165,7 +165,7 @@ RectTransform:
   m_GameObject: {fileID: 6868331627902581311}
   m_LocalRotation: {x: 0, y: -0.99577963, z: 0.0917768, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 6.8600006}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6044832505273186099}
@@ -253,9 +253,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   popInDuration: 0.3
   riseDuration: 1.5
-  riseDistance: 2
+  riseDistance: 3
   hoverDuration: 0.3
   popOutDuration: 0.2
-  popInEase: 27
-  riseEase: 4
-  popOutEase: 26
+  popInEase: 25
+  riseEase: 25
+  popOutEase: 25

@@ -185,6 +185,13 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
             {
                 attack = Instantiate(attackPrefab[attacks[i + 2] - 1]); // - 1 because 0 in the inspector means "hole" but here the slot 0 of attacks is a prefab
 
+                WeakPoint weakPoint = attack.GetComponent<WeakPoint>();
+                if(weakPoint != null)
+                {
+                    weakPoint.onDeath.AddListener(DealWeakPointDamage);
+                    weakPoint.SetTarget(targetForWeakpoints);
+                }
+
                 attack.transform.position = shootingPoint.position + playerMovement.CellDistance * i * new Vector3(0f, 0f, 1f);
 
                 Debug.Log("position:" + attack.transform.position + " i: " + i);
