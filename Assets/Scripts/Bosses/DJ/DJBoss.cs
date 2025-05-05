@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using static PhaseManager;
+using NaughtyAttributes;
 
 public class DJBoss : MonoBehaviour, BossInterface
 {
@@ -26,14 +27,29 @@ public class DJBoss : MonoBehaviour, BossInterface
     [Header("Weakpoint")]
     [SerializeField] private GameObject weakpoint;
 
-    [Header("Spike Attack")]
+    [SerializeField, Range(0f, 1f)] private float doubleSlamChance = 0.2f;
+    [SerializeField, Range(0f, 1f)] private float doubleSlamChanceNormal = 0.35f;
+
+    [Header("Spike Attacks 1")]
     [SerializeField] private GameObject projectilePrefab;
-    [SerializeField] private int[] projectileCount = { 3, 4, 5};
+    [SerializeField] private int[] projectileCount = { 3, 4, 5 };
     private int currentProjectileCount = 0;
     [SerializeField] private float attackArcAngle = 60f;
     [SerializeField] private float projectileSpeed = 10f;
     [SerializeField] private float projectileScale = 0.7f;
     [SerializeField] private float projectileDelay = 0f;
+
+    [Header("Spike Attacks Normal Difficulty")]
+    [SerializeField] private int[] projectileCountNormal = { 3, 4, 5 };
+    private int currentProjectileCountNormal = 0;
+    [SerializeField] private float attackArcAngleNormal = 60f;
+    [SerializeField] private float projectileSpeedNormal = 10f;
+    [SerializeField] private float projectileScaleNormal = 0.7f;
+    [SerializeField] private float projectileDelayNormal = 0f;
+
+    [SerializeField] private GameObject doubleSlamText;
+    [SerializeField] private Transform doubleSlamSpawn;
+
     [SerializeField] private ClearProjectiles clearProjectiles;
     [SerializeField] private DamageBoss damageBoss;
     private bool fightStarted = false;
@@ -116,6 +132,9 @@ public class DJBoss : MonoBehaviour, BossInterface
                 break;
             }
         }
+
+        AddSpeakerToList(pos);
+
         animator.SetTrigger("Button");
         collumn.collumn.SetActive(true);
         collumn.collumn.GetComponent<BlowCollumnUp>().Initialize(damageBoss, pos, 50);
@@ -139,7 +158,7 @@ public class DJBoss : MonoBehaviour, BossInterface
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //StartAttack(PhaseManager.SubPhase.Easy);
+
     }
 
     // Update is called once per frame
@@ -148,6 +167,11 @@ public class DJBoss : MonoBehaviour, BossInterface
         if (MoveWithMusic.Instance.bop && fightStarted)
         {
             AttackFromRandomColumn();
+        }
+
+        foreach (int i in deactivatedSpeakers)
+        {
+            Debug.Log(i + " speaker deactivated");
         }
     }
 
@@ -227,11 +251,41 @@ public class DJBoss : MonoBehaviour, BossInterface
 
     private void AttackFromRandomColumn()
     {
+        bool doDoubleAttack = false;
+
+        if(normalDifficulty)
+        {
+            doDoubleAttack = UnityEngine.Random.value <= doubleSlamChanceNormal;
+        }
+        else
+        {
+            doDoubleAttack = UnityEngine.Random.value <= doubleSlamChance;
+        }
+
+
+        // First column attack
         int randomIndex = normalDifficulty ?
             UnityEngine.Random.Range(0, collumns.Length) :
             UnityEngine.Random.Range(0, 2);
 
         Collumn collumn = collumns[0];
+
+        if (!normalDifficulty && deactivatedSpeakers.Count >= 2)
+        {
+            return;
+        }
+        else if (normalDifficulty && deactivatedSpeakers.Count >= 4)
+        {
+            return;
+        }
+
+        while (deactivatedSpeakers.Contains(randomIndex))
+        {
+            randomIndex = normalDifficulty ?
+            UnityEngine.Random.Range(0, collumns.Length) :
+            UnityEngine.Random.Range(0, 2);
+        }
+
         foreach (Collumn c in collumns)
         {
             if (c.index == randomIndex)
@@ -243,30 +297,93 @@ public class DJBoss : MonoBehaviour, BossInterface
 
         collumn.scaleWithMusic.Pulse();
 
-        if (randomIndex == 0 || randomIndex == 2)
+        // Handle double attack
+        if (doDoubleAttack)
         {
-            //animator.SetTrigger("LeftArm");
+            // Trigger double slam animation
+            animator.SetTrigger("DoubleSlam");
+            // Spawn the double slam text
+            GameObject doubleSlamTextClone = Instantiate(doubleSlamText, doubleSlamSpawn.position, Quaternion.identity);
+
+            // Find a second random column different from the first
+            int secondRandomIndex = randomIndex;
+
+            // Only attempt to find a second column if there are at least 2 active columns
+            if ((normalDifficulty && deactivatedSpeakers.Count < collumns.Length - 1) ||
+                (!normalDifficulty && deactivatedSpeakers.Count < 1))
+            {
+                while (secondRandomIndex == randomIndex || deactivatedSpeakers.Contains(secondRandomIndex))
+                {
+                    secondRandomIndex = normalDifficulty ?
+                        UnityEngine.Random.Range(0, collumns.Length) :
+                        UnityEngine.Random.Range(0, 2);
+                }
+
+                // Find the second column
+                Collumn secondCollumn = collumns[0];
+                foreach (Collumn c in collumns)
+                {
+                    if (c.index == secondRandomIndex)
+                    {
+                        secondCollumn = c;
+                        break;
+                    }
+                }
+
+                // Pulse the second column
+                secondCollumn.scaleWithMusic.Pulse();
+
+                // Attack from the second column
+                ColumnAttack(
+                    secondCollumn.firePoint,
+                    projectilePrefab,
+                    normalDifficulty ? projectileCountNormal[currentProjectileCountNormal] : projectileCount[currentProjectileCount],
+                    normalDifficulty ? attackArcAngleNormal : attackArcAngle,
+                    normalDifficulty ? projectileSpeedNormal : projectileSpeed,
+                    normalDifficulty ? projectileDelayNormal : projectileDelay,
+                    Vector3.one * (normalDifficulty ? projectileScaleNormal : projectileScale)
+                );
+            }
         }
-        else if(randomIndex == 1 || randomIndex == 3)
+        else
         {
-            //animator.SetTrigger("RightArm");
+            // Regular single column animation
+            if (randomIndex == 0 || randomIndex == 2)
+            {
+                //animator.SetTrigger("LeftArm");
+            }
+            else if (randomIndex == 1 || randomIndex == 3)
+            {
+                //animator.SetTrigger("RightArm");
+            }
         }
 
-        // Attack parameters
+        // Attack from the first column
         ColumnAttack(
             collumn.firePoint,
             projectilePrefab,
-            projectileCount[currentProjectileCount],       // Projectile count
-            attackArcAngle,   // Spread angle
-            projectileSpeed,   // Speed
-            projectileDelay,   // Delay
-            Vector3.one * projectileScale // Scale
+            normalDifficulty ? projectileCountNormal[currentProjectileCountNormal] : projectileCount[currentProjectileCount],       // Projectile count
+            normalDifficulty ? attackArcAngleNormal : attackArcAngle,   // Spread angle
+            normalDifficulty ? projectileSpeedNormal : projectileSpeed,   // Speed
+            normalDifficulty ? projectileDelayNormal : projectileDelay,   // Delay
+            Vector3.one * (normalDifficulty ? projectileScaleNormal : projectileScale) // Scale
         );
 
-        currentProjectileCount++;
-        if (currentProjectileCount >= projectileCount.Length)
+        if (normalDifficulty)
         {
-            currentProjectileCount = 0;
+            currentProjectileCountNormal++;
+            if (currentProjectileCountNormal >= projectileCountNormal.Length)
+            {
+                currentProjectileCountNormal = 0;
+            }
+        }
+        else
+        {
+            currentProjectileCount++;
+            if (currentProjectileCount >= projectileCount.Length)
+            {
+                currentProjectileCount = 0;
+            }
         }
     }
 }

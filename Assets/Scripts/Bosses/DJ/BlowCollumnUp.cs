@@ -87,6 +87,11 @@ public class BlowCollumnUp : MonoBehaviour
         // Settle to normal scale with elastic effect
         cartoonFallSequence.Append(transform.DOScale(originalScale, settleDuration)
             .SetEase(Ease.OutElastic, 1.2f));
+
+        cartoonFallSequence.AppendCallback(() =>
+        {
+            boss.RemoveSpeakerFromList(index);
+        });
     }
 
     public void Initialize(DamageBoss damageBoss, int index, int health = 50)
@@ -116,6 +121,7 @@ public class BlowCollumnUp : MonoBehaviour
         }
         if (health <= 0)
         {
+            boss.AddSpeakerToList(index);
             GameObject weakpointClone = Instantiate(weakpoint, transform.position, Quaternion.identity);
             weakpointClone.GetComponent<WeakPoint>().onDeath.AddListener(damageBoss.DealCritDamage);
             weakpointClone.GetComponent<WeakPoint>().onDeath.AddListener(boss.DamageAnimation);
