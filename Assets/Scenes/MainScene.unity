@@ -19173,8 +19173,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 1024517197}
   bossHealth: {fileID: 842874741}
-  scorpionBoss: {fileID: 1439814234}
-  mouthBoss: {fileID: 1187527019}
 --- !u!4 &1035727091
 Transform:
   m_ObjectHideFlags: 0
@@ -25560,17 +25558,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1213537006460658545, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
   m_PrefabInstance: {fileID: 1439814230}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1439814234 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6536184952667945689, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
-  m_PrefabInstance: {fileID: 1439814230}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9826e436ff70d2345b6b067248eb7c08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1441120998
 GameObject:
   m_ObjectHideFlags: 0
