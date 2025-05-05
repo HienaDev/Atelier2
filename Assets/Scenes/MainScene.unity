@@ -20923,6 +20923,7 @@ MonoBehaviour:
   requiredWeakpointsToDestroy: 2
   extraWeakpointDelay: 5
   targetForWeakpoints: {fileID: 116956359}
+  clearProjectiles: {fileID: 790325804}
   tutorialPercentage: 50
   easyPercentage: 75
 --- !u!54 &1127038516

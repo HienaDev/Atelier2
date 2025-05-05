@@ -16,6 +16,13 @@ public class EnergyCore : MonoBehaviour
     private List<Transform> firePoints = new List<Transform>();
     private bool useEvenPoints = true;
 
+    private ClearProjectiles clearProjectiles;
+
+    private void Start()
+    {
+        clearProjectiles = FindAnyObjectByType<ClearProjectiles>();
+    }
+
     public void Initialize(float chargeTime, float activeDuration, int numberOfPhases,
                            GameObject projectilePrefab, float projectileSpeed,
                            int numberOfFirePoints, float firePointRadius, float burstInterval)
@@ -75,6 +82,7 @@ public class EnergyCore : MonoBehaviour
 
                 // Instantiate the projectile at the fire point's position and rotation
                 GameObject proj = Instantiate(projectilePrefab, firePoint.position, rot);
+                clearProjectiles.AddProjectile(proj);
                 Rigidbody rb = proj.GetComponent<Rigidbody>();
                 if (rb != null)
                     rb.linearVelocity = dir * projectileSpeed;
