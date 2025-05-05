@@ -1,13 +1,12 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static ScorpionBoss;
+
 
 public class Debugger : MonoBehaviour
 {
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private BossHealth bossHealth;
-    [SerializeField] private ScorpionBoss scorpionBoss;
-    [SerializeField] private MouthBossAttacks mouthBoss;
+
 
     // Update is called once per frame
     void Update()
@@ -27,29 +26,8 @@ public class Debugger : MonoBehaviour
             bossHealth.SkipPhase();
         }
 
+
         if (Input.GetKeyDown(KeyCode.F4))
-        {
-            scorpionBoss.SetDifficulty(BossDifficulty.Tutorial);
-            Debug.Log("Difficulty set to Tutorial");
-        }
-        if (Input.GetKeyDown(KeyCode.F5))
-        {
-            scorpionBoss.SetDifficulty(BossDifficulty.Easy);
-            Debug.Log("Difficulty set to Easy");
-        }
-        if (Input.GetKeyDown(KeyCode.F6))
-        {
-            scorpionBoss.SetDifficulty(BossDifficulty.Normal);
-            Debug.Log("Difficulty set to Normal");
-        }
-
-        if (Input.GetKeyDown(KeyCode.F7))
-        {
-            mouthBoss.NormalDifficulty();
-            Debug.Log("Difficulty set to Normal");
-        }
-
-        if (Input.GetKeyDown(KeyCode.F8))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }

@@ -173,30 +173,30 @@ public class GuitarBoss : MonoBehaviour, BossInterface
     private void Update()
     {
         // For debug/testing
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            StartCoroutine(EncirclingAssaultSequence());
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            StartCoroutine(LegBarrageSequence());
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            StartCoroutine(EnergyCoreSequence());
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            SetDifficulty(BossDifficulty.Tutorial);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            SetDifficulty(BossDifficulty.Easy);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            SetDifficulty(BossDifficulty.Normal);
-        }
+        //if (Input.GetKeyDown(KeyCode.Alpha1))
+        //{
+        //    StartCoroutine(EncirclingAssaultSequence());
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha2))
+        //{
+        //    StartCoroutine(LegBarrageSequence());
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha3))
+        //{
+        //    StartCoroutine(EnergyCoreSequence());
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha4))
+        //{
+        //    SetDifficulty(BossDifficulty.Tutorial);
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha5))
+        //{
+        //    SetDifficulty(BossDifficulty.Easy);
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha6))
+        //{
+        //    SetDifficulty(BossDifficulty.Normal);
+        //}
     }
 
     private void FixedUpdate()
