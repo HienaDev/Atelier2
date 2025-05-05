@@ -13,7 +13,7 @@ public class PlayerMovementMonkeyHell : MonoBehaviour
     private bool isGrounded;
 
 
-    private void Start()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
@@ -36,7 +36,7 @@ public class PlayerMovementMonkeyHell : MonoBehaviour
         // Handle jumping
         if (isGrounded && Input.GetButtonDown("Jump")) // Jump when grounded and spacebar is pressed
         {
-            Jump();
+            //Jump();
         }
     }
 

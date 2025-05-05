@@ -13,15 +13,22 @@ public class PlayerMovementGuitar : MonoBehaviour
     private float dashTimer = 0f;
     private float dashCooldownTimer = 0f;
 
-    private void Awake()
+    void Awake()
     {
-        rb.constraints = RigidbodyConstraints.FreezeRotation;
+        
+        rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotation;
+    }
+
+    private void OnEnable()
+    {
+        
+        rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotation;
     }
 
     private void Update()
     {
         HandleMovementInput();
-        HandleDashInput();
+        //HandleDashInput();
 
         dashCooldownTimer -= Time.deltaTime;
     }

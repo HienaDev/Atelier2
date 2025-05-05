@@ -24,6 +24,12 @@ public class PlayerMovementQuark : MonoBehaviour
         rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotation;
     }
 
+    private void OnEnable()
+    {
+        startY = transform.position.y; // Store initial ground height
+        rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotation;
+    }
+
     void Update()
     {
         CheckGrounded();

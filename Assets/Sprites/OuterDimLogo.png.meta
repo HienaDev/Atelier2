@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -95,7 +95,29 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: OuterDimLogo_9
+      rect:
+        serializedVersion: 2
+        x: 421
+        y: 567
+        width: 1958
+        height: 1251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc50e6fcd0bd99d4182a0aaecacabe61
+      internalID: 816688189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -109,7 +131,20 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      OuterDimLogo_0: -310511527
+      OuterDimLogo_1: -1006788434
+      OuterDimLogo_10: -954908134
+      OuterDimLogo_11: 132772385
+      OuterDimLogo_12: 37964094
+      OuterDimLogo_2: 1356261473
+      OuterDimLogo_3: -1471078678
+      OuterDimLogo_4: -1461457377
+      OuterDimLogo_5: 131318640
+      OuterDimLogo_6: 996870260
+      OuterDimLogo_7: -1556947062
+      OuterDimLogo_8: -1792502768
+      OuterDimLogo_9: 816688189
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

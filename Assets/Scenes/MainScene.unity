@@ -8170,7 +8170,8 @@ MonoBehaviour:
     index: 3
     firePoint: {fileID: 1264034220}
   weakpoint: {fileID: 8336133669464535913, guid: 5a8991e099ce84a4caa982decafbaba0, type: 3}
-  doubleSlamchance: 0.2
+  doubleSlamChance: 0.1
+  doubleSlamChanceNormal: 0.1
   projectilePrefab: {fileID: 3539920370399448083, guid: 932b5ce7efcf21643be1d118e23159d3, type: 3}
   projectileCount: 0400000005000000060000000700000008000000
   attackArcAngle: 180
@@ -37390,7 +37391,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 422222793}
-  movSpeed: 5
+  movSpeed: 10
   dashSpeed: 20
   dashDuration: 0.2
   dashCooldown: 1
