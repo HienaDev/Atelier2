@@ -12,6 +12,19 @@ public class PlayerMovementMonkeyHell : MonoBehaviour
 
     private bool isGrounded;
 
+
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
+    }
+
+    private void OnEnable()
+    {
+        rb = GetComponent<Rigidbody>();
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
+    }
+
     void Update()
     {
         // Check if the player is grounded

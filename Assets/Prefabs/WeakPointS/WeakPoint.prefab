@@ -140,6 +140,11 @@ MonoBehaviour:
   onDeath:
     m_PersistentCalls:
       m_Calls: []
+  onLifetime:
+    m_PersistentCalls:
+      m_Calls: []
+  duration: 1
+  ease: 24
 --- !u!64 &6779117755271713210
 MeshCollider:
   m_ObjectHideFlags: 0

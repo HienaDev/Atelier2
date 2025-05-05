@@ -137,6 +137,11 @@ MonoBehaviour:
   onDeath:
     m_PersistentCalls:
       m_Calls: []
+  onLifetime:
+    m_PersistentCalls:
+      m_Calls: []
+  duration: 1
+  ease: 24
 --- !u!64 &6779117755271713210
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5033,3 +5038,4 @@ MonoBehaviour:
   particleSystemExplosion: {fileID: 8881244261015604869}
   disableMesh: 1
   destroy: 0
+  dealsDamage: 1

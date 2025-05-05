@@ -33,6 +33,25 @@ public class WeakPoint : MonoBehaviour
     public UnityEvent onDeath;
     public UnityEvent onLifetime;
 
+    [Header("Pop Settings")]
+    public float duration = 0.3f;
+    public Ease ease = Ease.OutBack;
+
+    private Vector3 originalScale;
+
+    void Awake()
+    {
+        originalScale = transform.localScale;
+    }
+
+    void OnEnable()
+    {
+        transform.localScale = Vector3.zero;
+
+        transform.DOScale(originalScale, duration)
+                 .SetEase(ease);
+    }
+
     void Start()
     {
         rend = GetComponent<Renderer>();

@@ -37,6 +37,9 @@ public class PlayerHealth : MonoBehaviour
     private Sequence sequence;
 
     [SerializeField] private AudioClip hurtSound;
+
+    [SerializeField] private GameObject deathScreen;
+
     void Start()
     {
         currentLives = lives;
@@ -160,7 +163,10 @@ public class PlayerHealth : MonoBehaviour
         sequence.Kill();
         foreach (var renderer in renderers)
         {
-            renderer.material.DOFloat(80f, "_PulseRatio", 0.25f).SetEase(Ease.InExpo);
+            renderer.material.DOFloat(80f, "_PulseRatio", 0.25f).SetEase(Ease.InExpo).OnComplete(() =>
+            {
+                deathScreen.SetActive(true);
+            }) ;
         }
     }
 }
