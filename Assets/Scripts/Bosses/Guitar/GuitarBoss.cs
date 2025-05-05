@@ -732,6 +732,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
 
         WeakPoint wpScript = wp.GetComponent<WeakPoint>();
         wpScript.onDeath.AddListener(DealWeakpointDamage);
+        wpScript.onDeath.AddListener(OnWeakpointDestroyed);
 
         if (targetForWeakpoints != null)
             wpScript.SetTarget(targetForWeakpoints);

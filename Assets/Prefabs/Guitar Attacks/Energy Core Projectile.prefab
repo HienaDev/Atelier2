@@ -197,6 +197,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleSystemExplosion: {fileID: 0}
-  disableMesh: 1
+  disableMesh: 0
   destroy: 1
   dealsDamage: 1
