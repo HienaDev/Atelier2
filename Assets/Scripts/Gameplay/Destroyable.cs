@@ -1,8 +1,6 @@
 using DG.Tweening;
-using System.Net.NetworkInformation;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnityEngine.ParticleSystem;
 
 public class Destroyable : MonoBehaviour
 {
@@ -33,20 +31,11 @@ public class Destroyable : MonoBehaviour
 
     void Start()
     {
-
         mat = rend.material;
         currentLives = lives;
         baseColor = mat.GetColor("_Color");
         currentIntensity = baseColor.maxColorComponent;
         justSpawned = Time.time;
-    }
-
-
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     private void OnTriggerEnter(Collider other)
@@ -72,13 +61,9 @@ public class Destroyable : MonoBehaviour
 
             mat.DOFloat(160f, "_PulseRatio", 0.1f).SetEase(Ease.InSine).OnComplete(() =>
             {
-
-
                 transform.DOKill();
                 onDeath.Invoke();
                 Destroy(gameObject, 0.1f);
-
-
             });
 
         }

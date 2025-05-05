@@ -95,8 +95,6 @@ public class RaymarchCamera : MonoBehaviour
         frustum.SetRow(2, BL);
         frustum.SetRow(3, BR);
 
-
-
         return frustum;
     }
 }

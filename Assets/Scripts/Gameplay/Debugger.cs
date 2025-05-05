@@ -4,17 +4,10 @@ using static ScorpionBoss;
 
 public class Debugger : MonoBehaviour
 {
-
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private BossHealth bossHealth;
     [SerializeField] private ScorpionBoss scorpionBoss;
     [SerializeField] private MouthBossAttacks mouthBoss;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
@@ -59,8 +52,6 @@ public class Debugger : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F8))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-
         }
-
     }
 }

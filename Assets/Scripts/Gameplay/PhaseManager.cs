@@ -125,7 +125,6 @@ public class PhaseManager : MonoBehaviour
 
     public void ChangePhase()
     {
-        
         Debug.Log("Phase changing");
         Debug.Log("lastPhase: " + lastPhase + "currentPhase: " + currentPhase);
         lastPhase = currentPhase;

@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using DG.Tweening;
 using System.Collections.Generic;
-using static MinotaurAttacks;
 
 public class MouthBossAttacks : MonoBehaviour, BossInterface
 {
@@ -11,7 +10,6 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
     private struct AttackPattern
     {
         public Vector3[] pattern;
-
     }
 
     [SerializeField] private PlayerMovementEverHood playerMovement;
@@ -133,13 +131,11 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
 
     private void DealWeakPointDamage()
     {
-
         damageableParts[0].DealDamage(30);
     }
 
     public void SendAttack()
     {
-
         bottomMouth.DOLocalRotate(new Vector3(35f, 0f, 0f), biteDuration / 2).OnComplete(() => bottomMouth.DOLocalRotate(new Vector3(0f, 0f, 0f), biteDuration / 2));
         topMouth.DOLocalRotate(new Vector3(-15f, 0f, 0f), biteDuration / 2).OnComplete(() => topMouth.DOLocalRotate(new Vector3(0f, 0f, 0f), biteDuration / 2));
 
@@ -148,7 +144,6 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
             justChangedPattern = false;
             //return;
         }
-
 
         // 2 - 4
         int attackPosition = UnityEngine.Random.Range(2, playerMovement.GridSize);
@@ -219,8 +214,6 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
         }
     }
 
-
-
     private IEnumerator SpawnTutorialWeakpoints()
     {
         foreach (DamageBoss damageBoss in damageableParts)
@@ -266,6 +259,5 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
         mainDamagePart.ToggleDamageable(true);
 
         mainDamagePart.ChangePhase();
-
     }
 }

@@ -38,8 +38,6 @@ public class DamageBoss : MonoBehaviour
         }
     }
 
-
-
     public void ChangePhase()
     {
         health.ChangePhase();

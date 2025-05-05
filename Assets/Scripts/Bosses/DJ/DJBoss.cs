@@ -3,7 +3,6 @@ using UnityEngine;
 using System.Collections;
 using static PhaseManager;
 
-
 public class DJBoss : MonoBehaviour, BossInterface
 {
 
@@ -146,7 +145,6 @@ public class DJBoss : MonoBehaviour, BossInterface
         }
     }
 
-
     private void ColumnAttack(
     Transform firePoint,
     GameObject projectilePrefab,
@@ -248,10 +246,6 @@ public class DJBoss : MonoBehaviour, BossInterface
             //animator.SetTrigger("RightArm");
         }
 
-
-
-
-
         // Attack parameters
         ColumnAttack(
             collumn.firePoint,
@@ -269,5 +263,4 @@ public class DJBoss : MonoBehaviour, BossInterface
             currentProjectileCount = 0;
         }
     }
-
 }
