@@ -445,6 +445,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
             if (availablePaths.Count == 0) break;
 
             OvalPath chosenPath = availablePaths[Random.Range(0, availablePaths.Count)];
+            // Instantiate the body part prefab at the fire point position
             GameObject part = Instantiate(bodyPartPrefab, slot.firePoint.position, Quaternion.identity);
             FlyingBodyPart flyingScript = part.GetComponent<FlyingBodyPart>();
 
@@ -583,6 +584,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         
         Quaternion rotation = Quaternion.LookRotation(forward, Vector3.up);
         
+        // Instantiate the projectile at the fire point position
         GameObject proj = Instantiate(legProjectilePrefab, leg.firePoint.position, rotation);
         LegProjectile lp = proj.GetComponent<LegProjectile>();
         if (lp != null)
@@ -689,10 +691,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
             Debug.Log("Spawning new weakpoints");
             currentExtraWeakpoint = null;
 
-            if (!waitingToSpawnNextWeakpoint)
-            {
-                SpawnNextWeakpointAfterDelay();
-            }
+            SpawnNextWeakpointAfterDelay();
         }
     }
 
