@@ -11848,7 +11848,7 @@ MonoBehaviour:
     number: 3
     camera: {fileID: 544035411}
     cinemachineCamera: {fileID: 544035415}
-    boss: {fileID: 1127038513}
+    boss: {fileID: 1235679495}
     playerMovement: {fileID: 8321138272810845190}
     playerShooting: {fileID: 8321138272810845189}
     arena: {fileID: 1707871837}
