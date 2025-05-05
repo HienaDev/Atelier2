@@ -66,6 +66,8 @@ public class GuitarBoss : MonoBehaviour, BossInterface
     [SerializeField] private float extraWeakpointDelay = 5f;
     [SerializeField] private Transform targetForWeakpoints;
 
+    [SerializeField] private ClearProjectiles clearProjectiles; 
+
     [System.Serializable]
     public struct WeakpointSlot
     {
@@ -447,6 +449,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
             OvalPath chosenPath = availablePaths[Random.Range(0, availablePaths.Count)];
             // Instantiate the body part prefab at the fire point position
             GameObject part = Instantiate(bodyPartPrefab, slot.firePoint.position, Quaternion.identity);
+            clearProjectiles?.AddProjectile(part);
             FlyingBodyPart flyingScript = part.GetComponent<FlyingBodyPart>();
 
             GameObject flyingVisual = Instantiate(slot.visual);
@@ -586,6 +589,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         
         // Instantiate the projectile at the fire point position
         GameObject proj = Instantiate(legProjectilePrefab, leg.firePoint.position, rotation);
+        clearProjectiles?.AddProjectile(proj);
         LegProjectile lp = proj.GetComponent<LegProjectile>();
         if (lp != null)
             lp.SetSpeed(legProjectileSpeed);
