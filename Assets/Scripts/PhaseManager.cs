@@ -58,7 +58,7 @@ public class PhaseManager : MonoBehaviour
     [Header("Phase Rez")]
     [SerializeField] private PhaseData phaseRez;
 
-    [SerializeField] private Phase[] phases;
+    [SerializeField] public Phase[] phases;
     private int currentPhaseIndex = 0;
     private Dictionary<Phase, PhaseData> phaseData = new Dictionary<Phase, PhaseData>();
     private Dictionary<Phase, SubPhase> subPhaseData = new Dictionary<Phase, SubPhase>();

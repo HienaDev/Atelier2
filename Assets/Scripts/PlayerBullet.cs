@@ -32,6 +32,13 @@ public class PlayerBullet : MonoBehaviour
             damageBoss.DealDamage(1);
         }
 
+        BlowCollumnUp blowCollumnUp = other.GetComponent<BlowCollumnUp>();
+
+        if (blowCollumnUp != null)
+        {
+            blowCollumnUp.DealDamage(1);
+        }
+
         // Get the closest point on the collider
         Vector3 hitPoint = other.ClosestPoint(transform.position);
 

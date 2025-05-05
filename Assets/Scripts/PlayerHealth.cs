@@ -42,11 +42,11 @@ public class PlayerHealth : MonoBehaviour
         currentLives = lives;
 
         gridMaterial = gridRenderer.sharedMaterial;
-        gridMaterialDefaultIntensity = gridMaterial.GetFloat("_ColorIntensity");
+        gridMaterialDefaultIntensity = 0.01f;// gridMaterial.GetFloat("_ColorIntensity");
         mountainMaterial = mountainRenderer.sharedMaterial;
-        mountainMaterialDefaultIntensity = mountainMaterial.GetFloat("_ColorIntensity");
+        mountainMaterialDefaultIntensity = 0.2f;// mountainMaterial.GetFloat("_ColorIntensity");
         starMaterial = starRenderer.sharedMaterial;
-        starMaterialDefaultIntensity = starMaterial.GetFloat("_ColorIntensity");
+        starMaterialDefaultIntensity = 0.5f;// starMaterial.GetFloat("_ColorIntensity");
 
         // Store original color from the first renderer (assuming all have same color)
         if (renderers.Length > 0)
