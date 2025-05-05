@@ -42,7 +42,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _GeneralMultiplierVertex: 0.5
+    - _GeneralMultiplierVertex: 0.01
     - _HardEdges: 0
     - _MultiplierAlbedo: 1
     - _MultiplierVertex: 1
@@ -51,8 +51,8 @@ Material:
     - _ScaleAlbedo: 10
     - _ScaleVertex: 5
     m_Colors:
-    - _ColorA: {r: 8, g: 0, b: 0, a: 1}
-    - _ColorB: {r: 2, g: 1.384487, b: 0.07169783, a: 0}
+    - _ColorA: {r: 0, g: 0, b: 0, a: 1}
+    - _ColorB: {r: 0, g: 0, b: 0, a: 0}
     - _TilingAlbedo: {r: 1, g: 1, b: 0, a: 0}
     - _TilingVertex: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []

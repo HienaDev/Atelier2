@@ -52,9 +52,10 @@ Material:
     m_Ints: []
     m_Floats:
     - _FresnelPower: 0.5
+    - _Pulsating: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _Tint: {r: 0.94180703, g: 1, b: 0, a: 1}
+    - _Tint: {r: 0.949203, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
