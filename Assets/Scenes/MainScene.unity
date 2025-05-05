@@ -32051,7 +32051,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5461453f6342d224899e53fc85d5819b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 20
+  width: 22
   height: 13
 --- !u!1 &1790797932
 GameObject:

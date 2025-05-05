@@ -39,6 +39,7 @@ public class PhaseManager : MonoBehaviour
         public GameObject arena;
         public Transform playerSpawnPoint;
         public MonoBehaviour bossInterface;
+
     }
 
     [SerializeField] private BossMorphing bossMorphing;

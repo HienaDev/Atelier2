@@ -41,7 +41,7 @@ public class BossHealth : MonoBehaviour
     public void DealCritDamage()
     {
         // Add an extra 5 to account for division and rounding errors, so that the boss changes after 3 crits
-        DealDamage(((lives/ phaseManager.phases.Length) / 3) + 5); 
+        DealDamage(((lives/ phaseManager.phases.Length) / 4) + 5); 
     }
 
     public void DealDamage(int damage)
