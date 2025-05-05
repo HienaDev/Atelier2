@@ -13,12 +13,19 @@ public class DamageBoss : MonoBehaviour
         damageable = toggle;
     }
 
-    public void DealDamage(int damage)
+    public void DealCritDamage()
+    {
+        health.DealCritDamage();
+        DealDamage(100, true);
+    }
+
+    public void DealDamage(int damage, bool crit = false)
     {
         if (!damageable)
             return;
 
-        health.DealDamage(damage);
+        if(!crit)
+            health.DealDamage(damage);
 
         foreach (var renderer in partsRenderer)
         {
@@ -30,6 +37,8 @@ public class DamageBoss : MonoBehaviour
 
         }
     }
+
+
 
     public void ChangePhase()
     {

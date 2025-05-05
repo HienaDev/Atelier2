@@ -18,8 +18,13 @@ public class ScaleWithMusic : MonoBehaviour
     {
         if (MoveWithMusic.Instance.bop)
         {
-            Pulse(scaleAmount, duration);
+            //Pulse();
         }
+    }
+
+    public void Pulse()
+    {
+        Pulse(scaleAmount, duration);
     }
 
     public void Pulse(Vector3 scaleAmount, float duration)
