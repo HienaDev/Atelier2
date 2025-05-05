@@ -338,11 +338,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scaleAmount: {x: 0.15, y: 0.15, z: 0.15}
   duration: 0.2
---- !u!23 &13513689 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: dd7838bbf2de0394c949fedd71b75e03, type: 3}
-  m_PrefabInstance: {fileID: 757646122}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &14730935
 GameObject:
   m_ObjectHideFlags: 0
@@ -3759,11 +3754,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scaleAmount: {x: 0.15, y: 0.15, z: 0.15}
   duration: 0.2
---- !u!23 &218717966 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: dd7838bbf2de0394c949fedd71b75e03, type: 3}
-  m_PrefabInstance: {fileID: 531529398}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &223815033
 GameObject:
   m_ObjectHideFlags: 0
@@ -6389,7 +6379,7 @@ PrefabInstance:
     - target: {fileID: 6160983212676666206, guid: 1366ba40215ce1848b82eb2ae6e7ffe8, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: b62a4f668bc39d64fb39df12c3c93394, type: 2}
+      objectReference: {fileID: 2100000, guid: 6b1e6601ca0fc7747ad9a88f1d6d8d8e, type: 2}
     - target: {fileID: 6714836837196007308, guid: 1366ba40215ce1848b82eb2ae6e7ffe8, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -6933,7 +6923,7 @@ PrefabInstance:
     - target: {fileID: 6160983212676666206, guid: 1366ba40215ce1848b82eb2ae6e7ffe8, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: b62a4f668bc39d64fb39df12c3c93394, type: 2}
+      objectReference: {fileID: 2100000, guid: 6b1e6601ca0fc7747ad9a88f1d6d8d8e, type: 2}
     - target: {fileID: 6714836837196007308, guid: 1366ba40215ce1848b82eb2ae6e7ffe8, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -9201,11 +9191,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scaleAmount: {x: 0.15, y: 0.15, z: 0.15}
   duration: 0.2
---- !u!23 &505176311 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: dd7838bbf2de0394c949fedd71b75e03, type: 3}
-  m_PrefabInstance: {fileID: 76009844}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &506161773
 GameObject:
   m_ObjectHideFlags: 0
@@ -9862,11 +9847,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scaleAmount: {x: 0.15, y: 0.15, z: 0.15}
   duration: 0.2
---- !u!23 &537796656 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: dd7838bbf2de0394c949fedd71b75e03, type: 3}
-  m_PrefabInstance: {fileID: 1349777053}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &538938437 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: dd7838bbf2de0394c949fedd71b75e03, type: 3}
@@ -10333,9 +10313,7 @@ MonoBehaviour:
   - {fileID: 1585654296}
   - {fileID: 1432954891}
   - {fileID: 2092643601}
-  - {fileID: 736444972}
-  - {fileID: 1886347720}
-  weakpoint: {fileID: 8336133669464535913, guid: 9b3623684ee96a14eb0ab9b4ffc6672b, type: 3}
+  weakpoint: {fileID: 8336133669464535913, guid: 093149d10179eb244b9af5addb4d96ae, type: 3}
   fallHeight: 20
   fallDuration: 1
   stretchScale: {x: 0.14, y: 0.3, z: 0.14}
@@ -13543,7 +13521,7 @@ PrefabInstance:
     - target: {fileID: 6160983212676666206, guid: 1366ba40215ce1848b82eb2ae6e7ffe8, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: b62a4f668bc39d64fb39df12c3c93394, type: 2}
+      objectReference: {fileID: 2100000, guid: 6b1e6601ca0fc7747ad9a88f1d6d8d8e, type: 2}
     - target: {fileID: 6714836837196007308, guid: 1366ba40215ce1848b82eb2ae6e7ffe8, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -14021,11 +13999,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scaleAmount: {x: 0.15, y: 0.15, z: 0.15}
   duration: 0.2
---- !u!23 &736444972 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: dd7838bbf2de0394c949fedd71b75e03, type: 3}
-  m_PrefabInstance: {fileID: 1705846912}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &738012860
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14572,9 +14545,7 @@ MonoBehaviour:
   - {fileID: 866554885}
   - {fileID: 157709857}
   - {fileID: 212595307}
-  - {fileID: 13513689}
-  - {fileID: 1527529163}
-  weakpoint: {fileID: 8336133669464535913, guid: 9b3623684ee96a14eb0ab9b4ffc6672b, type: 3}
+  weakpoint: {fileID: 8336133669464535913, guid: 093149d10179eb244b9af5addb4d96ae, type: 3}
   fallHeight: 20
   fallDuration: 1
   stretchScale: {x: 0.14, y: 0.3, z: 0.14}
@@ -15029,9 +15000,7 @@ MonoBehaviour:
   - {fileID: 972596363}
   - {fileID: 1442468753}
   - {fileID: 227942293}
-  - {fileID: 537796656}
-  - {fileID: 1425478455}
-  weakpoint: {fileID: 8336133669464535913, guid: 9b3623684ee96a14eb0ab9b4ffc6672b, type: 3}
+  weakpoint: {fileID: 8336133669464535913, guid: 093149d10179eb244b9af5addb4d96ae, type: 3}
   fallHeight: 20
   fallDuration: 1
   stretchScale: {x: 0.14, y: 0.3, z: 0.14}
@@ -19250,7 +19219,7 @@ PrefabInstance:
     - target: {fileID: 6160983212676666206, guid: 1366ba40215ce1848b82eb2ae6e7ffe8, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: b62a4f668bc39d64fb39df12c3c93394, type: 2}
+      objectReference: {fileID: 2100000, guid: 6b1e6601ca0fc7747ad9a88f1d6d8d8e, type: 2}
     - target: {fileID: 6714836837196007308, guid: 1366ba40215ce1848b82eb2ae6e7ffe8, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -24710,11 +24679,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scaleAmount: {x: 0.15, y: 0.15, z: 0.15}
   duration: 0.2
---- !u!23 &1425478455 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: dd7838bbf2de0394c949fedd71b75e03, type: 3}
-  m_PrefabInstance: {fileID: 58808440}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1427332239
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27365,11 +27329,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scaleAmount: {x: 0.15, y: 0.15, z: 0.15}
   duration: 0.2
---- !u!23 &1527529163 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: dd7838bbf2de0394c949fedd71b75e03, type: 3}
-  m_PrefabInstance: {fileID: 492424970}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1530889608
 GameObject:
   m_ObjectHideFlags: 0
@@ -32971,11 +32930,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scaleAmount: {x: 0.15, y: 0.15, z: 0.15}
   duration: 0.2
---- !u!23 &1886347720 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: dd7838bbf2de0394c949fedd71b75e03, type: 3}
-  m_PrefabInstance: {fileID: 1818689516}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1894555092
 GameObject:
   m_ObjectHideFlags: 0
@@ -34362,9 +34316,7 @@ MonoBehaviour:
   - {fileID: 1212318578}
   - {fileID: 259290274}
   - {fileID: 652388108}
-  - {fileID: 505176311}
-  - {fileID: 218717966}
-  weakpoint: {fileID: 8336133669464535913, guid: 9b3623684ee96a14eb0ab9b4ffc6672b, type: 3}
+  weakpoint: {fileID: 8336133669464535913, guid: 093149d10179eb244b9af5addb4d96ae, type: 3}
   fallHeight: 20
   fallDuration: 1
   stretchScale: {x: 0.14, y: 0.3, z: 0.14}
