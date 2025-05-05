@@ -21,6 +21,7 @@ public class EnergyCore : MonoBehaviour
     private void Start()
     {
         clearProjectiles = FindAnyObjectByType<ClearProjectiles>();
+        clearProjectiles.AddProjectile(gameObject);
     }
 
     public void Initialize(float chargeTime, float activeDuration, int numberOfPhases,

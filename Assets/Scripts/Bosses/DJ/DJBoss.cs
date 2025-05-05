@@ -187,9 +187,12 @@ public class DJBoss : MonoBehaviour, BossInterface
         // Use default scale if none provided
         if (scale == default) scale = Vector3.one;
 
+        // Add some flutation to avoid safe spots
+        float newSpreadAngle = spreadAngle + UnityEngine.Random.Range(-20, 20); 
+
         // Calculate angle between each projectile
-        float angleBetween = spreadAngle / Mathf.Max(1, projectileCount - 1);
-        float startAngle = -spreadAngle / 2f;
+        float angleBetween = newSpreadAngle / Mathf.Max(1, projectileCount - 1);
+        float startAngle = -newSpreadAngle / 2f;
 
         for (int i = 0; i < projectileCount; i++)
         {
