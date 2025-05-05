@@ -45,7 +45,7 @@ public class PlayerHealth : MonoBehaviour
         currentLives = lives;
 
         gridMaterial = gridRenderer.sharedMaterial;
-        gridMaterialDefaultIntensity = 0.01f;// gridMaterial.GetFloat("_ColorIntensity");
+        gridMaterialDefaultIntensity = 0.1f;// gridMaterial.GetFloat("_ColorIntensity");
         mountainMaterial = mountainRenderer.sharedMaterial;
         mountainMaterialDefaultIntensity = 0.2f;// mountainMaterial.GetFloat("_ColorIntensity");
         starMaterial = starRenderer.sharedMaterial;
