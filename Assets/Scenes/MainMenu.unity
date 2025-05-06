@@ -4454,7 +4454,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 855210501}
-  - component: {fileID: 855210500}
   m_Layer: 0
   m_Name: Bosses
   m_TagString: Untagged
@@ -4462,25 +4461,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &855210500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 855210499}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44e0d0966f8f5034a9a0de6ca7b9595e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lives: 2000
-  phaseManager: {fileID: 0}
-  projectiles: {fileID: 0}
-  healthBarFill: {fileID: 0}
-  UIParent: {fileID: 0}
-  healthSplit: {fileID: 0}
-  winScreen: {fileID: 0}
 --- !u!4 &855210501
 Transform:
   m_ObjectHideFlags: 0
@@ -4608,7 +4588,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 870683355}
-  - component: {fileID: 870683356}
   m_Layer: 0
   m_Name: Mouth Boss
   m_TagString: Untagged
@@ -4634,42 +4613,6 @@ Transform:
   - {fileID: 1160697168}
   m_Father: {fileID: 855210501}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &870683356
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 870683354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e4554aff2c5e4547896e909885c5603, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerMovement: {fileID: 0}
-  shootingPoint: {fileID: 0}
-  attackPrefab: []
-  attackSpeedMultiplier: 2
-  attackSpeed: 5
-  attackCooldown: 1
-  weakpointSpeed: 5
-  weakpointPrefab: {fileID: 0}
-  weakpointChance: 50
-  damageableParts: []
-  mainDamagePart: {fileID: 0}
-  clearProjectiles: {fileID: 0}
-  targetForWeakpoints: {fileID: 0}
-  bottomMouth: {fileID: 0}
-  topMouth: {fileID: 0}
-  biteDuration: 0.2
-  moveWithMusic: {fileID: 0}
-  attackPatternEasy5: []
-  attackPatternNormal5: []
-  attackPattern1Easy: []
-  attackPattern2Easy: []
-  attackPattern3Easy: []
-  attackPattern4Easy: []
-  numberOfWeakspointsToDestroy: 2
 --- !u!1 &891787396
 GameObject:
   m_ObjectHideFlags: 0
