@@ -267,44 +267,101 @@ public class GuitarBoss : MonoBehaviour, BossInterface
     public void StartBoss(PhaseManager.SubPhase subPhase)
     {
         Debug.Log("Guitar Boss: Starting phase " + subPhase);
+        
+        // First, make sure we end any previous phase properly
+        PhaseEnded();
+        
+        // Then set up the new phase
         switch (subPhase)
         {
             case PhaseManager.SubPhase.Tutorial:
                 SetDifficulty(BossDifficulty.Tutorial);
                 SpawnWeakpoints();
+                weakpointsDestroyed = 0;
+                extraSpawnLoopStarted = false;
+                waitingToSpawnNextWeakpoint = false;
                 StartCoroutine(WaitForWeakpointsDestroyed());
                 break;
+                
             case PhaseManager.SubPhase.Easy:
                 health?.ToggleDamageable(true);
-                StopAllCoroutines();
-                //animator?.Play("Idle", 0, 0f);
-                SpawnNextWeakpointAfterDelay();
                 SetDifficulty(BossDifficulty.Easy);
-                bossAICoroutine = StartCoroutine(BossAI());
+                SpawnNextWeakpointAfterDelay();
+                StartCoroutine(StartBossAIWithDelay(attackCooldown));
                 break;
+                
             case PhaseManager.SubPhase.Normal:
                 health?.ToggleDamageable(true);
-                StopAllCoroutines();
-                //animator?.Play("Idle", 0, 0f);
-                SpawnNextWeakpointAfterDelay();
                 SetDifficulty(BossDifficulty.Normal);
-                bossAICoroutine = StartCoroutine(BossAI());
+                SpawnNextWeakpointAfterDelay();
+                StartCoroutine(StartBossAIWithDelay(attackCooldown));
                 break;
         }
     }
 
+    private IEnumerator StartBossAIWithDelay(float delay)
+    {
+        currentState = BossState.Idle;
+        animator?.CrossFade("Guitar_idle", 0.2f);
+        
+        yield return new WaitForSeconds(delay);
+        
+        bossAICoroutine = StartCoroutine(BossAI());
+    }
+
     public void PhaseEnded()
     {
+        Debug.Log("Guitar Boss: Phase ended - performing full reset");
+        
         if (bossAICoroutine != null)
         {
             StopCoroutine(bossAICoroutine);
             bossAICoroutine = null;
         }
+        
         StopAllCoroutines();
+        
         isAttacking = false;
         isEvading = false;
+        isLegAttackActive = false;
         returning = false;
+        
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        
+        if (clearProjectiles != null)
+        {
+            clearProjectiles.ClearAllProjectiles();
+        }
+        
+        foreach (var slot in firePointSlots)
+        {
+            if (slot.visual != null)
+                slot.visual.SetActive(true);
+        }
+        
+        foreach (var leg in airborneLegs)
+        {
+            if (leg.visual != null)
+            {
+                leg.visual.SetActive(true);
+                leg.visual.transform.localScale = leg.visual.transform.localScale;
+            }
+        }
+        
+        if (animator != null && animator.enabled)
+        {
+            animator.enabled = true;
+            animator.CrossFade("Guitar_idle", 0.1f);
+        }
+        
         currentState = BossState.Idle;
+        
+        if (animator != null)
+        {
+            animator.enabled = true;
+            animator.CrossFade("Guitar_idle", 0.1f);
+        }
     }
 
     // ====================== Boss AI Logic ======================
