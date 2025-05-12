@@ -3258,7 +3258,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scaleAmount: {x: 0.3, y: 0.5, z: 0.3}
-  duration: 0.2
+  duration: 0.1
   moveWithoutCall: 1
 --- !u!1 &188875695 stripped
 GameObject:
@@ -9936,7 +9936,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scaleAmount: {x: 0.005, y: 0.025, z: 0.005}
   duration: 0.2
-  moveWithoutCall: 0
+  moveWithoutCall: 1
 --- !u!114 &568432960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14029,7 +14029,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scaleAmount: {x: 0.005, y: 0.025, z: 0.005}
   duration: 0.2
-  moveWithoutCall: 0
+  moveWithoutCall: 1
 --- !u!114 &750682451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14484,7 +14484,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scaleAmount: {x: 0.005, y: 0.025, z: 0.005}
   duration: 0.2
-  moveWithoutCall: 0
+  moveWithoutCall: 1
 --- !u!114 &774961508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23398,7 +23398,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scaleAmount: {x: 0.3, y: 0.5, z: 0.3}
-  duration: 0.2
+  duration: 0.1
   moveWithoutCall: 1
 --- !u!1 &1220796745
 GameObject:
@@ -35112,7 +35112,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scaleAmount: {x: 0.005, y: 0.025, z: 0.005}
   duration: 0.2
-  moveWithoutCall: 0
+  moveWithoutCall: 1
 --- !u!114 &1991557471
 MonoBehaviour:
   m_ObjectHideFlags: 0

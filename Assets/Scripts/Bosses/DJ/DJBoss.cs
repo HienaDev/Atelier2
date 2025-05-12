@@ -298,7 +298,7 @@ public class DJBoss : MonoBehaviour, BossInterface
             }
         }
 
-        collumn.scaleWithMusic.Pulse();
+        //collumn.scaleWithMusic.Pulse();
 
         // Handle double attack
         if (doDoubleAttack)
@@ -334,7 +334,7 @@ public class DJBoss : MonoBehaviour, BossInterface
                 }
 
                 // Pulse the second column
-                secondCollumn.scaleWithMusic.Pulse();
+                //secondCollumn.scaleWithMusic.Pulse();
 
                 // Attack from the second column
                 ColumnAttack(

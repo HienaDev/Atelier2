@@ -18,7 +18,7 @@ public class ScaleWithMusic : MonoBehaviour
 
     private void Update()
     {
-        if (MoveWithMusic.Instance.bop && moveWithoutCall)
+        if (MoveWithMusic.Instance.timeUntilBop < duration/4f && moveWithoutCall)
         {
 
             Pulse();
