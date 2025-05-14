@@ -378,8 +378,8 @@ public class GuitarBoss : MonoBehaviour, BossInterface
                 BossState[] availableAttacks = new BossState[]
                 {
                     BossState.EncirclingAssault,
-                    // BossState.LegBarrage,
-                    // BossState.EnergyCoreAttack
+                    BossState.LegBarrage,
+                    BossState.EnergyCoreAttack
                 };
 
                 BossState chosenAttack = availableAttacks[Random.Range(0, availableAttacks.Length)];
@@ -542,6 +542,8 @@ public class GuitarBoss : MonoBehaviour, BossInterface
             yield return new WaitForSeconds(delayBetweenLaunches);
         }
 
+        phaseManager?.CurrentCamera.GetComponent<CameraShake>().ShakeCamera(0.3f, 0.5f, flyingPartLifetimeOnPath);
+
         yield return new WaitForSeconds(flyingPartLifetimeOnPath);
         StopEvading();
 
@@ -701,6 +703,17 @@ public class GuitarBoss : MonoBehaviour, BossInterface
                 energyCoreBurstInterval
             );
         }
+
+        StartCoroutine(EnergyCoreShake());
+    }
+
+    private IEnumerator EnergyCoreShake()
+    {
+        phaseManager?.CurrentCamera.GetComponent<CameraShake>()?.SmoothShakeCamera(1.2f, energyCoreChargeTime);
+
+        yield return new WaitForSeconds(energyCoreChargeTime);
+
+        phaseManager?.CurrentCamera.GetComponent<CameraShake>()?.SmoothShakeCamera(0.5f, energyCoreAttackDuration);
     }
 
     // ====================== Weakpoint Logic ======================

@@ -898,6 +898,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultShakeIntensity: 1
   defaultShakeDuration: 1
+  defaultFrequencyGain: 1.2
 --- !u!114 &35122893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7664,6 +7665,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultShakeIntensity: 1
   defaultShakeDuration: 1
+  defaultFrequencyGain: 1.2
 --- !u!114 &453189251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9575,6 +9577,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultShakeIntensity: 1
   defaultShakeDuration: 1
+  defaultFrequencyGain: 1.2
 --- !u!114 &544035414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9758,6 +9761,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultShakeIntensity: 1
   defaultShakeDuration: 1
+  defaultFrequencyGain: 1.2
 --- !u!114 &561546174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37767,6 +37771,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultShakeIntensity: 1
   defaultShakeDuration: 1
+  defaultFrequencyGain: 1.2
 --- !u!114 &2112298003
 MonoBehaviour:
   m_ObjectHideFlags: 0

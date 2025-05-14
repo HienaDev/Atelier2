@@ -1,6 +1,7 @@
 using UnityEngine;
 using Unity.Cinemachine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CameraShake : MonoBehaviour
 {
@@ -9,69 +10,124 @@ public class CameraShake : MonoBehaviour
 
     [SerializeField] private float defaultShakeIntensity = 1f;
     [SerializeField] private float defaultShakeDuration = 1f;
+    [SerializeField] private float defaultFrequencyGain = 1.2f;
+
+    private readonly List<ShakeInstance> activeShakes = new();
+    private Coroutine shakeUpdater;
+    private Coroutine smoothShakeCoroutine;
 
     private void Awake()
     {
         cinemachineCamera = GetComponent<CinemachineCamera>();
-
-        if (cinemachineCamera == null)
-        {
-            Debug.LogError("No CinemachineCamera found on this GameObject.");
-            return;
-        }
-
-        noise = cinemachineCamera.GetComponent<CinemachineBasicMultiChannelPerlin>();
+        noise = cinemachineCamera?.GetComponent<CinemachineBasicMultiChannelPerlin>();
 
         if (noise == null)
         {
-            Debug.LogError("No CinemachineBasicMultiChannelPerlin found on the CinemachineCamera.");
+            Debug.LogError("CinemachineBasicMultiChannelPerlin not found.");
             return;
         }
 
-        noise.AmplitudeGain = 0f; // Start with no shake
+        noise.AmplitudeGain = 0f;
+        noise.FrequencyGain = 0f;
     }
 
     public void ShakeCamera(float intensity, float duration)
     {
+        ShakeCamera(intensity, defaultFrequencyGain, duration);
+    }
+
+    public void ShakeCamera(float intensity, float frequency, float duration)
+    {
         if (noise == null) return;
 
-        StopAllCoroutines();
-        StartCoroutine(Shake(intensity, duration));
+        activeShakes.Add(new ShakeInstance
+        {
+            intensity = intensity,
+            frequency = frequency,
+            timeLeft = duration
+        });
+
+        if (shakeUpdater == null)
+            shakeUpdater = StartCoroutine(UpdateShake());
     }
 
     public void SmoothShakeCamera(float intensity, float duration)
     {
         if (noise == null) return;
 
-        StopAllCoroutines();
-        StartCoroutine(SmoothShake(intensity, duration));
+        if (smoothShakeCoroutine != null)
+            StopCoroutine(smoothShakeCoroutine);
+
+        smoothShakeCoroutine = StartCoroutine(SmoothShake(intensity, duration));
     }
 
-    private IEnumerator Shake(float intensity, float duration)
+    private IEnumerator UpdateShake()
     {
-        if (noise == null) yield break;
+        while (activeShakes.Count > 0)
+        {
+            float maxIntensity = 0f;
+            float correspondingFrequency = 0f;
 
-        noise.AmplitudeGain = intensity;
-        yield return new WaitForSeconds(duration);
-        noise.AmplitudeGain = 0f; // Reset shake
+            for (int i = activeShakes.Count - 1; i >= 0; i--)
+            {
+                var shake = activeShakes[i];
+                shake.timeLeft -= Time.deltaTime;
+
+                if (shake.timeLeft <= 0f)
+                {
+                    activeShakes.RemoveAt(i);
+                    continue;
+                }
+
+                if (shake.intensity > maxIntensity)
+                {
+                    maxIntensity = shake.intensity;
+                    correspondingFrequency = shake.frequency;
+                }
+            }
+
+            noise.AmplitudeGain = maxIntensity;
+            noise.FrequencyGain = correspondingFrequency;
+
+            yield return null;
+        }
+
+        if (smoothShakeCoroutine == null)
+        {
+            noise.AmplitudeGain = 0f;
+            noise.FrequencyGain = 0f;
+        }
+
+        shakeUpdater = null;
     }
 
     private IEnumerator SmoothShake(float intensity, float duration)
     {
-        if (noise == null) yield break;
+        noise.FrequencyGain = defaultFrequencyGain;
 
         float elapsed = 0f;
-        float smoothIntensity = 0f;
 
         while (elapsed < duration)
         {
-            smoothIntensity = Mathf.Lerp(intensity, 0f, elapsed / duration);
-            noise.AmplitudeGain = smoothIntensity;
+            float t = elapsed / duration;
+            noise.AmplitudeGain = Mathf.Lerp(intensity, 0f, t);
 
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        noise.AmplitudeGain = 0f; // Reset shake
+        noise.AmplitudeGain = 0f;
+
+        if (activeShakes.Count == 0)
+            noise.FrequencyGain = 0f;
+
+        smoothShakeCoroutine = null;
+    }
+
+    private class ShakeInstance
+    {
+        public float intensity;
+        public float frequency;
+        public float timeLeft;
     }
 }
