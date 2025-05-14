@@ -13,11 +13,19 @@ public class CameraShake : MonoBehaviour
     private void Awake()
     {
         cinemachineCamera = GetComponent<CinemachineCamera>();
+
+        if (cinemachineCamera == null)
+        {
+            Debug.LogError("No CinemachineCamera found on this GameObject.");
+            return;
+        }
+
         noise = cinemachineCamera.GetComponent<CinemachineBasicMultiChannelPerlin>();
 
         if (noise == null)
         {
-            Debug.LogError("No CinemachineBasicMultiChannelPerlin found.");
+            Debug.LogError("No CinemachineBasicMultiChannelPerlin found on the CinemachineCamera.");
+            return;
         }
 
         noise.AmplitudeGain = 0f; // Start with no shake

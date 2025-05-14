@@ -9589,9 +9589,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
   PivotOffset: {x: 0, y: 0, z: 0}
-  AmplitudeGain: 1
+  AmplitudeGain: 0
   FrequencyGain: 1
-  m_NoiseOffsets: {x: 421.52783, y: 178.00513, z: -14.003174}
+  m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!114 &544035415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20865,6 +20865,7 @@ MonoBehaviour:
   bossCollider: {fileID: 438345852}
   animator: {fileID: 1127038514}
   health: {fileID: 438345851}
+  phaseManager: {fileID: 624881816}
   attackCooldown: 1
   bodyPartPrefab: {fileID: 8460287776679972660, guid: 0a300d8c262a6c8468fb16edfb2a4a0a, type: 3}
   firePointSlots:

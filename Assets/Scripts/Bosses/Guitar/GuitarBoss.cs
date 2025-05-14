@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 
 public class GuitarBoss : MonoBehaviour, BossInterface
 {
@@ -20,6 +21,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
     [SerializeField] private Collider bossCollider;
     [SerializeField] private Animator animator;
     [SerializeField] private DamageBoss health;
+    [SerializeField] private PhaseManager phaseManager;
 
     [Header("Boss Attack Settings")]
     [SerializeField] private float attackCooldown = 3f;
@@ -376,8 +378,8 @@ public class GuitarBoss : MonoBehaviour, BossInterface
                 BossState[] availableAttacks = new BossState[]
                 {
                     BossState.EncirclingAssault,
-                    BossState.LegBarrage,
-                    BossState.EnergyCoreAttack
+                    // BossState.LegBarrage,
+                    // BossState.EnergyCoreAttack
                 };
 
                 BossState chosenAttack = availableAttacks[Random.Range(0, availableAttacks.Length)];
@@ -535,6 +537,8 @@ public class GuitarBoss : MonoBehaviour, BossInterface
             if (slot.visual != null)
                 slot.visual.SetActive(false);
 
+            phaseManager?.CurrentCamera.GetComponent<CameraShake>().ShakeCamera(2f, 0.1f);
+
             yield return new WaitForSeconds(delayBetweenLaunches);
         }
 
@@ -650,6 +654,8 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         LegProjectile lp = proj.GetComponent<LegProjectile>();
         if (lp != null)
             lp.SetSpeed(legProjectileSpeed);
+
+        phaseManager?.CurrentCamera.GetComponent<CameraShake>()?.ShakeCamera(1f, 0.15f);
         
         StartCoroutine(RegrowLeg(leg));
     }
@@ -741,6 +747,8 @@ public class GuitarBoss : MonoBehaviour, BossInterface
     {
         weakpointsDestroyed++;
         Debug.Log("Weakpoint destroyed! Total destroyed: " + weakpointsDestroyed);
+
+        phaseManager?.CurrentCamera.GetComponent<CameraShake>()?.ShakeCamera(1.5f, 0.3f);
 
         if (weakpointsDestroyed == requiredWeakpointsToDestroy && !extraSpawnLoopStarted)
         {
