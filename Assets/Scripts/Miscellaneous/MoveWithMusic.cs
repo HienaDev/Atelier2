@@ -13,7 +13,6 @@ public class MoveWithMusic : MonoBehaviour
             {
                 // Try to find existing instance
                 _instance = FindAnyObjectByType<MoveWithMusic>();
-
                 // If no instance exists, create a new one
                 if (_instance == null)
                 {
@@ -29,8 +28,8 @@ public class MoveWithMusic : MonoBehaviour
     // BPM setting (beats per minute)
     [Range(1, 300)]
     public float BPM = 120f;
-
     [SerializeField] private Material matGridVertical;
+    [SerializeField] private AudioSource musicSource; // Reference to the music AudioSource
 
     // The "bop" flag that will be true for one frame on each beat
     [HideInInspector]
@@ -43,8 +42,7 @@ public class MoveWithMusic : MonoBehaviour
     // Internal timing variables
     private float secondsPerBeat;
     private float nextBeatTime;
-    private float previousFrameTime;
-
+    private float previousSongTime;
     private Sequence sequenceVertical;
 
     private void Awake()
@@ -55,7 +53,6 @@ public class MoveWithMusic : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         _instance = this;
         DontDestroyOnLoad(gameObject);
 
@@ -65,11 +62,25 @@ public class MoveWithMusic : MonoBehaviour
 
     private void Start()
     {
-        nextBeatTime = Time.time;
+        if (musicSource == null)
+        {
+            Debug.LogError("MoveWithMusic: Music source is not assigned!");
+            musicSource = GetComponent<AudioSource>();
+            if (musicSource == null)
+            {
+                Debug.LogError("MoveWithMusic: No AudioSource found on this GameObject!");
+            }
+        }
+
+        // Initialize the next beat time using the song's time
+        nextBeatTime = 0f;
     }
 
     private void Update()
     {
+        // If no music source, can't sync to music
+        if (musicSource == null) return;
+
         // Reset bop at the beginning of each frame
         bop = false;
 
@@ -79,8 +90,11 @@ public class MoveWithMusic : MonoBehaviour
             UpdateBPMSettings();
         }
 
+        // Get current song time
+        float songTime = musicSource.time;
+
         // Check if we've reached the next beat time
-        if (Time.time >= nextBeatTime)
+        if (songTime >= nextBeatTime)
         {
             // Set bop to true for this frame
             bop = true;
@@ -92,17 +106,26 @@ public class MoveWithMusic : MonoBehaviour
             // Calculate next beat time
             nextBeatTime += secondsPerBeat;
 
-            // If we've fallen way behind (e.g., after a pause), resync
-            if (nextBeatTime < Time.time - secondsPerBeat)
+            // If we've fallen way behind (e.g., after a pause or seek), resync
+            if (nextBeatTime < songTime - secondsPerBeat)
             {
-                nextBeatTime = Time.time;
+                // Calculate the closest beat time based on current song position
+                nextBeatTime = songTime + (secondsPerBeat - (songTime % secondsPerBeat));
+                if (nextBeatTime <= songTime) nextBeatTime += secondsPerBeat;
             }
         }
 
-        // Update the time until next bop
-        timeUntilBop = nextBeatTime - Time.time;
+        // Handle song looping
+        if (previousSongTime > songTime && previousSongTime > 0.5f)
+        {
+            // Song has looped or been restarted
+            nextBeatTime = songTime + (secondsPerBeat - (songTime % secondsPerBeat));
+            if (nextBeatTime <= songTime) nextBeatTime += secondsPerBeat;
+        }
 
-        previousFrameTime = Time.time;
+        // Update the time until next bop
+        timeUntilBop = nextBeatTime - songTime;
+        previousSongTime = songTime;
     }
 
     private void UpdateBPMSettings()
@@ -113,8 +136,19 @@ public class MoveWithMusic : MonoBehaviour
     // Convenience method to manually sync the beat timing
     public void SyncBeat()
     {
-        nextBeatTime = Time.time;
+        if (musicSource != null)
+        {
+            // Calculate the closest beat time based on current song position
+            float songTime = musicSource.time;
+            nextBeatTime = songTime + (secondsPerBeat - (songTime % secondsPerBeat));
+            if (nextBeatTime <= songTime) nextBeatTime += secondsPerBeat;
+        }
+    }
+
+    // Convenience method to change the music source at runtime
+    public void SetMusicSource(AudioSource newSource)
+    {
+        musicSource = newSource;
+        SyncBeat();
     }
 }
-
-

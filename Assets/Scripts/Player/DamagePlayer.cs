@@ -30,6 +30,8 @@ public class DamagePlayer : MonoBehaviour
             if(colliderTrigger != null)
                 colliderTrigger.enabled = false;
 
+            GetComponent<Renderer>().enabled = false;
+
             if (GetComponent<Collider>() != null)
                 GetComponent<Collider>().enabled = false;
         }

@@ -15001,6 +15001,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BPM: 120
   matGridVertical: {fileID: 2100000, guid: bcc3b6e4e14b8e346965770f50a6d863, type: 2}
+  musicSource: {fileID: 793038626}
   bop: 1
   timeUntilBop: 0
 --- !u!82 &793038626
