@@ -45,6 +45,9 @@ TagManager:
   - name: UI
     uniqueID: 3950350979
     locked: 0
+  - name: CameraSortingLayer
+    uniqueID: 4287472173
+    locked: 0
   m_RenderingLayers:
   - Default
   - Light Layer 1

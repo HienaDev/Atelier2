@@ -48,7 +48,8 @@ MonoBehaviour:
   - {fileID: 7833122117494664109}
   - {fileID: 2229978444940246825}
   - {fileID: -1153633578530967040}
-  m_RendererFeatureMap: ad6b866f10d7b46c29ff70ab9479f21e00f2b25e5f78fdef
+  - {fileID: 4976658190616416564}
+  m_RendererFeatureMap: ad6b866f10d7b46c29ff70ab9479f21e00f2b25e5f78fdef34d13ac441a41045
   m_UseNativeRenderPass: 1
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -91,6 +92,26 @@ MonoBehaviour:
   fetchColorBuffer: 1
   requirements: 0
   passMaterial: {fileID: 2100000, guid: 571a0b4b00933484f83b97e8d60f6841, type: 2}
+  passIndex: 0
+  bindDepthStencilAttachment: 0
+  m_Version: 1
+--- !u!114 &4976658190616416564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
+  m_Name: BOPShader
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  injectionPoint: 600
+  fetchColorBuffer: 1
+  requirements: 0
+  passMaterial: {fileID: 2100000, guid: 4bc9db19f6cd7b7488bc1a1ab919d00b, type: 2}
   passIndex: 0
   bindDepthStencilAttachment: 0
   m_Version: 1
