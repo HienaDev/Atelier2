@@ -131,7 +131,7 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
 
     private void DealWeakPointDamage()
     {
-        damageableParts[0].DealDamage(30);
+        damageableParts[0].DealCritDamage();
     }
 
     public void SendAttack()
@@ -190,6 +190,7 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
                 {
                     weakPoint.onDeath.AddListener(DealWeakPointDamage);
                     weakPoint.SetTarget(targetForWeakpoints);
+                    
                 }
 
                 attack.transform.position = shootingPoint.position + playerMovement.CellDistance * i * new Vector3(0f, 0f, 1f);

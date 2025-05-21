@@ -39,6 +39,8 @@ public class WeakPoint : MonoBehaviour
 
     private Vector3 originalScale;
 
+    [SerializeField] private AudioSource audioSource;
+
     void Awake()
     {
         originalScale = transform.localScale;
@@ -112,6 +114,12 @@ public class WeakPoint : MonoBehaviour
             sequence = DOTween.Sequence();
             sequence.Append(mat.DOFloat(2f + ((lives - currentLives) * extrusionIntensitySteps), "_PulseRatio", 0.05f).SetEase(Ease.InOutSine));
             sequence.Append(mat.DOFloat(0f + ((lives - currentLives) * extrusionIntensitySteps), "_PulseRatio", 0.5f).SetEase(Ease.InOutSine));
+            
+            if(audioSource != null)
+            {
+                audioSource.pitch = 1f + (lives / currentLives);
+                audioSource.Play();
+            }
         }
     }
 

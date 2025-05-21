@@ -811,9 +811,9 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         GameObject wp = Instantiate(weakpointPrefab, slot.spawnPoint.position, Quaternion.identity);
         wp.transform.SetParent(slot.spawnPoint, worldPositionStays: true);
         wp.transform.localScale = Vector3.one * slot.uniformScale;
-
+        //
         WeakPoint wpScript = wp.GetComponent<WeakPoint>();
-        wpScript.onDeath.AddListener(DealWeakpointDamage);
+        wpScript.onDeath.AddListener(health.DealCritDamage);
         wpScript.onDeath.AddListener(OnWeakpointDestroyed);
 
         if (targetForWeakpoints != null)

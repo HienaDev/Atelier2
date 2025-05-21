@@ -16,6 +16,7 @@ public class DamageBoss : MonoBehaviour
     public void DealCritDamage()
     {
         health.DealCritDamage();
+        // Only deals damage if crit is false, we put 100 to scale up the displacement
         DealDamage(100, true);
     }
 
