@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
@@ -156,6 +157,15 @@ public class PlayerHealth : MonoBehaviour
         }
 
         StartGracePeriod();
+
+        StartCoroutine(SlowTimeCR());
+    }
+
+    IEnumerator SlowTimeCR()
+    {
+        Time.timeScale = 0.01f;
+        yield return new WaitForSecondsRealtime(0.2f);
+        Time.timeScale = 1.0f;
     }
 
     public void Death()

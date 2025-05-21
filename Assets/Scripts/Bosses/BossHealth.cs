@@ -1,6 +1,9 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 using static PhaseManager;
+using Unity.Cinemachine;
 
 public class BossHealth : MonoBehaviour
 {
@@ -18,13 +21,23 @@ public class BossHealth : MonoBehaviour
     private int currentPhase = 0;
     private int numberOfPhasesSwapped = 0;
 
+    [SerializeField] private Material bopWaveMaterial;
+    [SerializeField] private float duration = 0.5f;
+    float size;
+    float startValue;
+    float endValue;
+    private Tween waveTween;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         currentLives = lives;
 
-        percentageToChangePhase = 1f/(float)phaseManager.phases.Length;
+        percentageToChangePhase = 1f / (float)phaseManager.phases.Length;
 
+        size = bopWaveMaterial.GetFloat("_Size");
+        startValue = 0f - size;
+        endValue = 1f;
         //GenerateSplits();
     }
 
@@ -41,8 +54,29 @@ public class BossHealth : MonoBehaviour
     public void DealCritDamage()
     {
         // Add an extra 5 to account for division and rounding errors, so that the boss changes after 3 crits
-        DealDamage(((lives/ phaseManager.phases.Length) / 4) + 5); 
+
+        waveTween?.Kill();
+
+        Vector3 worldPos = phaseManager.CurrentBoss.transform.position;
+        Vector3 viewportPos = Camera.main.WorldToViewportPoint(worldPos);
+
+        bopWaveMaterial.SetVector("_RingSpawnPosition", new Vector4(viewportPos.x, viewportPos.y, 0f, 0f)); // Set the spawn position of the ring
+        // Set starting value
+        bopWaveMaterial.SetFloat("_WaveProgression", startValue);
+
+        // Tween to target value
+        waveTween = DOTween.To(
+            () => bopWaveMaterial.GetFloat("_WaveProgression"),
+            val => bopWaveMaterial.SetFloat("_WaveProgression", val),
+            endValue,
+            duration
+        );
+
+        DealDamage(((lives / phaseManager.phases.Length) / 4) + 5);
+
     }
+
+
 
     public void DealDamage(int damage)
     {

@@ -46,6 +46,7 @@ public class PhaseManager : MonoBehaviour
 
     private Phase currentPhase;
     private GameObject currentBoss;
+    public GameObject CurrentBoss { get => currentBoss; }
     private MonoBehaviour currentPlayerMovement;
     private MonoBehaviour currentPlayerShooting;
     private GameObject currentArena;

@@ -896,6 +896,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b3da812d132c5e4fa1fe77dc454e65d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxTiltAngle: 1
+  tiltSpeed: 2
   defaultShakeIntensity: 1
   defaultShakeDuration: 1
   defaultFrequencyGain: 1.2
@@ -7663,6 +7665,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b3da812d132c5e4fa1fe77dc454e65d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxTiltAngle: 1
+  tiltSpeed: 2
   defaultShakeIntensity: 1
   defaultShakeDuration: 1
   defaultFrequencyGain: 1.2
@@ -9575,6 +9579,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b3da812d132c5e4fa1fe77dc454e65d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxTiltAngle: 1
+  tiltSpeed: 2
   defaultShakeIntensity: 1
   defaultShakeDuration: 1
   defaultFrequencyGain: 1.2
@@ -9759,6 +9765,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b3da812d132c5e4fa1fe77dc454e65d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxTiltAngle: 1
+  tiltSpeed: 2
   defaultShakeIntensity: 1
   defaultShakeDuration: 1
   defaultFrequencyGain: 1.2
@@ -15582,6 +15590,8 @@ MonoBehaviour:
   UIParent: {fileID: 1208324666}
   healthSplit: {fileID: 4172278887273562424, guid: 60573eb8c76c97641a49ff9a08923776, type: 3}
   winScreen: {fileID: 497273566}
+  bopWaveMaterial: {fileID: 2100000, guid: 4bc9db19f6cd7b7488bc1a1ab919d00b, type: 2}
+  duration: 0.5
 --- !u!1 &845297394
 GameObject:
   m_ObjectHideFlags: 0
@@ -37856,6 +37866,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b3da812d132c5e4fa1fe77dc454e65d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxTiltAngle: 1
+  tiltSpeed: 2
   defaultShakeIntensity: 1
   defaultShakeDuration: 1
   defaultFrequencyGain: 1.2

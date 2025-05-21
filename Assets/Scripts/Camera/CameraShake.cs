@@ -5,6 +5,12 @@ using System.Collections.Generic;
 
 public class CameraShake : MonoBehaviour
 {
+
+    [Header("Tilt Settings")]
+    public float maxTiltAngle = 5f;
+    public float tiltSpeed = 5f;
+    private Quaternion _originalRotation;
+
     private CinemachineCamera cinemachineCamera;
     private CinemachineBasicMultiChannelPerlin noise;
 
@@ -29,6 +35,13 @@ public class CameraShake : MonoBehaviour
 
         noise.AmplitudeGain = 0f;
         noise.FrequencyGain = 0f;
+
+        _originalRotation = transform.localRotation;
+    }
+
+    void Update()
+    {
+        ApplyTilt();
     }
 
     public void ShakeCamera(float intensity, float duration)
@@ -129,5 +142,18 @@ public class CameraShake : MonoBehaviour
         public float intensity;
         public float frequency;
         public float timeLeft;
+    }
+
+    private void ApplyTilt()
+    {
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+
+        // Invert values for camera-tilt style motion
+        float tiltX = -vertical * maxTiltAngle;
+        float tiltZ = horizontal * maxTiltAngle;
+
+        Quaternion targetTilt = _originalRotation * Quaternion.Euler(tiltX, tiltZ, 0f);
+        transform.localRotation = Quaternion.Lerp(transform.localRotation, targetTilt, Time.deltaTime * tiltSpeed);
     }
 }
