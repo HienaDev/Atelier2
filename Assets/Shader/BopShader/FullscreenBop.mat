@@ -55,7 +55,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _ShockWaveStrength: -0.5
-    - _Size: 0.05
+    - _Size: 0
     - _WaveProgression: -0.1
     m_Colors:
     - _RingSpawnPosition: {r: 0.5, g: 0.5, b: 0, a: 0}
