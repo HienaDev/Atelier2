@@ -15,6 +15,15 @@ public class PlayerShootingMonkeyHell : MonoBehaviour
     private bool isLeftArm = true;
     private float justShot = 0f;
 
+    private PlayerSounds playerSounds;
+
+    private void Start()
+    {
+        playerSounds = GetComponent<PlayerSounds>();
+        
+    }
+
+
     void Update()
     {
         // Get direction from object to the hit point, but only on the X-Z plane
@@ -40,7 +49,8 @@ public class PlayerShootingMonkeyHell : MonoBehaviour
 
     public void Shoot()
     {
-        if(isLeftArm)
+        playerSounds.PlayerShoot();
+        if (isLeftArm)
         {
             GameObject bullet = Instantiate(bulletPrefab, leftArmFirePoint.position, leftArmFirePoint.rotation);
             bullet.GetComponent<Rigidbody>().linearVelocity = bullet.transform.forward * bulletSpeed;

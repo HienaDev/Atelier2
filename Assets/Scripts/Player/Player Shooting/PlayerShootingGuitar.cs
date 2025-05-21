@@ -20,6 +20,13 @@ public class PlayerShootingGuitar : MonoBehaviour
     private bool isLeftArm = true;
     private bool isFacingRight = true;
 
+    private PlayerSounds playerSounds;
+
+    private void Start()
+    {
+        playerSounds = GetComponent<PlayerSounds>();
+    }
+
     void Update()
     {
         AimArms(); 
@@ -58,6 +65,8 @@ public class PlayerShootingGuitar : MonoBehaviour
 
     private void Shoot()
     {
+
+        playerSounds.PlayerShoot();
         Transform firePoint = isLeftArm ? leftArmFirePoint : rightArmFirePoint;
 
         Vector3 shootDirection = (GetMouseWorldPosition() - firePoint.position).normalized;

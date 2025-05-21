@@ -20,9 +20,14 @@ public class PlayerShootingEverHood : MonoBehaviour
     private float justShot = 0f;
     private Rigidbody rb;
 
+    private PlayerSounds playerSounds;
+
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        playerSounds = GetComponent<PlayerSounds>();
         rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.None;
         topHalf.DORotateQuaternion(Quaternion.LookRotation(transform.forward), 0.5f).OnComplete(() =>
@@ -60,6 +65,7 @@ public class PlayerShootingEverHood : MonoBehaviour
 
     public void Shoot()
     {
+        playerSounds.PlayerShoot();
         if (isLeftArm)
         {
             GameObject bullet = Instantiate(bulletPrefab, leftArmFirePoint.position, leftArmFirePoint.rotation);
