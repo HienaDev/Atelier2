@@ -37,7 +37,7 @@ public class BossHealth : MonoBehaviour
 
         size = bopWaveMaterial.GetFloat("_Size");
         startValue = 0f - size;
-        endValue = 1f;
+        endValue = 1f + size;
 
         bopWaveMaterial.SetFloat("_WaveProgression", startValue);
         //GenerateSplits();

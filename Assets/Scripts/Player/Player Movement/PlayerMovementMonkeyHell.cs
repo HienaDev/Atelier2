@@ -28,7 +28,7 @@ public class PlayerMovementMonkeyHell : MonoBehaviour
     void Update()
     {
         // Check if the player is grounded
-        CheckGrounded();
+        //CheckGrounded();
 
         // Handle movement
         HandleMovement();
@@ -38,7 +38,7 @@ public class PlayerMovementMonkeyHell : MonoBehaviour
         {
             //Jump();
         }
-    }
+    }//
 
     private void CheckGrounded()
     {

@@ -13,6 +13,7 @@ public class DJBoss : MonoBehaviour, BossInterface
     {
         public GameObject collumn;
         public ScaleWithMusic scaleWithMusic;
+        public SpeakerEffects speakerEffects;
         public int index;
         public Transform firePoint;
     }
@@ -336,6 +337,8 @@ public class DJBoss : MonoBehaviour, BossInterface
                 // Pulse the second column
                 //secondCollumn.scaleWithMusic.Pulse();
 
+                secondCollumn.speakerEffects.ShootEffect();
+
                 // Attack from the second column
                 ColumnAttack(
                     secondCollumn.firePoint,
@@ -360,6 +363,8 @@ public class DJBoss : MonoBehaviour, BossInterface
                 //animator.SetTrigger("RightArm");
             }
         }
+
+        collumn.speakerEffects.ShootEffect();
 
         // Attack from the first column
         ColumnAttack(
