@@ -51,9 +51,20 @@ public class DJBoss : MonoBehaviour, BossInterface
     [SerializeField] private GameObject doubleSlamText;
     [SerializeField] private Transform doubleSlamSpawn;
 
+    [Header("Wall Attack")]
+    [SerializeField] private GameObject wallProjectilePrefab;
+    [SerializeField] private float wallProjectileSpeed = 15f;
+    [SerializeField] private float wallLifetime = 15f;
+    [SerializeField] private int bopsToSpawn = 20;
+    private int bopCounter = 0;
+
+
     [SerializeField] private ClearProjectiles clearProjectiles;
     [SerializeField] private DamageBoss damageBoss;
     private bool fightStarted = false;
+
+
+
 
     private Animator animator;
 
@@ -162,12 +173,18 @@ public class DJBoss : MonoBehaviour, BossInterface
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (MoveWithMusic.Instance.bop && fightStarted)
         {
             AttackFromRandomColumn();
+
+            bopCounter++;
+            if (bopCounter >= bopsToSpawn)
+            {
+                WallAttack();
+                bopCounter = 0;
+            }
         }
 
         foreach (int i in deactivatedSpeakers)
@@ -175,6 +192,7 @@ public class DJBoss : MonoBehaviour, BossInterface
             Debug.Log(i + " speaker deactivated");
         }
     }
+
 
     private void ColumnAttack(
     Transform firePoint,
@@ -394,4 +412,43 @@ public class DJBoss : MonoBehaviour, BossInterface
             }
         }
     }
+
+    private void WallAttack()
+    {
+        int randomIndex = normalDifficulty ?
+            UnityEngine.Random.Range(0, collumns.Length) :
+            UnityEngine.Random.Range(0, 2);
+
+        while (deactivatedSpeakers.Contains(randomIndex))
+        {
+            randomIndex = normalDifficulty ?
+                UnityEngine.Random.Range(0, collumns.Length) :
+                UnityEngine.Random.Range(0, 2);
+        }
+
+        Collumn collumn = collumns[0];
+        foreach (Collumn c in collumns)
+        {
+            if (c.index == randomIndex)
+            {
+                collumn = c;
+                break;
+            }
+        }
+
+        collumn.speakerEffects.ShootEffect();
+
+        GameObject projectile = Instantiate(wallProjectilePrefab, collumn.firePoint.position, Quaternion.identity);
+        projectile.transform.rotation = collumn.firePoint.rotation;
+
+        Projectile projectileScript = projectile.GetComponent<Projectile>();
+        if (projectileScript != null)
+        {
+            projectileScript.Initialize(wallProjectileSpeed, wallLifetime); 
+        }
+
+        clearProjectiles.AddProjectile(projectile);
+    }
+
+
 }

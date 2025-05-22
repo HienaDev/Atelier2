@@ -26,6 +26,7 @@ public class WeakPoint : MonoBehaviour
 
     private Transform bossSpawn;
 
+    [SerializeField] private float timeToExplode = 0.1f;
     [SerializeField] private float amplitude = 0.1f;
     [SerializeField] public float period = 0.1f;
     [SerializeField] private float flyingDuration = 2f;
@@ -136,10 +137,10 @@ public class WeakPoint : MonoBehaviour
         transform.DOMove(transform.position + new Vector3(0f, 5f, 0f), 0.2f).SetEase(Ease.InOutSine).OnComplete(() => {
             transform.DOMove(bossSpawn.position, flyingDuration).SetEase(Ease.InElastic, amplitude: amplitude, period: period).OnComplete(() =>
             {
-                mat.DOFloat(160f, "_PulseRatio", 0.2f).SetEase(Ease.InSine);
+                mat.DOFloat(160f, "_PulseRatio", timeToExplode).SetEase(Ease.InSine);
                 transform.DOKill();
                 onDeath.Invoke();
-                Destroy(gameObject, 0.3f);
+                Destroy(gameObject, timeToExplode);
 
             });
         });
