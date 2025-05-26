@@ -13237,6 +13237,7 @@ MonoBehaviour:
   wallProjectilePrefab: {fileID: 9138236571741330086, guid: 20c26e2d7c365b34785b4c4bf15ebd51, type: 3}
   wallProjectileSpeed: 2
   wallLifetime: 15
+  bopsToSpawn: 20
   clearProjectiles: {fileID: 790325804}
   damageBoss: {fileID: 480802522}
 --- !u!114 &480802522
@@ -40913,7 +40914,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 32938ca456502644c8fb7bc8d3551a81, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 11.5
+      value: 16.91
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 32938ca456502644c8fb7bc8d3551a81, type: 3}
       propertyPath: m_LocalPosition.y
@@ -40921,7 +40922,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 32938ca456502644c8fb7bc8d3551a81, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.5
+      value: 12.68
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 32938ca456502644c8fb7bc8d3551a81, type: 3}
       propertyPath: m_LocalRotation.w
