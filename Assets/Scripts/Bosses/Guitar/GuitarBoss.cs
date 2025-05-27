@@ -35,6 +35,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
     [SerializeField] private float flyingPartScaleDuration = 1f;
     [SerializeField] private float flyingPartLifetimeOnPath = 4f;
     [SerializeField] private float flyingPartPathDetectionThreshold = 0.3f;
+    [SerializeField] private float flyingPartHomingCount = 1f;
     [SerializeField] private float delayBetweenLaunches = 0.3f;
     [SerializeField] private float evasiveMoveSpeed = 3f;
     [SerializeField] private float evasiveMoveRadius = 5f;
@@ -104,6 +105,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
     private float baseFlyingPartRotationSpeed;
     private float baseFlyingPartScaleDuration;
     private float baseFlyingPartLifetimeOnPath;
+    private float baseFlyingPartHomingCount;
     private float baseDelayBetweenLaunches;
     private float baseEvasiveMoveSpeed;
     private float baseEvasiveMoveRadius;
@@ -155,6 +157,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         baseFlyingPartRotationSpeed = flyingPartRotationSpeed;
         baseFlyingPartScaleDuration = flyingPartScaleDuration;
         baseFlyingPartLifetimeOnPath = flyingPartLifetimeOnPath;
+        baseFlyingPartHomingCount = flyingPartHomingCount;
         baseDelayBetweenLaunches = delayBetweenLaunches;
         baseEvasiveMoveSpeed = evasiveMoveSpeed;
         baseEvasiveMoveRadius = evasiveMoveRadius;
@@ -171,7 +174,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         baseAttackCooldown = attackCooldown;
         baseAnimSpeed = animator ? animator.speed : 1f;
         baseLegAttackDuration = legAttackDuration;
-        baseEnergyCoreAttackDuration = energyCoreAttackDuration;
+        baseEnergyCoreAttackDuration = energyCoreAttackDuration;   
     }
 
     private void Update()
@@ -242,6 +245,8 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         flyingPartRotationSpeed = baseFlyingPartRotationSpeed * multiplier;
         flyingPartScaleDuration = baseFlyingPartScaleDuration * inverseMultiplier;
         flyingPartLifetimeOnPath = baseFlyingPartLifetimeOnPath * multiplier;
+        flyingPartHomingCount = baseFlyingPartHomingCount * multiplier;
+        flyingPartHomingCount = Mathf.Max(0.1f, flyingPartHomingCount);
         delayBetweenLaunches = baseDelayBetweenLaunches * inverseMultiplier;
         evasiveMoveSpeed = baseEvasiveMoveSpeed * multiplier;
         evasiveMoveRadius = baseEvasiveMoveRadius * multiplier;
@@ -501,12 +506,18 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         originalPosition = transform.position;
         StartEvading();
 
-        foreach (FirePointSlot slot in firePointSlots)
+        int homingIndex = Random.Range(0, firePointSlots.Count);
+        int nHoming = Mathf.Max(1, Mathf.RoundToInt(flyingPartHomingCount));
+        float[] homingTimes = new float[nHoming];
+        for (int j = 0; j < nHoming; j++)
+            homingTimes[j] = flyingPartLifetimeOnPath * ((j + 1f) / (nHoming + 1f));
+
+        for (int i = 0; i < firePointSlots.Count; i++)
         {
+            var slot = firePointSlots[i];
             if (availablePaths.Count == 0) break;
 
             OvalPath chosenPath = availablePaths[Random.Range(0, availablePaths.Count)];
-            // Instantiate the body part prefab at the fire point position
             GameObject part = Instantiate(bodyPartPrefab, slot.firePoint.position, Quaternion.identity);
             clearProjectiles?.AddProjectile(part);
             FlyingBodyPart flyingScript = part.GetComponent<FlyingBodyPart>();
@@ -516,6 +527,8 @@ public class GuitarBoss : MonoBehaviour, BossInterface
             flyingVisual.transform.localPosition = Vector3.zero;
             flyingVisual.transform.localRotation = Quaternion.identity;
             flyingVisual.transform.localScale = slot.visual.transform.localScale;
+
+            bool shouldHoming = (i == homingIndex);
 
             flyingScript.Initialize(
                 chosenPath,
@@ -531,7 +544,10 @@ public class GuitarBoss : MonoBehaviour, BossInterface
                 flyingPartScaleDuration,
                 flyingPartLifetimeOnPath,
                 flyingPartPathDetectionThreshold,
-                flyingVisual.transform
+                flyingVisual.transform,
+                player,
+                shouldHoming ? homingTimes : new float[0],
+                shouldHoming
             );
 
             if (slot.visual != null)

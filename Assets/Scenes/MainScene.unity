@@ -30958,11 +30958,12 @@ MonoBehaviour:
   - {fileID: 1790429187}
   - {fileID: 2096982575}
   - {fileID: 277696552}
-  flyingPartMoveSpeed: 25
+  flyingPartMoveSpeed: 21
   flyingPartRotationSpeed: 180
   flyingPartScaleDuration: 2
   flyingPartLifetimeOnPath: 8
   flyingPartPathDetectionThreshold: 0.3
+  flyingPartHomingCount: 1.5
   delayBetweenLaunches: 0.3
   evasiveMoveSpeed: 12
   evasiveMoveRadius: 10
