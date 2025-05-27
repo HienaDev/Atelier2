@@ -553,12 +553,12 @@ public class GuitarBoss : MonoBehaviour, BossInterface
             if (slot.visual != null)
                 slot.visual.SetActive(false);
 
-            phaseManager?.CurrentCamera.GetComponent<CameraShake>().ShakeCamera(2f, 0.1f);
+            phaseManager?.CurrentCamera.GetComponent<CameraShake>().ShakeCamera(2.3f, 0.1f);
 
             yield return new WaitForSeconds(delayBetweenLaunches);
         }
 
-        phaseManager?.CurrentCamera.GetComponent<CameraShake>().ShakeCamera(0.3f, 0.5f, flyingPartLifetimeOnPath);
+        phaseManager?.CurrentCamera.GetComponent<CameraShake>().ShakeCamera(0.6f, 0.5f, flyingPartLifetimeOnPath);
 
         yield return new WaitForSeconds(flyingPartLifetimeOnPath);
         StopEvading();
@@ -673,7 +673,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         if (lp != null)
             lp.SetSpeed(legProjectileSpeed);
 
-        phaseManager?.CurrentCamera.GetComponent<CameraShake>()?.ShakeCamera(1f, 0.15f);
+        phaseManager?.CurrentCamera.GetComponent<CameraShake>()?.ShakeCamera(1.3f, 0.15f);
         
         StartCoroutine(RegrowLeg(leg));
     }
@@ -725,11 +725,11 @@ public class GuitarBoss : MonoBehaviour, BossInterface
 
     private IEnumerator EnergyCoreShake()
     {
-        phaseManager?.CurrentCamera.GetComponent<CameraShake>()?.SmoothShakeCamera(1.2f, energyCoreChargeTime);
+        phaseManager?.CurrentCamera.GetComponent<CameraShake>()?.SmoothShakeCamera(1.5f, energyCoreChargeTime);
 
         yield return new WaitForSeconds(energyCoreChargeTime);
 
-        phaseManager?.CurrentCamera.GetComponent<CameraShake>()?.SmoothShakeCamera(0.5f, energyCoreAttackDuration);
+        phaseManager?.CurrentCamera.GetComponent<CameraShake>()?.SmoothShakeCamera(0.8f, energyCoreAttackDuration);
     }
 
     // ====================== Weakpoint Logic ======================
@@ -777,7 +777,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         weakpointsDestroyed++;
         Debug.Log("Weakpoint destroyed! Total destroyed: " + weakpointsDestroyed);
 
-        phaseManager?.CurrentCamera.GetComponent<CameraShake>()?.ShakeCamera(1.5f, 0.3f);
+        phaseManager?.CurrentCamera.GetComponent<CameraShake>()?.ShakeCamera(1.8f, 0.3f);
 
         if (weakpointsDestroyed == requiredWeakpointsToDestroy && !extraSpawnLoopStarted)
         {
