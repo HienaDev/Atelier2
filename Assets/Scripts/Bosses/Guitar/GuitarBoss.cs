@@ -383,8 +383,8 @@ public class GuitarBoss : MonoBehaviour, BossInterface
                 BossState[] availableAttacks = new BossState[]
                 {
                     BossState.EncirclingAssault,
-                    //BossState.LegBarrage,
-                    //BossState.EnergyCoreAttack
+                    BossState.LegBarrage,
+                    BossState.EnergyCoreAttack
                 };
 
                 BossState chosenAttack = availableAttacks[Random.Range(0, availableAttacks.Length)];
