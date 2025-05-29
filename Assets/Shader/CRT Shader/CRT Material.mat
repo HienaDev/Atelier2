@@ -39,7 +39,7 @@ Material:
     m_Floats:
     - _BlueOffset: 0.001
     - _Pixelation: 50
-    - _PixelationToggle: 1
+    - _PixelationToggle: 0
     - _ScanlineNumber: 150
     - _ScanlineSpeed: -0.006
     m_Colors:
