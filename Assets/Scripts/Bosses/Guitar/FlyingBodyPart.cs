@@ -82,22 +82,41 @@ public class FlyingBodyPart : MonoBehaviour
         if (goingToPath)
         {
             transform.position += new Vector3(0f, 0f, -moveSpeed * Time.deltaTime);
+            
+            float closestDistance = float.MaxValue;
+            float closestT = 0f;
+            
             for (int i = 0; i <= 100; i++)
             {
                 float t = i / 100f;
                 Vector3 p = path.GetPointOnPath(t);
                 p.x = 0f;
                 float dist = Vector3.Distance(transform.position, p);
-                if (dist < bestDistance)
+                if (dist < closestDistance)
                 {
-                    bestDistance = dist;
-                    bestT = t;
+                    closestDistance = dist;
+                    closestT = t;
                 }
             }
-            if (bestDistance <= pathDetectionThreshold ||
-                (bestDistance < 0.5f && Vector3.Distance(transform.position, path.GetPointOnPath(bestT)) > bestDistance + 0.05f))
+            
+            if (closestDistance <= pathDetectionThreshold)
             {
-                pathProgress = bestT;
+                pathProgress = closestT;
+                Vector3 pathPoint = path.GetPointOnPath(pathProgress);
+                pathPoint.x = 0f;
+                transform.position = pathPoint;
+                goingToPath = false;
+                orbiting = true;
+                timer = 0f;
+                orbitTimer = 0f;
+                nextHomingIndex = 0;
+                inHomingPhase = false;
+                returningToPath = false;
+            }
+            
+            if (transform.position.z < path.GetMinZ() - 2f)
+            {
+                pathProgress = 0f;
                 Vector3 pathPoint = path.GetPointOnPath(pathProgress);
                 pathPoint.x = 0f;
                 transform.position = pathPoint;
@@ -192,7 +211,7 @@ public class FlyingBodyPart : MonoBehaviour
             transform.position += dir * moveSpeed * Time.deltaTime;
 
             if (Vector3.Distance(new Vector3(0f, transform.position.y, transform.position.z),
-                                 new Vector3(0f, originPos.y, originPos.z)) < 0.2f)
+                                    new Vector3(0f, originPos.y, originPos.z)) < 0.2f)
             {
                 onReturnComplete?.Invoke();
                 Destroy(gameObject);

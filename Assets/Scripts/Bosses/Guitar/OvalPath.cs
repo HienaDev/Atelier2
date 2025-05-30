@@ -43,4 +43,17 @@ public class OvalPath : MonoBehaviour
             prevPoint = nextPoint;
         }
     }
+
+    public float GetMinZ()
+    {
+        float minZ = float.MaxValue;
+        for (int i = 0; i <= 100; i++)
+        {
+            float t = i / 100f;
+            Vector3 point = GetPointOnPath(t);
+            if (point.z < minZ)
+                minZ = point.z;
+        }
+        return minZ;
+    }
 }
