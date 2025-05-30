@@ -8,6 +8,7 @@ public class FlyingBodyPart : MonoBehaviour
     private float scaleDuration;
     private float lifetimeOnPath;
     private float pathDetectionThreshold;
+    private float homingSpeed;
     private Transform model;
     private Transform player;
 
@@ -52,7 +53,8 @@ public class FlyingBodyPart : MonoBehaviour
         Transform model = null,
         Transform player = null,
         float[] homingTimes = null,
-        bool shouldHoming = false
+        bool shouldHoming = false,
+        float homingSpeed = 8f
     )
     {
         path = selectedPath;
@@ -67,6 +69,7 @@ public class FlyingBodyPart : MonoBehaviour
         this.player = player;
         this.homingTimes = homingTimes ?? new float[0];
         this.shouldHoming = shouldHoming;
+        this.homingSpeed = homingSpeed;
         initialScale = transform.localScale;
         transform.position = new Vector3(0f, transform.position.y, transform.position.z);
         initialized = true;
@@ -137,7 +140,7 @@ public class FlyingBodyPart : MonoBehaviour
                 orbitTimer += Time.deltaTime;
                 pathProgress += (moveSpeed / path.GetApproximateLength()) * Time.deltaTime;
 
-                float step = moveSpeed * Time.deltaTime;
+                float step = homingSpeed * Time.deltaTime;
                 transform.position += homingDirection * step;
                 homingTravelled += step;
 
@@ -149,7 +152,7 @@ public class FlyingBodyPart : MonoBehaviour
                     Vector3 pathTarget = path.GetPointOnPath(pathProgress % 1f);
                     pathTarget.x = 0f;
                     float dist = Vector3.Distance(returnStartPoint, pathTarget);
-                    returnToPathDuration = dist / moveSpeed;
+                    returnToPathDuration = dist / homingSpeed;
                     returnToPathTimer = 0f;
                     returningToPath = true;
                     nextHomingIndex++;
@@ -216,5 +219,17 @@ public class FlyingBodyPart : MonoBehaviour
         {
             transform.position = new Vector3(0f, transform.position.y, transform.position.z);
         }
+    }
+
+    public void EnableHoming(float[] newHomingTimes)
+    {
+        shouldHoming = true;
+        homingTimes = newHomingTimes ?? new float[0];
+        nextHomingIndex = 0;
+    }
+
+    public bool IsOrbiting()
+    {
+        return orbiting && !inHomingPhase && !returningToPath;
     }
 }

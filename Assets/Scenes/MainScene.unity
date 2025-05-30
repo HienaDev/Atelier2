@@ -30964,6 +30964,7 @@ MonoBehaviour:
   flyingPartLifetimeOnPath: 8
   flyingPartPathDetectionThreshold: 0.3
   flyingPartHomingCount: 1.5
+  flyingPartHomingSpeed: 15
   delayBetweenLaunches: 0.3
   evasiveMoveSpeed: 12
   evasiveMoveRadius: 10

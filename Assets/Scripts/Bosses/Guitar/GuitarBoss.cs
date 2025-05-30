@@ -36,6 +36,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
     [SerializeField] private float flyingPartLifetimeOnPath = 4f;
     [SerializeField] private float flyingPartPathDetectionThreshold = 0.3f;
     [SerializeField] private float flyingPartHomingCount = 1f;
+    [SerializeField] private float flyingPartHomingSpeed = 15f;
     [SerializeField] private float delayBetweenLaunches = 0.3f;
     [SerializeField] private float evasiveMoveSpeed = 3f;
     [SerializeField] private float evasiveMoveRadius = 5f;
@@ -106,6 +107,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
     private float baseFlyingPartScaleDuration;
     private float baseFlyingPartLifetimeOnPath;
     private float baseFlyingPartHomingCount;
+    private float baseFlyingPartHomingSpeed;
     private float baseDelayBetweenLaunches;
     private float baseEvasiveMoveSpeed;
     private float baseEvasiveMoveRadius;
@@ -158,6 +160,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         baseFlyingPartScaleDuration = flyingPartScaleDuration;
         baseFlyingPartLifetimeOnPath = flyingPartLifetimeOnPath;
         baseFlyingPartHomingCount = flyingPartHomingCount;
+        baseFlyingPartHomingSpeed = flyingPartHomingSpeed;
         baseDelayBetweenLaunches = delayBetweenLaunches;
         baseEvasiveMoveSpeed = evasiveMoveSpeed;
         baseEvasiveMoveRadius = evasiveMoveRadius;
@@ -247,6 +250,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         flyingPartLifetimeOnPath = baseFlyingPartLifetimeOnPath * multiplier;
         flyingPartHomingCount = baseFlyingPartHomingCount * multiplier;
         flyingPartHomingCount = Mathf.Max(0.1f, flyingPartHomingCount);
+        flyingPartHomingSpeed = baseFlyingPartHomingSpeed * multiplier;
         delayBetweenLaunches = baseDelayBetweenLaunches * inverseMultiplier;
         evasiveMoveSpeed = baseEvasiveMoveSpeed * multiplier;
         evasiveMoveRadius = baseEvasiveMoveRadius * multiplier;
@@ -383,8 +387,8 @@ public class GuitarBoss : MonoBehaviour, BossInterface
                 BossState[] availableAttacks = new BossState[]
                 {
                     BossState.EncirclingAssault,
-                    BossState.LegBarrage,
-                    BossState.EnergyCoreAttack
+                    //BossState.LegBarrage,
+                    //BossState.EnergyCoreAttack
                 };
 
                 BossState chosenAttack = availableAttacks[Random.Range(0, availableAttacks.Length)];
@@ -506,7 +510,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         originalPosition = transform.position;
         StartEvading();
 
-        int homingIndex = Random.Range(0, firePointSlots.Count);
+        List<GameObject> launchedParts = new List<GameObject>();
         int nHoming = Mathf.Max(1, Mathf.RoundToInt(flyingPartHomingCount));
         float[] homingTimes = new float[nHoming];
         for (int j = 0; j < nHoming; j++)
@@ -528,7 +532,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
             flyingVisual.transform.localRotation = Quaternion.identity;
             flyingVisual.transform.localScale = slot.visual.transform.localScale;
 
-            bool shouldHoming = (i == homingIndex);
+            launchedParts.Add(part);
 
             flyingScript.Initialize(
                 chosenPath,
@@ -546,8 +550,9 @@ public class GuitarBoss : MonoBehaviour, BossInterface
                 flyingPartPathDetectionThreshold,
                 flyingVisual.transform,
                 player,
-                shouldHoming ? homingTimes : new float[0],
-                shouldHoming
+                new float[0],
+                false,
+                flyingPartHomingSpeed
             );
 
             if (slot.visual != null)
@@ -556,6 +561,18 @@ public class GuitarBoss : MonoBehaviour, BossInterface
             phaseManager?.CurrentCamera.GetComponent<CameraShake>().ShakeCamera(2.3f, 0.1f);
 
             yield return new WaitForSeconds(delayBetweenLaunches);
+        }
+
+        yield return new WaitForSeconds(0.5f);
+
+        GameObject farthestPart = GetFarthestPartFromPlayer(launchedParts);
+        if (farthestPart != null)
+        {
+            FlyingBodyPart farthestScript = farthestPart.GetComponent<FlyingBodyPart>();
+            if (farthestScript != null)
+            {
+                farthestScript.EnableHoming(homingTimes);
+            }
         }
 
         phaseManager?.CurrentCamera.GetComponent<CameraShake>().ShakeCamera(0.6f, 0.5f, flyingPartLifetimeOnPath);
@@ -571,6 +588,33 @@ public class GuitarBoss : MonoBehaviour, BossInterface
             currentState = BossState.Idle;
             isAttacking = false;
         }
+    }
+
+    private GameObject GetFarthestPartFromPlayer(List<GameObject> parts)
+    {
+        if (player == null || parts.Count == 0) return null;
+
+        GameObject farthest = null;
+        float maxDistance = 0f;
+
+        foreach (GameObject part in parts)
+        {
+            if (part != null)
+            {
+                FlyingBodyPart flyingScript = part.GetComponent<FlyingBodyPart>();
+                if (flyingScript != null && flyingScript.IsOrbiting())
+                {
+                    float distance = Vector3.Distance(part.transform.position, player.position);
+                    if (distance > maxDistance)
+                    {
+                        maxDistance = distance;
+                        farthest = part;
+                    }
+                }
+            }
+        }
+
+        return farthest;
     }
 
     private void StartEvading()
