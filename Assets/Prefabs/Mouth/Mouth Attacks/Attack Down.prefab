@@ -67,7 +67,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 116e4b8ccc8deeb49a300b1148bd1c15, type: 2}
+      objectReference: {fileID: 2100000, guid: 41581f76ca77e954d8119ac0abd381d6, type: 2}
     - target: {fileID: -5754084199372789682, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -5068,6 +5068,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveUpDistance: 4
-  moveDuration: 0.5
-  pauseDuration: 0.5
+  moveDuration: 1
+  pauseDuration: 0.2
   startPosition: 0

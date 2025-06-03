@@ -117,12 +117,7 @@ public class PhaseManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!debugMode)
-            return;
-        if (Input.GetKeyDown(KeyCode.M)) ChangePhaseDictionary(Phase.MonkeyHell);
-        if (Input.GetKeyDown(KeyCode.E)) ChangePhaseDictionary(Phase.Everhood);
-        if (Input.GetKeyDown(KeyCode.Q)) ChangePhaseDictionary(Phase.Quark);
-        if (Input.GetKeyDown(KeyCode.R)) ChangePhaseDictionary(Phase.Rez);
+
     }
 
     public void ChangePhase()

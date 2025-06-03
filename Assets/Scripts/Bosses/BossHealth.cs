@@ -53,7 +53,7 @@ public class BossHealth : MonoBehaviour
         DealDamage((int)(lives * percentageToChangePhase) + 5); // Skip to the next phase
     }
 
-    public void DealCritDamage()
+    public void DealCritDamage(Transform[] bossParts = null)
     {
         // Add an extra 5 to account for division and rounding errors, so that the boss changes after 3 crits
 
@@ -79,8 +79,10 @@ public class BossHealth : MonoBehaviour
     }
 
 
+    
 
-    public void DealDamage(int damage)
+
+    public bool DealDamage(int damage)
     {
         currentLives -= damage;
 
@@ -103,22 +105,10 @@ public class BossHealth : MonoBehaviour
             numberOfPhasesSwapped++;
             Debug.Log("Phase changed because of HP");
             ChangePhase();
+            return true;
         }
-    }
 
-    // -255 - 255
-    private void GenerateSplits()
-    {
-        int totalPhases = Mathf.RoundToInt(1f / percentageToChangePhase); // e.g., 1 / 0.25 = 4 phases
-
-        for (int i = 1; i < totalPhases; i++) // Start from 1 (skip 0)
-        {
-            float markerX = (495 / 2 * (i * percentageToChangePhase)) - 255; // Position based on % of bar
-
-            // Create a new marker instance
-            GameObject marker = Instantiate(healthSplit, UIParent.transform);
-            marker.transform.localPosition = new Vector2(markerX - 246, 189); // Set position on bar
-        }
+        return false;
     }
 
     private void GameOver()

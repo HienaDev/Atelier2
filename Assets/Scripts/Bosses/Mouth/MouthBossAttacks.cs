@@ -18,6 +18,8 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
     private int gridHalfSize;
 
     [SerializeField] private GameObject[] attackPrefab;
+    [SerializeField] private Material arenaMaterial;
+    [SerializeField] private float arenaSpeed = -2f;
     [SerializeField] private float attackSpeedMultiplier = 2f;
     [SerializeField] private float attackSpeed = 5f;
     [SerializeField] private float attackCooldown = 1f;
@@ -51,9 +53,16 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
     [SerializeField] private ShotPattern[] attackPattern4Easy;
     private List<ShotPattern[]> attackPatternsEasy;
 
-    private int current5x5 = 0;
+    [SerializeField] private ShotPattern[] attackPattern1Hard;
+    [SerializeField] private ShotPattern[] attackPattern2Hard;
+    [SerializeField] private ShotPattern[] attackPattern3Hard;
+    [SerializeField] private ShotPattern[] attackPattern4Hard;
+    private List<ShotPattern[]> attackPatternsHard;
+
+    private int current5x5 = 3;
     private int currentPatternIndex = 0;
     private ShotPattern[] currentPatterns;
+    private List<ShotPattern[]> currentAttacks;
     private ShotPattern currentPattern;
     private int currentPatternRow;
 
@@ -66,23 +75,31 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        
         attackPatternsEasy = new List<ShotPattern[]>();
         attackPatternsEasy.Add(attackPattern1Easy);
         attackPatternsEasy.Add(attackPattern2Easy);
         attackPatternsEasy.Add(attackPattern3Easy);
         attackPatternsEasy.Add(attackPattern4Easy);
 
+        attackPatternsHard = new List<ShotPattern[]>();
+        attackPatternsHard.Add(attackPattern2Hard); // Hardcoded order change :/
+        attackPatternsHard.Add(attackPattern1Hard);
+        attackPatternsHard.Add(attackPattern3Hard);
+        attackPatternsHard.Add(attackPattern4Hard);
+
         //attackPatternEasy5.Shuffle();
         //attackPatternNormal5.Shuffle();
+        currentAttacks = attackPatternsEasy;
 
-        
-        currentPatterns = attackPatternsEasy[current5x5]; // Select the patterns (ShotPatterns[])
+        currentPatterns = currentAttacks[current5x5]; // Select the patterns (ShotPatterns[])
         currentPatternIndex = currentPatterns.Length - 1;
         currentPattern = currentPatterns[currentPatternIndex]; // Select the current pattern (ShotPattern)
 
         gridHalfSize = (int)Math.Ceiling((float)playerMovement.GridSize / 2f);
 
-        
+        Debug.Log("grid: " + gridHalfSize);
+
         currentPatternRow = currentPattern.Width - 1; // Start from the last row of the pattern
 
     }
@@ -118,9 +135,18 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
     public void NormalDifficulty()
     {
         currentPatternIndex = 0;
-        currentPatterns = attackPatternNormal5;
+        current5x5 = 0; 
+
+        currentAttacks = attackPatternsHard;
+        currentPatterns = currentAttacks[current5x5]; 
+        currentPatternIndex = currentPatterns.Length - 1;
+        currentPattern = currentPatterns[currentPatternIndex];
+
+        arenaSpeed *= attackSpeedMultiplier;
         attackSpeed *= attackSpeedMultiplier;
         weakpointSpeed *= attackSpeedMultiplier;
+
+        arenaMaterial.SetFloat("_MovingSpeed", arenaSpeed);
     }
 
     void Update()
@@ -208,14 +234,20 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
 
                 do
                 {
+                    Debug.Log("Switching pattern");
                     current5x5++;
-                    if (current5x5 >= attackPatternsEasy.Count)
+                    if (current5x5 >= currentAttacks.Count)
                     {
                         current5x5 = 0; // Reset to the first set of patterns
                     }
-                } while (attackPatternsEasy[current5x5].Length <= 0);
+                    if(currentAttacks[current5x5].Length <= 0)
+                    {
+                        Debug.Log("attack patterns easy length <= 0, current5x5: " + current5x5);   
+                    }
 
+                } while (currentAttacks[current5x5].Length <= 0);
 
+                currentPatterns = currentAttacks[current5x5]; // Select the patterns (ShotPatterns[])
                 currentPatternIndex = currentPatterns.Length - 1;
             }
 

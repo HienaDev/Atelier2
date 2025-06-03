@@ -67,14 +67,14 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 41581f76ca77e954d8119ac0abd381d6, type: 2}
+      objectReference: {fileID: 2100000, guid: 47eb074d48c1aa74992cf7e606228894, type: 2}
     - target: {fileID: -5754084199372789682, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: -7691300609363347970, guid: 32938ca456502644c8fb7bc8d3551a81, type: 3}
     - target: {fileID: 919132149155446097, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
       propertyPath: m_Name
-      value: Attack Up
+      value: Attack Left
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
       propertyPath: m_Layer
@@ -104,7 +104,7 @@ PrefabInstance:
       addedObject: {fileID: 6282886859810065977}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -6556193457423120143}
+      addedObject: {fileID: 926025097871141684}
   m_SourcePrefab: {fileID: 100100000, guid: 9475fe148acf9fe4a9155d89e6798fbc, type: 3}
 --- !u!1 &3522871406645740575 stripped
 GameObject:
@@ -5055,7 +5055,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.0000005, y: 2.0000005, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-6556193457423120143
+--- !u!114 &926025097871141684
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5064,10 +5064,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3522871406645740575}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27e1ceef3c1298d46bf691315360011b, type: 3}
+  m_Script: {fileID: 11500000, guid: ebdf94e7fd4cd1a4eb6c31fbecb9a130, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveUpDistance: 4
-  moveDuration: 1
-  pauseDuration: 0.2
-  startPosition: 1
+  gridSpacing: 1.5
+  moveDuration: 0.33
+  pauseDuration: 1
+  startDirection: 0

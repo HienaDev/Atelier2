@@ -8,6 +8,16 @@ public class DamageBoss : MonoBehaviour
 
     private bool damageable = false;
 
+    private void OnEnable()
+    {
+        Transform[] bossParts = new Transform[partsRenderer.Length];
+        for (int i = 0; i < partsRenderer.Length; i++)
+        {
+            bossParts[i] = partsRenderer[i].transform;
+        }
+
+    }
+
     public void ToggleDamageable(bool toggle)
     {
         damageable = toggle;
@@ -15,6 +25,13 @@ public class DamageBoss : MonoBehaviour
 
     public void DealCritDamage()
     {
+        Transform[] bossParts = new Transform[partsRenderer.Length];
+
+        for (int i = 0; i < partsRenderer.Length; i++)
+        {
+            bossParts[i] = partsRenderer[i].transform;
+        }
+
         health.DealCritDamage();
         // Only deals damage if crit is false, we put 100 to scale up the displacement
         DealDamage(100, true);
