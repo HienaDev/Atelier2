@@ -5,10 +5,8 @@ public class ScaleWithMusic : MonoBehaviour
 {
     private Vector3 originalScale;
     private Tween currentTween;
-
     [SerializeField] private Vector3 scaleAmount = new Vector3(0.3f, 0.3f, 0.3f);
     [SerializeField] private float duration = 0.4f;
-
     [SerializeField] private bool moveWithoutCall = true;
 
     void Awake()
@@ -18,9 +16,8 @@ public class ScaleWithMusic : MonoBehaviour
 
     private void Update()
     {
-        if (MoveWithMusic.Instance.timeUntilBop < duration/4f && moveWithoutCall)
+        if (MoveWithMusic.Instance.timeUntilBop < duration / 4f && moveWithoutCall)
         {
-
             Pulse();
         }
     }
@@ -44,8 +41,10 @@ public class ScaleWithMusic : MonoBehaviour
 
         currentTween = transform.DOScale(targetScale, halfDuration)
             .SetEase(Ease.InBounce)
+            .SetUpdate(true) // This makes the tween use unscaled time
             .OnComplete(() =>
                 transform.DOScale(originalScale, halfDuration)
-                         .SetEase(Ease.OutBounce));
+                         .SetEase(Ease.OutBounce)
+                         .SetUpdate(true)); // This also uses unscaled time
     }
 }

@@ -26,6 +26,9 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
     [SerializeField] private float weakpointSpeed = 5f;
     private float justAttacked = 0f;
 
+    [SerializeField] private int relaxPeriodBeats = 5;
+    private bool justSwappedToNormal = false;
+
     [SerializeField] private GameObject weakpointPrefab;
 
     [SerializeField, Range(0, 100)] private int weakpointChance = 50;
@@ -72,10 +75,12 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
     private bool fightStarted = false;
     private bool justChangedPattern = false;
 
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        arenaMaterial.SetFloat("_MovingSpeed", arenaSpeed);
         attackPatternsEasy = new List<ShotPattern[]>();
         attackPatternsEasy.Add(attackPattern1Easy);
         attackPatternsEasy.Add(attackPattern2Easy);
@@ -135,7 +140,9 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
     public void NormalDifficulty()
     {
         currentPatternIndex = 0;
-        current5x5 = 0; 
+        current5x5 = 0;
+
+        justSwappedToNormal = true;
 
         currentAttacks = attackPatternsHard;
         currentPatterns = currentAttacks[current5x5]; 
@@ -173,6 +180,19 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
 
     public void SendAttack()
     {
+
+        if(justSwappedToNormal)
+        {
+            relaxPeriodBeats--;
+
+            if(relaxPeriodBeats <= 0)
+            {
+                Debug.Log("Relax period ended, switching to normal difficulty");
+                justSwappedToNormal = false;
+            }
+            return;
+        }
+
         bottomMouth.DOLocalRotate(new Vector3(35f, 0f, 0f), biteDuration / 2).OnComplete(() => bottomMouth.DOLocalRotate(new Vector3(0f, 0f, 0f), biteDuration / 2));
         topMouth.DOLocalRotate(new Vector3(-15f, 0f, 0f), biteDuration / 2).OnComplete(() => topMouth.DOLocalRotate(new Vector3(0f, 0f, 0f), biteDuration / 2));
 
