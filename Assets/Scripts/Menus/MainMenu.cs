@@ -13,7 +13,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private string sceneToLoad;
     [SerializeField] private GameObject settingsMenu;
     [SerializeField] private GameObject creditsMenu;
-    [SerializeField] PlayableDirector introCutscene;
+    [SerializeField] private PlayableDirector introCutscene;
 
     [Header("Loading Screen")]
     [SerializeField] private GameObject loadingScreen;
