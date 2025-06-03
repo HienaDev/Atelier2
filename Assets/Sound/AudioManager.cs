@@ -37,7 +37,7 @@ public class AudioManager : MonoBehaviour
     /// <summary>
     /// Play a sound once (non-looping)
     /// </summary>
-    public void PlaySound(AudioClip clip, float volume = 1f, float pitch = 1f, bool allowMultiple = false)
+    public void PlaySound(AudioClip clip, float volume = 1f, float pitch = 1f, bool allowMultiple = false, float blend = 0f)
     {
         if (clip == null) return;
 
@@ -49,7 +49,7 @@ public class AudioManager : MonoBehaviour
         AudioSource availableSource = GetAvailableAudioSource();
         if (availableSource == null) return;
 
-        ConfigureAudioSource(availableSource, clip, volume, pitch, false);
+        ConfigureAudioSource(availableSource, clip, volume, pitch, false, blend);
         availableSource.Play();
 
         TrackOneShot(clip, availableSource);
@@ -174,13 +174,13 @@ public class AudioManager : MonoBehaviour
     #endregion
 
     #region Helper Methods
-    private void ConfigureAudioSource(AudioSource source, AudioClip clip, float volume, float pitch, bool loop)
+    private void ConfigureAudioSource(AudioSource source, AudioClip clip, float volume, float pitch, bool loop, float blend = 0f)
     {
         source.clip = clip;
         source.volume = Mathf.Clamp01(volume);
         source.pitch = Mathf.Clamp(pitch, 0.1f, 3f);
         source.loop = loop;
-        source.spatialBlend = 0f; // Force 2D sound
+        source.spatialBlend = blend; // Force 2D sound
     }
 
     private void TrackOneShot(AudioClip clip, AudioSource source)

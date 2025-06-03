@@ -6,13 +6,17 @@ public class UpDownMovement : MonoBehaviour
     public enum Position { Bottom, Top }
 
     [Header("Movement Settings")]
-    [SerializeField] float moveUpDistance = 2f;       // How far up the object moves
-    [SerializeField] float moveDuration = 0.33f;      // How long each movement takes
-    [SerializeField] float pauseDuration = 1f;       // How long to pause at each position
-    [SerializeField] Position startPosition = Position.Bottom; // Where to start the movement
-    private Position currentPosition; // Current position of the object
+    [SerializeField] private float moveUpDistance = 2f;
+    [SerializeField] private float moveDuration = 0.33f;
+    [SerializeField] private float pauseDuration = 1f;
+    [SerializeField] private Position startPosition = Position.Bottom;
 
+    [Header("Audio Settings")]
+    [SerializeField] private AudioClip audioClip;
+    [SerializeField] private float audioVolume = 1f;
+    [SerializeField] private float audioPitch = 1f;
 
+    private Position currentPosition;
     private Vector3 originalPosition;
     private Vector3 topPosition;
     private Sequence movementSequence;
@@ -21,10 +25,8 @@ public class UpDownMovement : MonoBehaviour
     {
         originalPosition = transform.position;
         topPosition = originalPosition + Vector3.up * moveUpDistance;
-
         currentPosition = startPosition;
 
-        // Set initial position based on startPosition choice
         if (startPosition == Position.Top)
         {
             transform.position = topPosition;
@@ -35,62 +37,62 @@ public class UpDownMovement : MonoBehaviour
 
     void CreateMovementSequence()
     {
-        // Create a new sequence
         movementSequence = DOTween.Sequence();
 
-        // If starting at bottom (default)
         if (startPosition == Position.Bottom)
         {
-            // Move up quickly
+            // Move up
+            movementSequence.AppendCallback(() =>
+            {
+                PlayMovementSound();
+            });
             movementSequence.Append(transform.DOMoveY(topPosition.y, moveDuration).SetEase(Ease.InOutSine));
-            // Pause at the top
             movementSequence.AppendInterval(pauseDuration);
-            // Move down quickly
+
+            // Move down
+            movementSequence.AppendCallback(() =>
+            {
+                PlayMovementSound();
+            });
             movementSequence.Append(transform.DOMoveY(originalPosition.y, moveDuration).SetEase(Ease.InOutSine));
-            // Pause at the bottom
             movementSequence.AppendInterval(pauseDuration);
         }
-        else // If starting at top
+        else
         {
-            // Move down quickly
+            // Move down
+            movementSequence.AppendCallback(() =>
+            {
+                PlayMovementSound();
+            });
             movementSequence.Append(transform.DOMoveY(originalPosition.y, moveDuration).SetEase(Ease.InOutSine));
-            // Pause at the bottom
             movementSequence.AppendInterval(pauseDuration);
-            // Move up quickly
+
+            // Move up
+            movementSequence.AppendCallback(() =>
+            {
+                PlayMovementSound();
+            });
             movementSequence.Append(transform.DOMoveY(topPosition.y, moveDuration).SetEase(Ease.InOutSine));
-            // Pause at the top
             movementSequence.AppendInterval(pauseDuration);
         }
 
-        // Set the sequence to loop indefinitely
         movementSequence.SetLoops(-1);
+    }
 
-        // Create a new sequence
-        movementSequence = DOTween.Sequence();
-
-        //// If starting at bottom (default)
-        //if (currentPosition == Position.Bottom)
-        //{
-        //    // Move up quickly
-        //    movementSequence.Append(transform.DOMoveY(topPosition.y, moveDuration).SetEase(Ease.InOutSine));
-        //    currentPosition = Position.Top;
-        //}
-        //else // If starting at top
-        //{
-        //    // Move down quickly
-        //    movementSequence.Append(transform.DOMoveY(originalPosition.y, moveDuration).SetEase(Ease.InOutSine));
-        //    currentPosition = Position.Bottom;
-        //}
+    void PlayMovementSound()
+    {
+        if (audioClip != null && AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySound(audioClip, audioVolume, audioPitch, true, 0f);
+        }
     }
 
     void OnDestroy()
     {
-        // Clean up the tween when the object is destroyed
         if (movementSequence != null)
             movementSequence.Kill();
     }
 
-    // Optional: Draw gizmos to visualize the movement range in the editor
     void OnDrawGizmosSelected()
     {
         if (!Application.isPlaying)

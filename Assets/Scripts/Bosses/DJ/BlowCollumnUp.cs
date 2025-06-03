@@ -1,5 +1,17 @@
 using DG.Tweening;
 using UnityEngine;
+using System.Collections.Generic;
+
+[System.Serializable]
+public class DestructionAudioClip
+{
+    public AudioClip clip;
+    [Range(0f, 1f)]
+    public float volume = 1f;
+    [Range(-3f, 3f)]
+    public float pitch = 1f;
+}
+
 public class BlowCollumnUp : MonoBehaviour
 {
     [SerializeField] private Renderer[] partsRenderer;
@@ -30,15 +42,54 @@ public class BlowCollumnUp : MonoBehaviour
     public float bounceHeight = 0.5f;                                 // How high to bounce after squash
     public float wiggleAmount = 5f;                                   // Rotation wiggle intensity
 
+    [Header("Destruction Audio Settings")]
+    [SerializeField] private List<DestructionAudioClip> destructionAudioClips = new List<DestructionAudioClip>();
+    [SerializeField] private bool playAllClipsOnDestruction = true; // If false, plays random clip
+    [SerializeField] private float pitchVariation = 0.1f; // Random pitch variation range
+
     private Vector3 originalPosition;
     private Vector3 originalScale;
     private Quaternion originalRotation;
+
+    [SerializeField] private AudioClip hitSound;
+    [SerializeField] private float hitSoundVolume = 1f;
+    [SerializeField] private float hitSoundPitch = 1f;
 
     void Awake()
     {
         originalPosition = transform.position;
         originalScale = transform.localScale;
         originalRotation = transform.rotation;
+    }
+
+    private void PlayDestructionAudio()
+    {
+        if (destructionAudioClips.Count == 0 || AudioManager.Instance == null) return;
+
+        if (playAllClipsOnDestruction)
+        {
+            // Play all clips simultaneously
+            foreach (var destructionClip in destructionAudioClips)
+            {
+                if (destructionClip.clip != null)
+                {
+                    // Add random pitch variation within the specified range
+                    float randomPitch = destructionClip.pitch + Random.Range(-pitchVariation, pitchVariation);
+                    AudioManager.Instance.PlaySound(destructionClip.clip, destructionClip.volume, randomPitch, true, 0f);
+                }
+            }
+        }
+        else
+        {
+            // Play a random clip
+            DestructionAudioClip randomClip = destructionAudioClips[Random.Range(0, destructionAudioClips.Count)];
+            if (randomClip.clip != null)
+            {
+                // Add random pitch variation within the specified range
+                float randomPitch = randomClip.pitch + Random.Range(-pitchVariation, pitchVariation);
+                AudioManager.Instance.PlaySound(randomClip.clip, randomClip.volume, randomPitch, true, 0f);
+            }
+        }
     }
 
     public void TriggerFall()
@@ -118,9 +169,13 @@ public class BlowCollumnUp : MonoBehaviour
             sequence.Join(renderer.material.DOFloat(0.15f + damage * 0.5f, "_PulseRatio", 0.05f).SetEase(Ease.InOutSine));
             sequence.Append(renderer.material.DOFloat(1f, "_ColorBrightness", 0.05f).SetEase(Ease.InOutSine));
             sequence.Join(renderer.material.DOFloat(0f, "_PulseRatio", 0.05f).SetEase(Ease.InOutSine));
+            AudioManager.Instance.PlaySound(hitSound, hitSoundVolume, hitSoundPitch, true, 0f);
         }
         if (health <= 0)
         {
+            // Play destruction audio when health reaches 0
+            PlayDestructionAudio();
+
             boss.AddSpeakerToList(index);
             GameObject weakpointClone = Instantiate(weakpoint, transform.position, Quaternion.identity);
             weakpointClone.GetComponent<WeakPoint>().onDeath.AddListener(damageBoss.DealCritDamage);
@@ -129,7 +184,7 @@ public class BlowCollumnUp : MonoBehaviour
             clearProjectiles.AddProjectile(weakpointClone);
 
             switch (index)
-                {                 
+            {
                 case 0:
                     weakpointClone.GetComponent<WeakPoint>().onLifetime.AddListener(boss.SpawnCollum0);
                     weakpointClone.GetComponent<WeakPoint>().onDeath.AddListener(boss.SpawnCollum0);
@@ -149,7 +204,7 @@ public class BlowCollumnUp : MonoBehaviour
                 default:
                     break;
             }
-                
+
 
             weakpointClone.GetComponent<WeakPoint>().SetTarget(damageBoss.gameObject.transform);
             gameObject.SetActive(false);

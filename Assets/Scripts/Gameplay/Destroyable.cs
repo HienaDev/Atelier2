@@ -29,8 +29,15 @@ public class Destroyable : MonoBehaviour
 
     public UnityEvent onDeath;
 
+    [SerializeField] private AudioClip audioClip;
+    [SerializeField] private float audioVolume = 1f;
+    [SerializeField] private float audioPitch = 1f;
+    private float originalPitch;
+
+
     void Start()
     {
+        originalPitch = audioPitch;
         mat = rend.material;
         currentLives = lives;
         baseColor = mat.GetColor("_Color");
@@ -69,6 +76,7 @@ public class Destroyable : MonoBehaviour
         }
         else
         {
+            AudioManager.Instance.PlaySound(audioClip, audioVolume, originalPitch + (lives / currentLives), true);
             currentIntensity += intensitySteps;
             particles.Emit(numberOfParticles);
             mat.SetColor("_Color", baseColor * currentIntensity);

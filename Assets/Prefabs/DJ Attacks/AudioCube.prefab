@@ -4966,7 +4966,9 @@ MonoBehaviour:
       m_Calls: []
   duration: 0.3
   ease: 27
-  audioSource: {fileID: 0}
+  audioClip: {fileID: 8300000, guid: 11b4e8da54b4e4e45aa691b0e06d717b, type: 3}
+  audioVolume: 0.8
+  audioPitch: 1
 --- !u!1 &7785364010328218475
 GameObject:
   m_ObjectHideFlags: 0

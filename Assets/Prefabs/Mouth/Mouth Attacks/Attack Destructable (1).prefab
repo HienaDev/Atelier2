@@ -4939,6 +4939,9 @@ MonoBehaviour:
   onDeath:
     m_PersistentCalls:
       m_Calls: []
+  audioClip: {fileID: 8300000, guid: 11b4e8da54b4e4e45aa691b0e06d717b, type: 3}
+  audioVolume: 0.8
+  audioPitch: 1
 --- !u!54 &5350896789499213721
 Rigidbody:
   m_ObjectHideFlags: 0

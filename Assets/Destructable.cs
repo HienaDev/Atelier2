@@ -32,6 +32,8 @@ public class Destructable : MonoBehaviour
     [SerializeField] public float period = 0.1f;
     [SerializeField] private float flyingDuration = 2f;
 
+    private float originalPitch;
+
     public UnityEvent onDeath;
     public UnityEvent onLifetime;
 
@@ -41,11 +43,13 @@ public class Destructable : MonoBehaviour
 
     private Vector3 originalScale;
 
-    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip audioClip;
+    [SerializeField] private float audioVolume = 1f;
+    [SerializeField] private float audioPitch = 1f;
 
     void Start()
     {
-
+        originalPitch = audioPitch;
         rend = GetComponent<MeshRenderer>();
 
         if (rend == null)
@@ -84,11 +88,8 @@ public class Destructable : MonoBehaviour
             sequence.Append(mat.DOFloat(minimumExtrusion + ((lives - currentLives) * extrusionIntensitySteps), "_PulseRatio", 0.05f).SetEase(Ease.InOutSine));
             sequence.Append(mat.DOFloat(0f + ((lives - currentLives) * extrusionIntensitySteps), "_PulseRatio", 0.5f).SetEase(Ease.InOutSine));
 
-            if (audioSource != null)
-            {
-                audioSource.pitch = 1f + (lives / currentLives);
-                audioSource.Play();
-            }
+            AudioManager.Instance.PlaySound(audioClip, audioVolume, originalPitch + (lives / currentLives), true);
+
         }
     }
 

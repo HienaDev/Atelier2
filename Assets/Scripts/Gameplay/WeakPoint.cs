@@ -42,6 +42,8 @@ public class WeakPoint : MonoBehaviour
 
     [SerializeField] private AudioSource audioSource;
 
+    [SerializeField] private GameObject critTextUI;
+
     void Awake()
     {
         originalScale = transform.localScale;
@@ -156,7 +158,11 @@ public class WeakPoint : MonoBehaviour
                 mat.DOFloat(160f, "_PulseRatio", timeToExplode).SetEase(Ease.InSine);
                 transform.DOKill();
                 if(invokeDeath)
+                {
                     onDeath.Invoke();
+                    GameObject critTextUIClone = Instantiate(critTextUI, targetPosition, Quaternion.identity);
+                }
+                    
                 Destroy(gameObject, timeToExplode);
 
             });

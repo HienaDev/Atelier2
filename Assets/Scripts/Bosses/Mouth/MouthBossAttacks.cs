@@ -62,7 +62,7 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
     [SerializeField] private ShotPattern[] attackPattern4Hard;
     private List<ShotPattern[]> attackPatternsHard;
 
-    private int current5x5 = 3;
+    private int current5x5 = 0;
     private int currentPatternIndex = 0;
     private ShotPattern[] currentPatterns;
     private List<ShotPattern[]> currentAttacks;
@@ -289,13 +289,17 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
         List<WeakPoint> weakPoints = new List<WeakPoint>();
 
         Debug.Log(numberOfWeakpointsDestroyed + " >= " + numberOfWeakspointsToDestroy + " : " + (numberOfWeakpointsDestroyed >= numberOfWeakspointsToDestroy));
+        int bopsToSpawn = 3;
+        int counter = 0;
         while (numberOfWeakpointsDestroyed < numberOfWeakspointsToDestroy)
         {
-            if (!moveWithMusic.bop)
+            if(moveWithMusic.bop)
             {
-                yield return null; // Wait for 2 seconds
+                counter++;
+    
             }
-            else
+           
+            if ( counter >= bopsToSpawn)
             {
                 int attackPosition = UnityEngine.Random.Range(1, playerMovement.GridSize + 1);
                 GameObject attack = Instantiate(weakpointPrefab);
@@ -308,6 +312,7 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
                 weakPoint.SetTarget(targetForWeakpoints);
 
                 attack.GetComponent<DamagePlayer>().dealsDamage = false;
+                counter = 0;
             }
 
 

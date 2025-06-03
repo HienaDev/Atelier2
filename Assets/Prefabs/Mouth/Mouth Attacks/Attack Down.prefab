@@ -178,7 +178,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 17d75bfbfa7474d4fb7543a9405ab94d, type: 2}
+  - {fileID: 2100000, guid: 41581f76ca77e954d8119ac0abd381d6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5071,3 +5071,6 @@ MonoBehaviour:
   moveDuration: 1
   pauseDuration: 0.2
   startPosition: 0
+  audioClip: {fileID: 0}
+  audioVolume: 0.1
+  audioPitch: 2
