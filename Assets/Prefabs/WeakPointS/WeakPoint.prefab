@@ -137,6 +137,7 @@ MonoBehaviour:
   numberOfParticles: 5
   timeAlive: 20
   disableLifetime: 0
+  timeToExplode: 0.1
   amplitude: 0.1
   period: 0.5
   flyingDuration: 0.3
@@ -179,7 +180,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8336133669464535913}
   serializedVersion: 8
-  lengthInSec: 0.05
+  lengthInSec: 2
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -5070,7 +5071,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleSystemExplosion: {fileID: 8881244261015604869}
-  disableMesh: 1
+  disableMesh: 0
   destroy: 1
   dealsDamage: 1
 --- !u!82 &5304178829808953466

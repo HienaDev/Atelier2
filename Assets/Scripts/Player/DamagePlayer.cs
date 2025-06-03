@@ -52,7 +52,7 @@ public class DamagePlayer : MonoBehaviour
         }
 
         float lifetime = 0.1f;
-
+        
         if (particleSystemExplosion != null)
         {
             particleSystemExplosion.Play();
@@ -60,7 +60,18 @@ public class DamagePlayer : MonoBehaviour
             lifetime = particleSystemExplosion.main.duration + particleSystemExplosion.main.startLifetime.constantMax;
         }
 
-        if(destroy)
+        WeakPoint weakPoint = GetComponent<WeakPoint>();
+
+        if (weakPoint != null)
+        {
+            Debug.Log("WeakPoint found, calling BlowUp");   
+            weakPoint.BlowUp(false);
+        }
+        else if (destroy)
+        {
+            Debug.Log("Destroying gameObject after " + lifetime + " seconds");
             Destroy(gameObject, lifetime);
+        }
+            
     }
 }

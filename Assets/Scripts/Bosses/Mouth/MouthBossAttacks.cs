@@ -49,7 +49,9 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
     [SerializeField] private ShotPattern[] attackPattern2Easy;
     [SerializeField] private ShotPattern[] attackPattern3Easy;
     [SerializeField] private ShotPattern[] attackPattern4Easy;
+    private List<ShotPattern[]> attackPatternsEasy;
 
+    private int current5x5 = 0;
     private int currentPatternIndex = 0;
     private ShotPattern[] currentPatterns;
     private ShotPattern currentPattern;
@@ -64,16 +66,25 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        attackPatternsEasy = new List<ShotPattern[]>();
+        attackPatternsEasy.Add(attackPattern1Easy);
+        attackPatternsEasy.Add(attackPattern2Easy);
+        attackPatternsEasy.Add(attackPattern3Easy);
+        attackPatternsEasy.Add(attackPattern4Easy);
 
-        attackPatternEasy5.Shuffle();
-        attackPatternNormal5.Shuffle();
+        //attackPatternEasy5.Shuffle();
+        //attackPatternNormal5.Shuffle();
 
-        currentPatterns = attackPatternEasy5;
-        currentPattern = currentPatterns[currentPatternIndex];
+        
+        currentPatterns = attackPatternsEasy[current5x5]; // Select the patterns (ShotPatterns[])
+        currentPatternIndex = currentPatterns.Length - 1;
+        currentPattern = currentPatterns[currentPatternIndex]; // Select the current pattern (ShotPattern)
 
         gridHalfSize = (int)Math.Ceiling((float)playerMovement.GridSize / 2f);
 
-        currentPatternRow = currentPattern.Width - 1;
+        
+        currentPatternRow = currentPattern.Width - 1; // Start from the last row of the pattern
+
     }
 
     public void StartBoss(PhaseManager.SubPhase subPhase)
@@ -146,10 +157,6 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
         }
 
         // 2 - 4
-        int attackPosition = UnityEngine.Random.Range(2, playerMovement.GridSize);
-
-        bool weakPointActive = UnityEngine.Random.Range(0, 100) < weakpointChance;
-        int weakPointPosition = UnityEngine.Random.Range(-1, 2);
 
         int[] attacks = new int[5]
                         {
@@ -166,39 +173,27 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
 
         for (int i = -2; i < 3; i++)
         {
-            if (attacks[i + 2] == 0 && (!weakPointActive))// && weakPointPosition == i))
+            if (attacks[i + 2] == 0)// && weakPointPosition == i))
                 continue;
 
             GameObject attack;
 
-            if (weakPointActive && weakPointPosition != i)
+            attack = Instantiate(attackPrefab[attacks[i + 2] - 1]); // - 1 because 0 in the inspector means "hole" but here the slot 0 of attacks is a prefab
+
+            WeakPoint weakPoint = attack.GetComponent<WeakPoint>();
+            if (weakPoint != null)
             {
-                attack = Instantiate(weakpointPrefab);
+                weakPoint.onDeath.AddListener(DealWeakPointDamage);
+                weakPoint.SetTarget(targetForWeakpoints);
 
-                attack.transform.position = shootingPoint.position + playerMovement.CellDistance * i * new Vector3(0f, 0f, 1f);
-                attack.GetComponent<Rigidbody>().linearVelocity = -attack.transform.right * weakpointSpeed;
-
-                attack.GetComponent<WeakPoint>().onDeath.AddListener(DealWeakPointDamage);
-                attack.GetComponent<WeakPoint>().SetTarget(targetForWeakpoints);
             }
-            else
-            {
-                attack = Instantiate(attackPrefab[attacks[i + 2] - 1]); // - 1 because 0 in the inspector means "hole" but here the slot 0 of attacks is a prefab
 
-                WeakPoint weakPoint = attack.GetComponent<WeakPoint>();
-                if(weakPoint != null)
-                {
-                    weakPoint.onDeath.AddListener(DealWeakPointDamage);
-                    weakPoint.SetTarget(targetForWeakpoints);
-                    
-                }
+            attack.transform.position = shootingPoint.position + playerMovement.CellDistance * i * new Vector3(0f, 0f, 1f);
 
-                attack.transform.position = shootingPoint.position + playerMovement.CellDistance * i * new Vector3(0f, 0f, 1f);
+            Debug.Log("position:" + attack.transform.position + " i: " + i);
 
-                Debug.Log("position:" + attack.transform.position + " i: " + i);
+            attack.GetComponent<Rigidbody>().linearVelocity = attack.transform.up * attackSpeed;
 
-                attack.GetComponent<Rigidbody>().linearVelocity = attack.transform.up * attackSpeed;
-            }
 
             clearProjectiles.AddProjectile(attack);
         }
@@ -207,11 +202,21 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
 
         if (currentPatternRow < 0)
         {
-            currentPatternIndex++;
-            if (currentPatternIndex >= currentPatterns.Length)
+            currentPatternIndex--;
+            if (currentPatternIndex < 0)
             {
-                currentPatterns.Shuffle();
-                currentPatternIndex = 0;
+
+                do
+                {
+                    current5x5++;
+                    if (current5x5 >= attackPatternsEasy.Count)
+                    {
+                        current5x5 = 0; // Reset to the first set of patterns
+                    }
+                } while (attackPatternsEasy[current5x5].Length <= 0);
+
+
+                currentPatternIndex = currentPatterns.Length - 1;
             }
 
             currentPatternRow = currentPattern.Width - 1;
@@ -259,10 +264,15 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
         Debug.Log("Leave coroutine");
 
         foreach (WeakPoint weakPoint in weakPoints)
+        {
+            if (weakPoint == null)
+                continue;
             weakPoint.BlowUp();
+        }
+
 
         foreach (DamageBoss damageBoss in damageableParts)
-            damageBoss.ToggleDamageable(true);
+            damageBoss?.ToggleDamageable(true);
 
         mainDamagePart.ToggleDamageable(true);
 

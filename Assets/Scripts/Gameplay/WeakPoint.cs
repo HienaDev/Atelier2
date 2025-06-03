@@ -125,21 +125,38 @@ public class WeakPoint : MonoBehaviour
     }
 
 
-    public void BlowUp()
+    public void BlowUp(bool invokeDeath = true)
     {
-        col.enabled = false;
+        if(col != null)
+            col.enabled = false;
+
         dying = true;
         sequence?.Kill();
+
+        Debug.Log("Blowing up weakpoint");  
+
         transform.DOKill();
         transform.DOShakeRotation(0.2f, 0.2f, 5, 50, false, ShakeRandomnessMode.Harmonic).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
         transform.DOShakeScale(0.2f, 0.2f, 5, 50, false, ShakeRandomnessMode.Harmonic).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
 
-        transform.DOMove(transform.position + new Vector3(0f, 5f, 0f), 0.2f).SetEase(Ease.InOutSine).OnComplete(() => {
-            transform.DOMove(bossSpawn.position, flyingDuration).SetEase(Ease.InElastic, amplitude: amplitude, period: period).OnComplete(() =>
+        transform.DOMove(transform.position + new Vector3(0f, invokeDeath? 5f : 0f, 0f), 0.2f).SetEase(Ease.InOutSine).OnComplete(() => {
+            Vector3 targetPosition;
+
+            if (bossSpawn != null && invokeDeath)
+            {
+                targetPosition = bossSpawn.position;
+            }
+            else
+            {
+                targetPosition = transform.position;
+            }
+
+            transform.DOMove(targetPosition, flyingDuration).SetEase(Ease.InElastic, amplitude: amplitude, period: period).OnComplete(() =>
             {
                 mat.DOFloat(160f, "_PulseRatio", timeToExplode).SetEase(Ease.InSine);
                 transform.DOKill();
-                onDeath.Invoke();
+                if(invokeDeath)
+                    onDeath.Invoke();
                 Destroy(gameObject, timeToExplode);
 
             });
