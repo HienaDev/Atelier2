@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Playables;
 using System.Collections;
 using TMPro;
 
@@ -8,15 +9,17 @@ public class MainMenu : MonoBehaviour
 {
     [Header("Main Menu")]
     [SerializeField] private Button continueButton;
-    [SerializeField] private GameObject newGameMessage;
     [SerializeField] private GameObject exitMessage;
     [SerializeField] private string sceneToLoad;
     [SerializeField] private GameObject settingsMenu;
     [SerializeField] private GameObject creditsMenu;
+    [SerializeField] PlayableDirector introCutscene;
 
     [Header("Loading Screen")]
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private TextMeshProUGUI loadingText;
+
+    private bool hasStartedGame = false;
 
     private void Start()
     {
@@ -28,11 +31,7 @@ public class MainMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (newGameMessage.activeSelf)
-            {
-                CancelNewGame();
-            }
-            else if (settingsMenu.activeSelf)
+            if (settingsMenu.activeSelf)
             {
                 CloseSettingsMenu();
             }
@@ -51,24 +50,34 @@ public class MainMenu : MonoBehaviour
         }
     }
 
-    public void ContinueGame()
+    public void PlayGame()
     {
-        StartCoroutine(LoadSceneAsync(sceneToLoad));
+        if (!hasStartedGame && introCutscene != null)
+        {
+            hasStartedGame = true;
+            introCutscene.stopped += OnCutsceneFinished;
+            introCutscene.Play();
+        }
+        else
+        {
+            StartCoroutine(LoadSceneAsync(sceneToLoad));
+        }
     }
 
-    public void NewGame()
+    private void OnCutsceneFinished(PlayableDirector director)
     {
-        newGameMessage.SetActive(true);
+        introCutscene.stopped -= OnCutsceneFinished;
+        StartCoroutine(StartGameAfterFrame());
     }
 
-    public void ConfirmNewGame()
+    private IEnumerator StartGameAfterFrame()
     {
-        StartCoroutine(LoadSceneAsync(sceneToLoad));
-    }
+        loadingScreen.SetActive(true);
+        if (loadingText != null) loadingText.text = "Loading... 0%";
+        
+        yield return null;
 
-    public void CancelNewGame()
-    {
-        newGameMessage.SetActive(false);
+        yield return LoadSceneAsync(sceneToLoad);
     }
 
     public void OpenSettingsMenu()
@@ -113,21 +122,16 @@ public class MainMenu : MonoBehaviour
 
     private IEnumerator LoadSceneAsync(string sceneName)
     {
-        loadingScreen.SetActive(true);
-
-        if (loadingText != null) loadingText.text = "Loading... 0%";
-
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
 
         while (!operation.isDone)
         {
             float progress = Mathf.Clamp01(operation.progress / 0.9f) * 100f;
 
-            if (loadingText != null) loadingText.text = $"Loading... {Mathf.RoundToInt(progress)}%";
+            if (loadingText != null)
+                loadingText.text = $"Loading... {Mathf.RoundToInt(progress)}%";
 
             yield return null;
         }
-
-        loadingScreen.SetActive(false);
     }
 }
