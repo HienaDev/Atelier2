@@ -19848,7 +19848,6 @@ GameObject:
   - component: {fileID: 752188154}
   - component: {fileID: 752188153}
   - component: {fileID: 752188156}
-  - component: {fileID: 752188157}
   - component: {fileID: 752188158}
   m_Layer: 0
   m_Name: Main Camera
@@ -19980,23 +19979,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 1
---- !u!114 &752188157
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 752188152}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b7270d307bea1e41b758101f84f15d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxYRotation: 1
-  maxXRotation: 1
-  rotationSpeed: 2
-  returnSpeed: 5
-  inputThreshold: 0.1
 --- !u!114 &752188158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61118,8 +61100,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2112298001}
   - component: {fileID: 2112298000}
-  - component: {fileID: 2112298002}
   - component: {fileID: 2112298003}
+  - component: {fileID: 2112298002}
   m_Layer: 0
   m_Name: Phase  Rez
   m_TagString: Untagged
