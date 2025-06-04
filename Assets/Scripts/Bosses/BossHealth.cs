@@ -112,6 +112,7 @@ public class BossHealth : MonoBehaviour
             duration
         );
         phaseManager?.CurrentCamera.GetComponent<CameraShake>().SmoothShakeCamera(20f, 1f);
+        projectiles.ClearAllProjectiles();
         DealDamage(((lives / phaseManager.phases.Length) / 4) + 5);
     }
 
