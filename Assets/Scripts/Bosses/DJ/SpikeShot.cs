@@ -21,7 +21,7 @@ public class SpikeShot : MonoBehaviour
     private void Start()
     {
         // Default initialization with speed 5f and max distance 20f
-        Initialize(5f, 10f);
+        //Initialize(5f, 10f);
     }
 
     // Initialize method to set the speed and maximum travel distance
