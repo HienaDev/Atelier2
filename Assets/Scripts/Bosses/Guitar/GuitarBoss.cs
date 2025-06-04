@@ -65,6 +65,8 @@ public class GuitarBoss : MonoBehaviour, BossInterface
 
     [Header("Weakpoint Settings")]
     [SerializeField] private GameObject weakpointPrefab;
+    [SerializeField] private GameObject energyCoreWeakpointPrefab;
+    [SerializeField] private GameObject encirlingAssaultWeakpointPrefab;
     [SerializeField] private WeakpointSlot[] weakpointSpawnPoints;
     [SerializeField] private int requiredWeakpointsToDestroy = 2;
     [SerializeField] private float extraWeakpointDelay = 5f;
@@ -100,6 +102,8 @@ public class GuitarBoss : MonoBehaviour, BossInterface
     private Coroutine bossAICoroutine;
     private Vector3 startPosition = Vector3.zero;
     private Quaternion startRotation = Quaternion.identity;
+    private GameObject currentCoreWeakpoint;
+    private GameObject currentPartWeakpoint;
 
     // Base value storage for difficulty scaling
     private float baseFlyingPartMoveSpeed;
@@ -525,6 +529,9 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         for (int j = 0; j < nHoming; j++)
             homingTimes[j] = flyingPartLifetimeOnPath * ((j + 1f) / (nHoming + 1f));
 
+        // NOVO: Escolher parte aleatória para weakpoint
+        int randomPartIndex = Random.Range(0, firePointSlots.Count);
+
         for (int i = 0; i < firePointSlots.Count; i++)
         {
             var slot = firePointSlots[i];
@@ -542,6 +549,11 @@ public class GuitarBoss : MonoBehaviour, BossInterface
             flyingVisual.transform.localScale = slot.visual.transform.localScale;
 
             launchedParts.Add(part);
+
+            if (i == randomPartIndex)
+            {
+                SpawnPartWeakpoint(part);
+            }
 
             flyingScript.Initialize(
                 chosenPath,
@@ -773,6 +785,8 @@ public class GuitarBoss : MonoBehaviour, BossInterface
             );
         }
 
+        SpawnCoreWeakpoint(core);
+
         StartCoroutine(EnergyCoreShake());
     }
 
@@ -813,6 +827,56 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         }
     }
 
+    private void SpawnCoreWeakpoint(GameObject core)
+    {
+        if (energyCoreWeakpointPrefab == null) return;
+
+        GameObject wp = Instantiate(energyCoreWeakpointPrefab, core.transform.position, Quaternion.identity);
+        wp.transform.SetParent(core.transform, worldPositionStays: true);
+
+        WeakPoint wpScript = wp.GetComponent<WeakPoint>();
+        wpScript.onDeath.AddListener(health.DealCritDamage);
+        wpScript.onDeath.AddListener(() => {
+            currentCoreWeakpoint = null;
+            OnWeakpointDestroyed();
+        });
+        wpScript.SetCritPositions(critPositions);
+
+        if (targetForWeakpoints != null)
+            wpScript.SetTarget(targetForWeakpoints);
+
+        currentCoreWeakpoint = wp;
+    }
+
+    private void SpawnPartWeakpoint(GameObject part)
+    {
+        if (encirlingAssaultWeakpointPrefab == null) return;
+
+        Transform centerRef = part.GetComponentInChildren<MeshRenderer>()?.transform;
+
+        if (centerRef == null)
+        {
+            Debug.LogWarning("SpawnPartWeakpoint: MeshRenderer não encontrado. Usando part.position.");
+            centerRef = part.transform;
+        }
+
+        GameObject wp = Instantiate(encirlingAssaultWeakpointPrefab, centerRef.position, Quaternion.identity);
+        wp.transform.SetParent(part.transform, worldPositionStays: true);
+
+        WeakPoint wpScript = wp.GetComponent<WeakPoint>();
+        wpScript.onDeath.AddListener(health.DealCritDamage);
+        wpScript.onDeath.AddListener(() => {
+            currentPartWeakpoint = null;
+            OnWeakpointDestroyed();
+        });
+        wpScript.SetCritPositions(critPositions);
+
+        if (targetForWeakpoints != null)
+            wpScript.SetTarget(targetForWeakpoints);
+
+        currentPartWeakpoint = wp;
+    }
+
     private IEnumerator WaitForWeakpointsDestroyed()
     {
         while (weakpointsDestroyed < requiredWeakpointsToDestroy)
@@ -849,6 +913,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
 
     private void SpawnNextWeakpointAfterDelay()
     {
+        if (!gameObject.activeInHierarchy) return;
         StartCoroutine(DelayedWeakpointSpawn());
     }
 

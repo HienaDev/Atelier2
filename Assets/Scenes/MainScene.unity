@@ -12598,7 +12598,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 438345850}
-  - component: {fileID: 438345852}
   - component: {fileID: 438345851}
   m_Layer: 0
   m_Name: MainBody
@@ -12662,27 +12661,6 @@ MonoBehaviour:
   - {fileID: 906993700}
   - {fileID: 1761539645}
   - {fileID: 188875698}
---- !u!65 &438345852
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 438345849}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2, y: 13.382896, z: 5.14}
-  m_Center: {x: 0, y: 0.10594337, z: 0}
 --- !u!1 &440482034 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3006328815571793890, guid: a2e9a6a334f80a8469ee14d336fc4f1b, type: 3}
@@ -32370,7 +32348,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1024517180}
   rb: {fileID: 1127038516}
-  bossCollider: {fileID: 438345852}
+  bossCollider: {fileID: 0}
   animator: {fileID: 1127038514}
   health: {fileID: 438345851}
   phaseManager: {fileID: 624881816}
@@ -32426,13 +32404,15 @@ MonoBehaviour:
   energyCoreBurstInterval: 0.2
   energyCoreAttackDuration: 8
   weakpointPrefab: {fileID: 8336133669464535913, guid: 1d46df66a09acf242a675382ac6a416d, type: 3}
+  energyCoreWeakpointPrefab: {fileID: 8336133669464535913, guid: a0e94715753e10641bcff72beb34af75, type: 3}
+  encirlingAssaultWeakpointPrefab: {fileID: 8336133669464535913, guid: 64d3cbb9360e3014d8ebb5f5e8235fe9, type: 3}
   weakpointSpawnPoints:
-  - spawnPoint: {fileID: 1882590166}
-    uniformScale: 1
+  - spawnPoint: {fileID: 1709599383}
+    uniformScale: 1.2
   - spawnPoint: {fileID: 479614082}
     uniformScale: 1
   requiredWeakpointsToDestroy: 2
-  extraWeakpointDelay: 5
+  extraWeakpointDelay: 10
   targetForWeakpoints: {fileID: 116956359}
   clearProjectiles: {fileID: 790325804}
   tutorialPercentage: 50
@@ -32586,6 +32566,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1140119748}
+  - component: {fileID: 1140119749}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -32614,6 +32595,27 @@ Transform:
   - {fileID: 969762194}
   m_Father: {fileID: 1127038517}
   m_LocalEulerAnglesHint: {x: 0, y: 45.021, z: 0}
+--- !u!65 &1140119749
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140119747}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2, y: 13.382896, z: 5.14}
+  m_Center: {x: 0, y: 0.10594337, z: 0}
 --- !u!1 &1143734857
 GameObject:
   m_ObjectHideFlags: 0
