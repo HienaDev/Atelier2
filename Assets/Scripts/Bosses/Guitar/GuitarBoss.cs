@@ -126,6 +126,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
     private float baseLegAttackDuration;
     private float baseEnergyCoreAttackDuration;
 
+    [SerializeField] private Transform[] critPositions;
     private void Awake()
     {
         if (rb == null) rb = GetComponent<Rigidbody>();
@@ -803,6 +804,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
             WeakPoint wpScript = wp.GetComponent<WeakPoint>();
             wpScript.onDeath.AddListener(OnWeakpointDestroyed);
 
+
             if (targetForWeakpoints != null)
                 wpScript.SetTarget(targetForWeakpoints);
 
@@ -883,6 +885,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         WeakPoint wpScript = wp.GetComponent<WeakPoint>();
         wpScript.onDeath.AddListener(health.DealCritDamage);
         wpScript.onDeath.AddListener(OnWeakpointDestroyed);
+        wpScript.SetCritPositions(critPositions);
 
         if (targetForWeakpoints != null)
             wpScript.SetTarget(targetForWeakpoints);

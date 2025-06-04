@@ -1,5 +1,6 @@
 
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -178,6 +179,14 @@ public class WeakPoint : MonoBehaviour
                             critTextUI.transform.localPosition = Vector3.zero; // Reset local position to avoid offset
                             critTextUI.transform.eulerAngles = Vector3.zero; // Reset rotation to avoid tilt
                         }
+                    }
+                    else
+                    {
+                        // Instantiate crit text at each crit position
+                        GameObject critTextUITemp = Instantiate(critTextUI, transform);
+                        critTextUI.transform.localPosition = Vector3.zero; // Reset local position to avoid offset
+                        critTextUI.transform.eulerAngles = Vector3.zero; // Reset rotation to avoid tilt
+
                     }
 
 
