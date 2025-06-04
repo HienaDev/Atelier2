@@ -21,7 +21,7 @@ public class RotateCameraOnMovement : MonoBehaviour
         targetRotation = originalRotation;
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         // Get input from Unity's input system
         float horizontalInput = Input.GetAxis("Horizontal"); // A/D keys or left/right arrows by default

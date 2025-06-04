@@ -37,6 +37,8 @@ public class PlayerShootingGuitar : MonoBehaviour
 
     private void AimArms()
     {
+        return;
+
         Vector3 mouseWorldPosition = GetMouseWorldPosition();
         Vector3 aimDirection = (mouseWorldPosition - transform.position).normalized;
         aimDirection.x = 0;
@@ -47,6 +49,8 @@ public class PlayerShootingGuitar : MonoBehaviour
 
     private void FlipBodyBasedOnAim()
     {
+        return;
+
         Vector3 mouseWorldPosition = GetMouseWorldPosition();
         bool shouldFaceRight = mouseWorldPosition.z > transform.position.z;
         if (shouldFaceRight != isFacingRight)
@@ -59,9 +63,15 @@ public class PlayerShootingGuitar : MonoBehaviour
     private void Shoot()
     {
         playerSounds.PlayerShoot();
-        Transform firePoint = isLeftArm ? leftArmFirePoint : rightArmFirePoint;
+        Transform firePoint = transform; //isLeftArm ? leftArmFirePoint : rightArmFirePoint;
+        
         Vector3 mouseWorldPosition = GetMouseWorldPosition();
-        Vector3 shootDirection = (mouseWorldPosition - transform.position).normalized;
+
+        //Debug.Log($"MousePos = {Input.mousePosition} / {-mainCamera.transform.forward} / {mouseWorldPosition}");
+
+        Debug.DrawLine(firePoint.position, mouseWorldPosition, Color.green, 0.1f);
+
+        Vector3 shootDirection = (mouseWorldPosition - firePoint.position).normalized;
         shootDirection.x = 0;
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.LookRotation(shootDirection));
         bullet.GetComponent<Rigidbody>().linearVelocity = shootDirection * bulletSpeed;
@@ -74,13 +84,16 @@ public class PlayerShootingGuitar : MonoBehaviour
         Plane plane = new Plane(Vector3.right, transform.position);
         if (plane.Raycast(ray, out float distance))
         {
-            return ray.GetPoint(distance);
+            var pt = ray.GetPoint(distance);
+            Debug.Log($"Distance = {distance}, Ray = {ray}, pt = {pt}, Mine = {ray.origin + ray.direction * distance}");
+            return pt;
         }
         return Vector3.zero;
     }
 
     private void OnDrawGizmos()
     {
+        return;
         if (!Application.isPlaying || mainCamera == null) return;
         Gizmos.color = new Color(0f, 0.5f, 1f, 0.2f);
         Vector3 center = transform.position;
