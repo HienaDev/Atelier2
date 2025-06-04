@@ -14,6 +14,7 @@ public class WeakPoint : MonoBehaviour
     [SerializeField] private int numberOfParticles = 5;
     [SerializeField] private float timeAlive = 20f;
     [SerializeField] private bool disableLifetime = false;
+    [SerializeField] private bool allowBodyContact = true;
 
     private Renderer rend;  // Assign the renderer in the Inspector
     private Material mat;
@@ -84,24 +85,22 @@ public class WeakPoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("PlayerProjectile"))
-        {
-            HandleHit();
-        }
+        HandleHit(other.gameObject);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("PlayerProjectile"))
-        {
-            HandleHit();
-        }
+        HandleHit(collision.gameObject);
     }
 
-
-
-    private void HandleHit()
+    private void HandleHit(GameObject hitter)
     {
+        if (!allowBodyContact)
+        {
+            if (hitter.CompareTag("Player") || hitter.layer == LayerMask.NameToLayer("Player"))
+                return;
+        }
+
         currentLives--;
         if (currentLives <= 0 && !dying)
         {
@@ -117,15 +116,14 @@ public class WeakPoint : MonoBehaviour
             sequence = DOTween.Sequence();
             sequence.Append(mat.DOFloat(2f + ((lives - currentLives) * extrusionIntensitySteps), "_PulseRatio", 0.05f).SetEase(Ease.InOutSine));
             sequence.Append(mat.DOFloat(0f + ((lives - currentLives) * extrusionIntensitySteps), "_PulseRatio", 0.5f).SetEase(Ease.InOutSine));
-            
-            if(audioSource != null)
+
+            if (audioSource != null)
             {
                 audioSource.pitch = 1f + (lives / currentLives);
                 audioSource.Play();
             }
         }
     }
-
 
     public void BlowUp(bool invokeDeath = true)
     {
