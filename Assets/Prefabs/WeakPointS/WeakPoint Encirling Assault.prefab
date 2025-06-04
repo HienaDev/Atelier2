@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   intensitySteps: 0.3
-  lives: 8
+  lives: 5
   isTriggerWeakPoint: 1
   extrusionIntensitySteps: 0.1
   col: {fileID: 6779117755271713210}
