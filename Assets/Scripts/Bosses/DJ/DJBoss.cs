@@ -63,8 +63,7 @@ public class DJBoss : MonoBehaviour, BossInterface
     [SerializeField] private DamageBoss damageBoss;
     private bool fightStarted = false;
 
-
-
+    [SerializeField] private Transform[] critPositions;
 
     private Animator animator;
 
@@ -144,7 +143,7 @@ public class DJBoss : MonoBehaviour, BossInterface
                 break;
             }
         }
-
+        collumn.collumn.GetComponent<BlowCollumnUp>().SetCritPoints(critPositions);
         AddSpeakerToList(pos);
 
         animator.SetTrigger("Button");
