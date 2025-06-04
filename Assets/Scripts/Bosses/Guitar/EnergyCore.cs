@@ -12,6 +12,7 @@ public class EnergyCore : MonoBehaviour
     private int numberOfFirePoints;
     private float firePointRadius;
     private float burstInterval;
+    private float lingerTime;
 
     private List<Transform> firePoints = new List<Transform>();
     private bool useEvenPoints = true;
@@ -26,7 +27,8 @@ public class EnergyCore : MonoBehaviour
 
     public void Initialize(float chargeTime, float activeDuration, int numberOfPhases,
                            GameObject projectilePrefab, float projectileSpeed,
-                           int numberOfFirePoints, float firePointRadius, float burstInterval)
+                           int numberOfFirePoints, float firePointRadius, float burstInterval,
+                           float lingerTime)
     {
         this.chargeTime = chargeTime;
         this.activeDuration = activeDuration;
@@ -36,6 +38,7 @@ public class EnergyCore : MonoBehaviour
         this.numberOfFirePoints = numberOfFirePoints;
         this.firePointRadius = firePointRadius;
         this.burstInterval = burstInterval;
+        this.lingerTime = lingerTime;
 
         GenerateFirePointsOnYZ();
         StartCoroutine(ExecuteCorePattern());
@@ -66,6 +69,7 @@ public class EnergyCore : MonoBehaviour
             }
         }
 
+        yield return new WaitForSeconds(lingerTime);
         Destroy(gameObject);
     }
 

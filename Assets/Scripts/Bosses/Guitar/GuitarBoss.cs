@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Cinemachine;
 
 public class GuitarBoss : MonoBehaviour, BossInterface
 {
@@ -55,6 +54,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
     [SerializeField] private Transform energyCoreSpawnPoint;
     [SerializeField] private float energyCoreChargeTime = 3f;
     [SerializeField] private float energyCoreActiveDuration = 4f;
+    [SerializeField] private float energyCoreLingerTime = 2f;
     [SerializeField] private int energyCorePhases = 2;
     [SerializeField] private GameObject energyCoreProjectilePrefab;
     [SerializeField] private float energyCoreProjectileSpeed = 10f;
@@ -129,6 +129,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
     private float baseAnimSpeed;
     private float baseLegAttackDuration;
     private float baseEnergyCoreAttackDuration;
+    private float baseEnergyCoreLingerTime;
 
     [SerializeField] private Transform[] critPositions;
     private void Awake()
@@ -182,7 +183,8 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         baseAttackCooldown = attackCooldown;
         baseAnimSpeed = animator ? animator.speed : 1f;
         baseLegAttackDuration = legAttackDuration;
-        baseEnergyCoreAttackDuration = energyCoreAttackDuration;   
+        baseEnergyCoreAttackDuration = energyCoreAttackDuration;
+        baseEnergyCoreLingerTime = energyCoreLingerTime; 
     }
 
     private void Update()
@@ -272,6 +274,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         attackCooldown = baseAttackCooldown * inverseMultiplier;
         legAttackDuration = baseLegAttackDuration * multiplier;
         energyCoreAttackDuration = baseEnergyCoreAttackDuration * multiplier;
+        energyCoreLingerTime = baseEnergyCoreLingerTime * inverseMultiplier;
 
         if (animator != null)
         {
@@ -385,11 +388,11 @@ public class GuitarBoss : MonoBehaviour, BossInterface
     {
         Debug.Log("Guitar Boss: Starting AI behavior");
 
-        yield return StartCoroutine(EncirclingAssaultSequence());
-        yield return new WaitForSeconds(attackCooldown);
+        //yield return StartCoroutine(EncirclingAssaultSequence());
+        //yield return new WaitForSeconds(attackCooldown);
 
-        yield return StartCoroutine(LegBarrageSequence());
-        yield return new WaitForSeconds(attackCooldown);
+        //yield return StartCoroutine(LegBarrageSequence());
+        //yield return new WaitForSeconds(attackCooldown);
 
         yield return StartCoroutine(EnergyCoreSequence());
         yield return new WaitForSeconds(attackCooldown);
@@ -781,12 +784,12 @@ public class GuitarBoss : MonoBehaviour, BossInterface
                 energyCoreProjectileSpeed,
                 energyCoreFirePoints,
                 energyCoreFireRadius,
-                energyCoreBurstInterval
+                energyCoreBurstInterval,
+                energyCoreLingerTime
             );
         }
 
         SpawnCoreWeakpoint(core);
-
         StartCoroutine(EnergyCoreShake());
     }
 
