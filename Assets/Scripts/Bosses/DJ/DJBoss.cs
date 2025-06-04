@@ -63,8 +63,7 @@ public class DJBoss : MonoBehaviour, BossInterface
     [SerializeField] private DamageBoss damageBoss;
     private bool fightStarted = false;
 
-
-
+    [SerializeField] private Transform[] critPositions;
 
     private Animator animator;
 

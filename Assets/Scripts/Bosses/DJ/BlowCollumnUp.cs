@@ -21,6 +21,12 @@ public class BlowCollumnUp : MonoBehaviour
     private DamageBoss damageBoss;
     [SerializeField] private ClearProjectiles clearProjectiles;
 
+    private Transform[] critPoints;
+    public void SetCritPoints(Transform[] points)
+    {
+        critPoints = points;
+    }
+
     private int index = 0;
 
     [Header("Fall Settings")]
@@ -55,12 +61,16 @@ public class BlowCollumnUp : MonoBehaviour
     [SerializeField] private float hitSoundVolume = 1f;
     [SerializeField] private float hitSoundPitch = 1f;
 
+    private System.Action[] spawnColumnActions;
+
     void Awake()
     {
         originalPosition = transform.position;
         originalScale = transform.localScale;
         originalRotation = transform.rotation;
     }
+
+
 
     private void PlayDestructionAudio()
     {
@@ -150,13 +160,16 @@ public class BlowCollumnUp : MonoBehaviour
         this.health = health;
         this.index = index;
         this.damageBoss = damageBoss;
+
+        spawnColumnActions = new System.Action[]
+        {
+            () => boss.SpawnCollum0(),
+            () => boss.SpawnCollum1(),
+            () => boss.SpawnCollum2(),
+            () => boss.SpawnCollum3()
+        };
+
         TriggerFall();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public void DealDamage(int damage)
@@ -173,40 +186,25 @@ public class BlowCollumnUp : MonoBehaviour
         }
         if (health <= 0)
         {
-            // Play destruction audio when health reaches 0
             PlayDestructionAudio();
 
             boss.AddSpeakerToList(index);
             GameObject weakpointClone = Instantiate(weakpoint, transform.position, Quaternion.identity);
-            weakpointClone.GetComponent<WeakPoint>().onDeath.AddListener(damageBoss.DealCritDamage);
-            weakpointClone.GetComponent<WeakPoint>().onDeath.AddListener(boss.DamageAnimation);
+            var weakpointComponent = weakpointClone.GetComponent<WeakPoint>();
+
+            weakpointComponent.onDeath.AddListener(damageBoss.DealCritDamage);
+            weakpointComponent.onDeath.AddListener(boss.DamageAnimation);
 
             clearProjectiles.AddProjectile(weakpointClone);
 
-            switch (index)
+            // Add delegate-based listeners if index is valid
+            if (index >= 0 && index < spawnColumnActions.Length)
             {
-                case 0:
-                    weakpointClone.GetComponent<WeakPoint>().onLifetime.AddListener(boss.SpawnCollum0);
-                    weakpointClone.GetComponent<WeakPoint>().onDeath.AddListener(boss.SpawnCollum0);
-                    break;
-                case 1:
-                    weakpointClone.GetComponent<WeakPoint>().onLifetime.AddListener(boss.SpawnCollum1);
-                    weakpointClone.GetComponent<WeakPoint>().onDeath.AddListener(boss.SpawnCollum1);
-                    break;
-                case 2:
-                    weakpointClone.GetComponent<WeakPoint>().onLifetime.AddListener(boss.SpawnCollum2);
-                    weakpointClone.GetComponent<WeakPoint>().onDeath.AddListener(boss.SpawnCollum2);
-                    break;
-                case 3:
-                    weakpointClone.GetComponent<WeakPoint>().onLifetime.AddListener(boss.SpawnCollum3);
-                    weakpointClone.GetComponent<WeakPoint>().onDeath.AddListener(boss.SpawnCollum3);
-                    break;
-                default:
-                    break;
+                weakpointComponent.onLifetime.AddListener(() => spawnColumnActions[index]());
+                weakpointComponent.onDeath.AddListener(() => spawnColumnActions[index]());
             }
 
-
-            weakpointClone.GetComponent<WeakPoint>().SetTarget(damageBoss.gameObject.transform);
+            weakpointComponent.SetTarget(damageBoss.transform);
             gameObject.SetActive(false);
         }
     }

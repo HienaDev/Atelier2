@@ -44,6 +44,13 @@ public class WeakPoint : MonoBehaviour
 
     [SerializeField] private GameObject critTextUI;
 
+    private Vector3[] critPositions;
+
+    public void SetCritPositions(Vector3[] positions)
+    {
+        critPositions = positions;
+    }
+
     void Awake()
     {
         originalScale = transform.localScale;
