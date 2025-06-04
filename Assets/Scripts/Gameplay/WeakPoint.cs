@@ -44,9 +44,9 @@ public class WeakPoint : MonoBehaviour
 
     [SerializeField] private GameObject critTextUI;
 
-    private Vector3[] critPositions;
+    private Transform[] critPositions;
 
-    public void SetCritPositions(Vector3[] positions)
+    public void SetCritPositions(Transform[] positions)
     {
         critPositions = positions;
     }
@@ -76,7 +76,7 @@ public class WeakPoint : MonoBehaviour
 
     void Update()
     {
-        if  (!disableLifetime && Time.time - justSpawned > timeAlive && !dying)
+        if (!disableLifetime && Time.time - justSpawned > timeAlive && !dying)
         {
             dying = true;
             col.enabled = false;
@@ -124,8 +124,8 @@ public class WeakPoint : MonoBehaviour
             sequence = DOTween.Sequence();
             sequence.Append(mat.DOFloat(2f + ((lives - currentLives) * extrusionIntensitySteps), "_PulseRatio", 0.05f).SetEase(Ease.InOutSine));
             sequence.Append(mat.DOFloat(0f + ((lives - currentLives) * extrusionIntensitySteps), "_PulseRatio", 0.5f).SetEase(Ease.InOutSine));
-            
-            if(audioSource != null)
+
+            if (audioSource != null)
             {
                 audioSource.pitch = 1f + (lives / currentLives);
                 audioSource.Play();
@@ -136,19 +136,20 @@ public class WeakPoint : MonoBehaviour
 
     public void BlowUp(bool invokeDeath = true)
     {
-        if(col != null)
+        if (col != null)
             col.enabled = false;
 
         dying = true;
         sequence?.Kill();
 
-        Debug.Log("Blowing up weakpoint");  
+        Debug.Log("Blowing up weakpoint");
 
         transform.DOKill();
         transform.DOShakeRotation(0.2f, 0.2f, 5, 50, false, ShakeRandomnessMode.Harmonic).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
         transform.DOShakeScale(0.2f, 0.2f, 5, 50, false, ShakeRandomnessMode.Harmonic).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
 
-        transform.DOMove(transform.position + new Vector3(0f, invokeDeath? 5f : 0f, 0f), 0.2f).SetEase(Ease.InOutSine).OnComplete(() => {
+        transform.DOMove(transform.position + new Vector3(0f, invokeDeath ? 5f : 0f, 0f), 0.2f).SetEase(Ease.InOutSine).OnComplete(() =>
+        {
             Vector3 targetPosition;
 
             if (bossSpawn != null && invokeDeath)
@@ -164,12 +165,24 @@ public class WeakPoint : MonoBehaviour
             {
                 mat.DOFloat(160f, "_PulseRatio", timeToExplode).SetEase(Ease.InSine);
                 transform.DOKill();
-                if(invokeDeath)
+                if (invokeDeath)
                 {
                     onDeath.Invoke();
-                    GameObject critTextUIClone = Instantiate(critTextUI, targetPosition, Quaternion.identity);
+
+                    if (critPositions != null && critPositions.Length > 0)
+                    {
+                        foreach (Transform critPosition in critPositions)
+                        {
+                            // Instantiate crit text at each crit position
+                            GameObject critTextUITemp = Instantiate(critTextUI, critPosition); 
+                            critTextUI.transform.localPosition = Vector3.zero; // Reset local position to avoid offset
+                            critTextUI.transform.eulerAngles = Vector3.zero; // Reset rotation to avoid tilt
+                        }
+                    }
+
+
                 }
-                    
+
                 Destroy(gameObject, timeToExplode);
 
             });
@@ -214,7 +227,7 @@ public class WeakPoint : MonoBehaviour
             Destroy(gameObject, 0.3f);
         });
     }
-    
+
     public void DisableLifetime()
     {
         disableLifetime = true;

@@ -143,7 +143,7 @@ public class DJBoss : MonoBehaviour, BossInterface
                 break;
             }
         }
-
+        collumn.collumn.GetComponent<BlowCollumnUp>().SetCritPoints(critPositions);
         AddSpeakerToList(pos);
 
         animator.SetTrigger("Button");

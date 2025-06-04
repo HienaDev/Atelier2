@@ -75,6 +75,7 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
     private bool fightStarted = false;
     private bool justChangedPattern = false;
 
+    [SerializeField] private Transform[] critPositions;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -231,7 +232,7 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
             {
                 weakPoint.onDeath.AddListener(DealWeakPointDamage);
                 weakPoint.SetTarget(targetForWeakpoints);
-
+                weakPoint.SetCritPositions(critPositions);
             }
 
             attack.transform.position = shootingPoint.position + playerMovement.CellDistance * i * new Vector3(0f, 0f, 1f);

@@ -197,11 +197,11 @@ public class BlowCollumnUp : MonoBehaviour
 
             clearProjectiles.AddProjectile(weakpointClone);
 
-            // Add delegate-based listeners if index is valid
             if (index >= 0 && index < spawnColumnActions.Length)
             {
                 weakpointComponent.onLifetime.AddListener(() => spawnColumnActions[index]());
                 weakpointComponent.onDeath.AddListener(() => spawnColumnActions[index]());
+                weakpointComponent.SetCritPositions(critPoints);
             }
 
             weakpointComponent.SetTarget(damageBoss.transform);
