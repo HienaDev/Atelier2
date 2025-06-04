@@ -388,11 +388,11 @@ public class GuitarBoss : MonoBehaviour, BossInterface
     {
         Debug.Log("Guitar Boss: Starting AI behavior");
 
-        //yield return StartCoroutine(EncirclingAssaultSequence());
-        //yield return new WaitForSeconds(attackCooldown);
+        yield return StartCoroutine(EncirclingAssaultSequence());
+        yield return new WaitForSeconds(attackCooldown);
 
-        //yield return StartCoroutine(LegBarrageSequence());
-        //yield return new WaitForSeconds(attackCooldown);
+        yield return StartCoroutine(LegBarrageSequence());
+        yield return new WaitForSeconds(attackCooldown);
 
         yield return StartCoroutine(EnergyCoreSequence());
         yield return new WaitForSeconds(attackCooldown);
