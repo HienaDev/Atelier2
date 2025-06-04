@@ -74,7 +74,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1c4de4749ec01e74c82d52d3578d3a43, type: 2}
     - target: {fileID: 919132149155446097, guid: 50dd710cb6eea6b4bbd66669b0035685, type: 3}
       propertyPath: m_Name
-      value: WeakPointScorpion
+      value: WeakPointGuitar
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 50dd710cb6eea6b4bbd66669b0035685, type: 3}
       propertyPath: m_Layer
@@ -96,9 +96,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 50dd710cb6eea6b4bbd66669b0035685, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4700319512618447981}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 50dd710cb6eea6b4bbd66669b0035685, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -7836926299482995916}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 50dd710cb6eea6b4bbd66669b0035685, type: 3}
       insertIndex: -1
       addedObject: {fileID: -517358388756699048}
@@ -137,6 +134,7 @@ MonoBehaviour:
   numberOfParticles: 5
   timeAlive: 20
   disableLifetime: 0
+  allowBodyContact: 0
   timeToExplode: 0.1
   amplitude: 0.1
   period: 0.1
@@ -5032,22 +5030,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &-7836926299482995916
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8336133669464535913}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d7cc8dcc109f9f48b63628297be2939, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  particleSystemExplosion: {fileID: 8881244261015604869}
-  disableMesh: 1
-  destroy: 0
-  dealsDamage: 1
 --- !u!82 &-517358388756699048
 AudioSource:
   m_ObjectHideFlags: 0
