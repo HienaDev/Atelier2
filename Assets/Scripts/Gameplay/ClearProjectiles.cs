@@ -19,6 +19,27 @@ public class ClearProjectiles : MonoBehaviour
     {
         foreach (GameObject projectile in projectiles)
         {
+
+            if(projectile == null)
+            {
+                continue; // Skip if the projectile is already destroyed
+            }
+
+            SpikeShot spikeShot = projectile.GetComponent<SpikeShot>();
+            if (spikeShot != null)
+            {
+                spikeShot.BreakApart();
+                continue;
+            }
+
+            Destructable destructable = projectile.GetComponent<Destructable>();
+            if (destructable != null)
+            {
+                destructable.BlowUp();
+                continue;
+            }
+
+
             Destroy(projectile);
         }
 
