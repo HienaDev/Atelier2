@@ -74,4 +74,51 @@ public class DamagePlayer : MonoBehaviour
         }
             
     }
+
+    public void BlowUp()
+    {
+        if(particleSystemExplosion == null)
+        {
+            Debug.LogWarning("Particle system explosion is not set, cannot blow up.");
+            return;
+        }
+
+        if (disableMesh)
+        {
+            if (colliderTrigger != null)
+                colliderTrigger.enabled = false;
+
+            MeshRenderer rend = GetComponent<MeshRenderer>();
+
+            if (rend != null)
+            {
+                rend.enabled = false;
+                Debug.Log(rend.name);
+                Debug.Log("AUDIO CUBE RENDERER DISABLED");
+            }
+            else
+            {
+                rend = GetComponentInChildren<MeshRenderer>();
+                if (rend != null)
+                {
+                    rend.enabled = false;
+                    Debug.Log("AUDIO CUBE RENDERER DISABLED");
+                }
+
+            }
+
+        }
+
+        float lifetime = 0.1f;
+
+        if (particleSystemExplosion != null)
+        {
+            particleSystemExplosion.Play();
+            // Destroy this object after the particle system finishes
+            lifetime = particleSystemExplosion.main.duration + particleSystemExplosion.main.startLifetime.constantMax;
+        }
+
+        Debug.Log("Destroying gameObject after " + lifetime + " seconds");
+        Destroy(gameObject, lifetime);
+    }
 }

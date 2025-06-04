@@ -59,20 +59,8 @@ public class Destroyable : MonoBehaviour
         currentLives--;
         if (currentLives <= 0 && !dying)
         {
-            col.enabled = false;
-            dying = true;
-            sequence?.Kill();
-            transform.DOKill();
-            transform.DOShakeRotation(0.2f, 0.2f, 5, 50, false, ShakeRandomnessMode.Harmonic).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
-            transform.DOShakeScale(0.2f, 0.2f, 5, 50, false, ShakeRandomnessMode.Harmonic).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
 
-            mat.DOFloat(160f, "_PulseRatio", 0.1f).SetEase(Ease.InSine).OnComplete(() =>
-            {
-                transform.DOKill();
-                onDeath.Invoke();
-                Destroy(gameObject, 0.1f);
-            });
-
+            BlowUp();
         }
         else
         {
@@ -86,5 +74,22 @@ public class Destroyable : MonoBehaviour
             sequence.Append(mat.DOFloat(2f + ((lives - currentLives) * extrusionIntensitySteps), "_PulseRatio", 0.05f).SetEase(Ease.InOutSine));
             sequence.Append(mat.DOFloat(0f + ((lives - currentLives) * extrusionIntensitySteps), "_PulseRatio", 0.5f).SetEase(Ease.InOutSine));
         }
+    }
+
+    public void BlowUp()
+    {
+        col.enabled = false;
+        dying = true;
+        sequence?.Kill();
+        transform.DOKill();
+        transform.DOShakeRotation(0.2f, 0.2f, 5, 50, false, ShakeRandomnessMode.Harmonic).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
+        transform.DOShakeScale(0.2f, 0.2f, 5, 50, false, ShakeRandomnessMode.Harmonic).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
+
+        mat.DOFloat(160f, "_PulseRatio", 0.1f).SetEase(Ease.InSine).OnComplete(() =>
+        {
+            transform.DOKill();
+            onDeath.Invoke();
+            Destroy(gameObject, 0.1f);
+        });
     }
 }

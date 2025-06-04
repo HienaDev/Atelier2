@@ -39,6 +39,19 @@ public class ClearProjectiles : MonoBehaviour
                 continue;
             }
 
+            Destroyable destroyable = projectile.GetComponent<Destroyable>();
+            if (destroyable != null)
+            {
+                destroyable.BlowUp();
+                continue;
+            }
+
+            DamagePlayer damagePlayer = projectile.GetComponent<DamagePlayer>();
+            if (damagePlayer != null)
+            {
+                damagePlayer.BlowUp();
+                continue;
+            }
 
             Destroy(projectile);
         }
