@@ -17,10 +17,13 @@ public class InstantiateCubes : MonoBehaviour
     [SerializeField] private Ease easingType = Ease.OutExpo;
     [SerializeField] private float spacingDuration = 2f;
 
+    private ClearProjectiles projectiles;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         audioVisualizer = FindAnyObjectByType<AudioVisualizer>();
+        projectiles = FindAnyObjectByType<ClearProjectiles>();
         cubes = new GameObject[audioVisualizer.numberOfFrequencies];
 
         Vector3 startPosition = transform.position;
@@ -31,6 +34,8 @@ public class InstantiateCubes : MonoBehaviour
             cubes[i] = Instantiate(cubePrefab, startPosition, transform.rotation);
             cubes[i].transform.parent = transform;
             cubes[i].name = "Cube " + i;
+
+            projectiles.AddProjectile(cubes[i]);
 
             // Get the cube's X scale to space correctly (assuming scale.x = 1 by default)
             float cubeWidth = cubePrefab.transform.localScale.x;

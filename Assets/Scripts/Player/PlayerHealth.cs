@@ -111,6 +111,9 @@ public class PlayerHealth : MonoBehaviour
             return;
         }
 
+        
+
+
         AudioManager.Instance.PlaySound(hurtSound, volume:0.6f, pitch: 0.3f, true);
 
         Sequence sequenceGrid = DOTween.Sequence();
@@ -130,7 +133,10 @@ public class PlayerHealth : MonoBehaviour
         if (cameraShake != null)
             cameraShake.ShakeCamera(2f, 0.1f);
 
-        currentLives--;
+        currentLives -= damage;
+
+        if (currentLives > lives)
+            currentLives = lives;
 
         for (int i = 0; i < livesUI.Length; i++)
         {

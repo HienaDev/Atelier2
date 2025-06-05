@@ -22,12 +22,14 @@ public class ClearProjectiles : MonoBehaviour
 
             if(projectile == null)
             {
+                //Debug.Log("ClearAllProjectiles: Attempted to clear a null projectile.");
                 continue; // Skip if the projectile is already destroyed
             }
 
             SpikeShot spikeShot = projectile.GetComponent<SpikeShot>();
             if (spikeShot != null)
             {
+                //Debug.Log("Clearing SpikeShot: " + projectile.name);
                 spikeShot.BreakApart();
                 continue;
             }
@@ -35,6 +37,7 @@ public class ClearProjectiles : MonoBehaviour
             Destructable destructable = projectile.GetComponent<Destructable>();
             if (destructable != null)
             {
+                //Debug.Log("Clearing Destructable: " + projectile.name);
                 destructable.BlowUp();
                 continue;
             }
@@ -42,6 +45,7 @@ public class ClearProjectiles : MonoBehaviour
             Destroyable destroyable = projectile.GetComponent<Destroyable>();
             if (destroyable != null)
             {
+                //Debug.Log("Clearing Destroyable: " + projectile.name);
                 destroyable.BlowUp();
                 continue;
             }
@@ -49,10 +53,13 @@ public class ClearProjectiles : MonoBehaviour
             DamagePlayer damagePlayer = projectile.GetComponent<DamagePlayer>();
             if (damagePlayer != null)
             {
+                //Debug.Log("Clearing DamagePlayer: " + projectile.name);
                 damagePlayer.BlowUp();
                 continue;
             }
 
+            // If no specific component is found, just destroy the projectile
+            //Debug.Log("Clearing projectile: " + projectile.name);
             Destroy(projectile);
         }
 

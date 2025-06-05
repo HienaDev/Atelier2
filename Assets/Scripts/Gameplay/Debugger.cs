@@ -6,6 +6,7 @@ public class Debugger : MonoBehaviour
 {
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private BossHealth bossHealth;
+    [SerializeField] private ClearProjectiles clearProjectiles;
 
 
     // Update is called once per frame
@@ -18,18 +19,29 @@ public class Debugger : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F2))
         {
+            playerHealth.DealDamage(-1);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
             playerHealth.ToggleInvulnerable();
         }
 
-        if(Input.GetKeyDown(KeyCode.F3))
+        if(Input.GetKeyDown(KeyCode.F4))
         {
             bossHealth.SkipPhase();
         }
 
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            clearProjectiles.ClearAllProjectiles();
+        }
 
-        if (Input.GetKeyDown(KeyCode.F4))
+        if (Input.GetKeyDown(KeyCode.F6))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+
+
     }
 }

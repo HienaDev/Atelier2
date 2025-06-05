@@ -97,7 +97,8 @@ public class MoveWithMusic : MonoBehaviour
         if (songTime >= nextBeatTime)
         {
             // Set bop to true for this frame
-            bop = true;
+            if(Time.timeScale > 0)
+                bop = true;
 
             sequenceVertical = DOTween.Sequence();
             sequenceVertical.Append(matGridVertical.DOFloat(0.8f, "_LineWidth", 0.1f).SetEase(Ease.InOutSine));

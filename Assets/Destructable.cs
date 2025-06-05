@@ -95,6 +95,7 @@ public class Destructable : MonoBehaviour
 
     public void BlowUp()
     {
+        Debug.Log("Blowing up " + gameObject.name);
         col.enabled = false;
         dying = true;
         sequence?.Kill();

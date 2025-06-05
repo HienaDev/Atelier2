@@ -446,7 +446,7 @@ public class DJBoss : MonoBehaviour, BossInterface
             projectileScript.Initialize(wallProjectileSpeed, wallLifetime); 
         }
 
-        clearProjectiles.AddProjectile(projectile);
+        //clearProjectiles.AddProjectile(projectile);
     }
 
 
