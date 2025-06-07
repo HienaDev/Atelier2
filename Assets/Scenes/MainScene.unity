@@ -29799,6 +29799,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1851819376124963880, guid: 9a5ae60637477eb4182569c37227cdf2, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -36203,6 +36207,14 @@ PrefabInstance:
     - target: {fileID: 980184960296167175, guid: 9a5ae60637477eb4182569c37227cdf2, type: 3}
       propertyPath: m_Name
       value: Crit Canvas!
+      objectReference: {fileID: 0}
+    - target: {fileID: 980184960296167175, guid: 9a5ae60637477eb4182569c37227cdf2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1851819376124963880, guid: 9a5ae60637477eb4182569c37227cdf2, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
