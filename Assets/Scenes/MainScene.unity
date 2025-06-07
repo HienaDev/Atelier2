@@ -1502,7 +1502,6 @@ Transform:
   m_LocalScale: {x: 1.887506, y: 1.887506, z: 1.887506}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1709599383}
   - {fileID: 479614082}
   m_Father: {fileID: 1127038517}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -32542,6 +32541,7 @@ MonoBehaviour:
   delayBetweenLaunches: 0.3
   evasiveMoveSpeed: 12
   evasiveMoveRadius: 10
+  weakpointPartSpeedMultiplier: 0.6
   timeBetweenRandomMoves: 1
   legProjectilePrefab: {fileID: 8460287776679972660, guid: 95811fb55ac27e641bb4498ef4e36bfc, type: 3}
   legProjectileSpeed: 21
@@ -32573,8 +32573,8 @@ MonoBehaviour:
   energyCoreWeakpointPrefab: {fileID: 8336133669464535913, guid: a0e94715753e10641bcff72beb34af75, type: 3}
   encirlingAssaultWeakpointPrefab: {fileID: 8336133669464535913, guid: 64d3cbb9360e3014d8ebb5f5e8235fe9, type: 3}
   weakpointSpawnPoints:
-  - spawnPoint: {fileID: 1709599383}
-    uniformScale: 1.2
+  - spawnPoint: {fileID: 1777795490}
+    uniformScale: 1
   - spawnPoint: {fileID: 479614082}
     uniformScale: 1
   requiredWeakpointsToDestroy: 2
@@ -48931,37 +48931,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   duration: 1
   ease: 25
---- !u!1 &1709599382
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1709599383}
-  m_Layer: 0
-  m_Name: Weakpoint 1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1709599383
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1709599382}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.236, y: 6.015, z: -0.128}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 61476838}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1716877593
 GameObject:
   m_ObjectHideFlags: 0
