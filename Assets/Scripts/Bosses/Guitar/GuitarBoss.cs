@@ -403,15 +403,6 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         yield return StartCoroutine(EncirclingAssaultSequence());
         yield return new WaitForSeconds(attackCooldown);
 
-        yield return StartCoroutine(EncirclingAssaultSequence());
-        yield return new WaitForSeconds(attackCooldown);
-
-        yield return StartCoroutine(EncirclingAssaultSequence());
-        yield return new WaitForSeconds(attackCooldown);
-
-        yield return StartCoroutine(EncirclingAssaultSequence());
-        yield return new WaitForSeconds(attackCooldown);
-
         yield return StartCoroutine(LegBarrageSequence());
         yield return new WaitForSeconds(attackCooldown);
 
