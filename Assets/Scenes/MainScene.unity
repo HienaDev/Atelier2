@@ -32541,7 +32541,7 @@ MonoBehaviour:
   delayBetweenLaunches: 0.3
   evasiveMoveSpeed: 12
   evasiveMoveRadius: 10
-  weakpointPartSpeedMultiplier: 0.6
+  weakpointPartSpeedMultiplier: 0.5
   timeBetweenRandomMoves: 1
   legProjectilePrefab: {fileID: 8460287776679972660, guid: 95811fb55ac27e641bb4498ef4e36bfc, type: 3}
   legProjectileSpeed: 21

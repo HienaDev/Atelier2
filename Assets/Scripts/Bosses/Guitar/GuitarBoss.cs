@@ -403,6 +403,15 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         yield return StartCoroutine(EncirclingAssaultSequence());
         yield return new WaitForSeconds(attackCooldown);
 
+        yield return StartCoroutine(EncirclingAssaultSequence());
+        yield return new WaitForSeconds(attackCooldown);
+
+        yield return StartCoroutine(EncirclingAssaultSequence());
+        yield return new WaitForSeconds(attackCooldown);
+
+        yield return StartCoroutine(EncirclingAssaultSequence());
+        yield return new WaitForSeconds(attackCooldown);
+
         yield return StartCoroutine(LegBarrageSequence());
         yield return new WaitForSeconds(attackCooldown);
 
@@ -532,7 +541,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         StartCoroutine(LaunchAndEvadeSequence());
     }
 
-    private IEnumerator LaunchAndEvadeSequence()
+        private IEnumerator LaunchAndEvadeSequence()
     {
         isAttacking = true;
         originalPosition = transform.position;
@@ -597,7 +606,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
                 flyingPartPathDetectionThreshold,
                 flyingVisual.transform,
                 player,
-                new float[0],
+                homingTimes,
                 false,
                 flyingPartHomingSpeed
             );
@@ -612,25 +621,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
 
         yield return new WaitForSeconds(0.5f);
 
-        List<GameObject> eligibleForHoming = new List<GameObject>();
-        foreach (GameObject part in launchedParts)
-        {
-            FlyingBodyPart flyingScript = part.GetComponent<FlyingBodyPart>();
-            if (flyingScript != null && flyingScript.IsOrbiting() && !flyingScript.HasWeakpoint())
-            {
-                eligibleForHoming.Add(part);
-            }
-        }
-
-        GameObject farthestPart = GetFarthestPartFromPlayer(eligibleForHoming);
-        if (farthestPart != null)
-        {
-            FlyingBodyPart farthestScript = farthestPart.GetComponent<FlyingBodyPart>();
-            if (farthestScript != null)
-            {
-                farthestScript.EnableHoming(homingTimes);
-            }
-        }
+        StartCoroutine(MonitorHomingActivation(launchedParts, homingTimes));
 
         phaseManager?.CurrentCamera.GetComponent<CameraShake>().ShakeCamera(0.6f, 0.5f, flyingPartLifetimeOnPath);
 
@@ -647,12 +638,54 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         }
     }
 
+    private IEnumerator MonitorHomingActivation(List<GameObject> launchedParts, float[] homingTimes)
+    {
+        int homingIndex = 0;
+        float timer = 0f;
+
+        while (homingIndex < homingTimes.Length && timer < flyingPartLifetimeOnPath)
+        {
+            timer += Time.deltaTime;
+
+            if (timer >= homingTimes[homingIndex])
+            {
+                List<GameObject> eligibleForHoming = new List<GameObject>();
+                foreach (GameObject part in launchedParts)
+                {
+                    if (part != null)
+                    {
+                        FlyingBodyPart flyingScript = part.GetComponent<FlyingBodyPart>();
+                        if (flyingScript != null && flyingScript.IsOrbiting() && !flyingScript.HasWeakpoint())
+                        {
+                            eligibleForHoming.Add(part);
+                        }
+                    }
+                }
+
+                GameObject farthestPart = GetFarthestPartFromPlayer(eligibleForHoming);
+                if (farthestPart != null)
+                {
+                    FlyingBodyPart farthestScript = farthestPart.GetComponent<FlyingBodyPart>();
+                    if (farthestScript != null)
+                    {
+                        float[] singleHomingTime = { 0f };
+                        farthestScript.EnableHoming(singleHomingTime);
+                    }
+                }
+
+                homingIndex++;
+            }
+
+            yield return null;
+        }
+    }
+
     private GameObject GetFarthestPartFromPlayer(List<GameObject> parts)
     {
         if (player == null || parts.Count == 0) return null;
 
         GameObject farthest = null;
-        float maxDistance = 0f;
+        float maxDistance = float.MinValue;
 
         foreach (GameObject part in parts)
         {
@@ -921,9 +954,6 @@ public class GuitarBoss : MonoBehaviour, BossInterface
 
         Debug.Log("Guitar Boss: **Weakpoints destroyed!**");
 
-        // Placeholder for health change or phase change
-        //StartCoroutine(BossAI());
-
         health?.ChangePhase();
     }
 
@@ -983,7 +1013,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         GameObject wp = Instantiate(weakpointPrefab, slot.spawnPoint.position, Quaternion.identity);
         wp.transform.SetParent(slot.spawnPoint, worldPositionStays: true);
         wp.transform.localScale = Vector3.one * slot.uniformScale;
-        //
+
         WeakPoint wpScript = wp.GetComponent<WeakPoint>();
         wpScript.onDeath.AddListener(health.DealCritDamage);
         wpScript.onDeath.AddListener(OnWeakpointDestroyed);

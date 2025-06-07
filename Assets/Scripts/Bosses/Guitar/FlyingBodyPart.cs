@@ -282,7 +282,9 @@ public class FlyingBodyPart : MonoBehaviour
             Vector3 dir = (originPos - transform.position);
             dir.x = 0f;
             dir = dir.sqrMagnitude < 0.01f ? Vector3.back : dir.normalized;
-            transform.position += dir * moveSpeed * Time.deltaTime;
+            
+            float returnSpeed = hasWeakpoint ? (moveSpeed / 0.5f) : moveSpeed;
+            transform.position += dir * returnSpeed * Time.deltaTime;
 
             if (Vector3.Distance(new Vector3(0f, transform.position.y, transform.position.z),
                                     new Vector3(0f, originPos.y, originPos.z)) < 0.2f)
