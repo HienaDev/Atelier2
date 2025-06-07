@@ -161,8 +161,6 @@ public class FlyingBodyPart : MonoBehaviour
 
         if (goingToPath)
         {
-            transform.position += new Vector3(0f, 0f, -moveSpeed * Time.deltaTime);
-            
             float closestDistance = float.MaxValue;
             float closestT = 0f;
             
@@ -179,9 +177,15 @@ public class FlyingBodyPart : MonoBehaviour
                 }
             }
             
+            Vector3 targetPoint = path.GetPointOnPath(closestT);
+            targetPoint.x = 0f;
+            Vector3 direction = (targetPoint - transform.position).normalized;
+            
+            transform.position += direction * moveSpeed * Time.deltaTime;
+            
             if (closestDistance <= pathDetectionThreshold)
             {
-                pathProgress = closestT;
+                pathProgress = Mathf.Clamp01(closestT);
                 Vector3 pathPoint = path.GetPointOnPath(pathProgress);
                 pathPoint.x = 0f;
                 transform.position = pathPoint;
@@ -197,7 +201,7 @@ public class FlyingBodyPart : MonoBehaviour
             if (transform.position.z < path.GetMinZ() - 2f)
             {
                 pathProgress = 0f;
-                Vector3 pathPoint = path.GetPointOnPath(pathProgress);
+                Vector3 pathPoint = path.GetPointOnPath(0f);
                 pathPoint.x = 0f;
                 transform.position = pathPoint;
                 goingToPath = false;
@@ -215,7 +219,8 @@ public class FlyingBodyPart : MonoBehaviour
             {
                 orbitTimer += Time.deltaTime;
                 pathProgress += (moveSpeed / path.GetApproximateLength()) * Time.deltaTime;
-                Vector3 pathPoint = path.GetPointOnPath(pathProgress % 1f);
+                pathProgress = pathProgress % 1f;
+                Vector3 pathPoint = path.GetPointOnPath(pathProgress);
                 pathPoint.x = 0f;
                 transform.position = pathPoint;
 
@@ -239,6 +244,7 @@ public class FlyingBodyPart : MonoBehaviour
             {
                 orbitTimer += Time.deltaTime;
                 pathProgress += (moveSpeed / path.GetApproximateLength()) * Time.deltaTime;
+                pathProgress = pathProgress % 1f;
 
                 float step = homingSpeed * Time.deltaTime;
                 transform.position += homingDirection * step;
@@ -250,7 +256,7 @@ public class FlyingBodyPart : MonoBehaviour
                     inHomingPhase = false;
                     StopBlinking();
                     returnStartPoint = transform.position;
-                    Vector3 pathTarget = path.GetPointOnPath(pathProgress % 1f);
+                    Vector3 pathTarget = path.GetPointOnPath(pathProgress);
                     pathTarget.x = 0f;
                     float dist = Vector3.Distance(returnStartPoint, pathTarget);
                     returnToPathDuration = dist / homingSpeed;
@@ -263,10 +269,11 @@ public class FlyingBodyPart : MonoBehaviour
             {
                 orbitTimer += Time.deltaTime;
                 pathProgress += (moveSpeed / path.GetApproximateLength()) * Time.deltaTime;
+                pathProgress = pathProgress % 1f;
 
                 returnToPathTimer += Time.deltaTime;
                 float t = Mathf.Clamp01(returnToPathTimer / returnToPathDuration);
-                Vector3 pathTarget = path.GetPointOnPath(pathProgress % 1f);
+                Vector3 pathTarget = path.GetPointOnPath(pathProgress);
                 pathTarget.x = 0f;
                 Vector3 newPos = Vector3.Lerp(returnStartPoint, pathTarget, t);
                 newPos.x = 0f;
