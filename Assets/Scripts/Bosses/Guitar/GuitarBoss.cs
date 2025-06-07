@@ -39,6 +39,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
     [SerializeField] private float delayBetweenLaunches = 0.3f;
     [SerializeField] private float evasiveMoveSpeed = 3f;
     [SerializeField] private float evasiveMoveRadius = 5f;
+    [SerializeField] private float weakpointPartSpeedMultiplier = 0.5f;
     [SerializeField] private float timeBetweenRandomMoves = 1.5f;
 
     [Header("Leg Barrage")]
@@ -562,11 +563,19 @@ public class GuitarBoss : MonoBehaviour, BossInterface
             flyingVisual.transform.localPosition = Vector3.zero;
             flyingVisual.transform.localRotation = Quaternion.identity;
             flyingVisual.transform.localScale = slot.visual.transform.localScale;
-            //clearProjectiles.AddProjectile(flyingVisual);
 
             launchedParts.Add(part);
 
-            if (i == randomPartIndex)
+            bool isWeakpointPart = (i == randomPartIndex);
+            float partMoveSpeed = isWeakpointPart ? 
+                flyingPartMoveSpeed * weakpointPartSpeedMultiplier : 
+                flyingPartMoveSpeed;
+            
+            float partRotationSpeed = isWeakpointPart ? 
+                flyingPartRotationSpeed * weakpointPartSpeedMultiplier : 
+                flyingPartRotationSpeed;
+
+            if (isWeakpointPart)
             {
                 SpawnPartWeakpoint(part);
             }
@@ -580,8 +589,8 @@ public class GuitarBoss : MonoBehaviour, BossInterface
                         slot.visual.SetActive(true);
                     Destroy(part);
                 },
-                flyingPartMoveSpeed,
-                flyingPartRotationSpeed,
+                partMoveSpeed,
+                partRotationSpeed,
                 flyingPartScaleDuration,
                 flyingPartLifetimeOnPath,
                 flyingPartPathDetectionThreshold,
