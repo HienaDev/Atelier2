@@ -578,6 +578,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
             if (isWeakpointPart)
             {
                 SpawnPartWeakpoint(part);
+                flyingScript.SetHasWeakpoint(true);
             }
 
             flyingScript.Initialize(
@@ -611,7 +612,17 @@ public class GuitarBoss : MonoBehaviour, BossInterface
 
         yield return new WaitForSeconds(0.5f);
 
-        GameObject farthestPart = GetFarthestPartFromPlayer(launchedParts);
+        List<GameObject> eligibleForHoming = new List<GameObject>();
+        foreach (GameObject part in launchedParts)
+        {
+            FlyingBodyPart flyingScript = part.GetComponent<FlyingBodyPart>();
+            if (flyingScript != null && flyingScript.IsOrbiting() && !flyingScript.HasWeakpoint())
+            {
+                eligibleForHoming.Add(part);
+            }
+        }
+
+        GameObject farthestPart = GetFarthestPartFromPlayer(eligibleForHoming);
         if (farthestPart != null)
         {
             FlyingBodyPart farthestScript = farthestPart.GetComponent<FlyingBodyPart>();

@@ -1,5 +1,7 @@
 using UnityEngine;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 public class FlyingBodyPart : MonoBehaviour
 {
@@ -24,6 +26,7 @@ public class FlyingBodyPart : MonoBehaviour
     private float currentRotationX;
     private Action onReturnComplete;
     private bool initialized = false;
+    private bool hasWeakpoint = false;
 
     private float[] homingTimes;
     private int nextHomingIndex = 0;
@@ -40,6 +43,56 @@ public class FlyingBodyPart : MonoBehaviour
     private Vector3 returnStartPoint;
     private float bestDistance = float.MaxValue;
     private float bestT = -1f;
+
+    private bool isBlinking = false;
+    private List<Renderer> allRenderers = new List<Renderer>();
+    private List<Material[]> originalMaterials = new List<Material[]>();
+    private Material blinkMaterial;
+    private float blinkInterval = 0.1f;
+    private Coroutine blinkCoroutine;
+
+    private void Awake()
+    {
+        SetupBlinkSystem();
+    }
+
+    private void SetupBlinkSystem()
+    {
+        allRenderers.Clear();
+        originalMaterials.Clear();
+
+        Renderer[] renderers = GetComponentsInChildren<Renderer>(true);
+
+        foreach (Renderer renderer in renderers)
+        {
+            if (renderer != null && renderer.materials != null && renderer.materials.Length > 0)
+            {
+                allRenderers.Add(renderer);
+                
+                Material[] originalMats = new Material[renderer.materials.Length];
+                for (int i = 0; i < renderer.materials.Length; i++)
+                {
+                    if (renderer.materials[i] != null)
+                    {
+                        originalMats[i] = new Material(renderer.materials[i]);
+                    }
+                }
+                originalMaterials.Add(originalMats);
+            }
+        }
+
+        CreateBlinkMaterial();
+    }
+
+    private void CreateBlinkMaterial()
+    {
+        Shader shader = Shader.Find("Shader Graphs/VertexPulse");
+        if (shader != null)
+        {
+            blinkMaterial = new Material(shader);
+            blinkMaterial.SetColor("_Color", Color.white);
+        }
+    }
 
     public void Initialize(
         OvalPath selectedPath,
@@ -73,6 +126,24 @@ public class FlyingBodyPart : MonoBehaviour
         initialScale = transform.localScale;
         transform.position = new Vector3(0f, transform.position.y, transform.position.z);
         initialized = true;
+
+        StartCoroutine(DelayedBlinkSetup());
+    }
+
+    private IEnumerator DelayedBlinkSetup()
+    {
+        yield return new WaitForEndOfFrame();
+        SetupBlinkSystem();
+    }
+
+    public void SetHasWeakpoint(bool hasWeakpoint)
+    {
+        this.hasWeakpoint = hasWeakpoint;
+    }
+
+    public bool HasWeakpoint()
+    {
+        return hasWeakpoint;
     }
 
     private void Update()
@@ -142,6 +213,7 @@ public class FlyingBodyPart : MonoBehaviour
                 if (shouldHoming && nextHomingIndex < homingTimes.Length && orbitTimer >= homingTimes[nextHomingIndex])
                 {
                     inHomingPhase = true;
+                    StartBlinking();
                     pathExitPoint = pathPoint;
                     Vector3 target = player ? player.position : Vector3.zero;
                     target.x = 0f;
@@ -167,6 +239,7 @@ public class FlyingBodyPart : MonoBehaviour
                 {
                     transform.position = homingTarget;
                     inHomingPhase = false;
+                    StopBlinking();
                     returnStartPoint = transform.position;
                     Vector3 pathTarget = path.GetPointOnPath(pathProgress % 1f);
                     pathTarget.x = 0f;
@@ -199,6 +272,7 @@ public class FlyingBodyPart : MonoBehaviour
             {
                 orbiting = false;
                 returning = true;
+                StopBlinking();
             }
         }
         else if (returning)
@@ -250,5 +324,103 @@ public class FlyingBodyPart : MonoBehaviour
     public bool IsOrbiting()
     {
         return orbiting && !inHomingPhase && !returningToPath;
+    }
+
+    private void StartBlinking()
+    {
+        if (blinkMaterial == null) return;
+
+        if (!isBlinking && blinkCoroutine == null)
+        {
+            isBlinking = true;
+            blinkCoroutine = StartCoroutine(BlinkEffect());
+        }
+    }
+
+    private void StopBlinking()
+    {
+        if (isBlinking)
+        {
+            isBlinking = false;
+            if (blinkCoroutine != null)
+            {
+                StopCoroutine(blinkCoroutine);
+                blinkCoroutine = null;
+            }
+            RestoreOriginalMaterials();
+        }
+    }
+
+    private IEnumerator BlinkEffect()
+    {
+        bool useWhite = false;
+        
+        while (isBlinking)
+        {
+            if (useWhite)
+            {
+                ApplyWhiteMaterial();
+            }
+            else
+            {
+                RestoreOriginalMaterials();
+            }
+            
+            useWhite = !useWhite;
+            yield return new WaitForSeconds(blinkInterval);
+        }
+    }
+
+    private void ApplyWhiteMaterial()
+    {
+        if (blinkMaterial == null) return;
+
+        for (int i = 0; i < allRenderers.Count; i++)
+        {
+            if (allRenderers[i] != null)
+            {
+                Material[] whiteMaterials = new Material[allRenderers[i].materials.Length];
+                for (int j = 0; j < whiteMaterials.Length; j++)
+                {
+                    whiteMaterials[j] = blinkMaterial;
+                }
+                allRenderers[i].materials = whiteMaterials;
+            }
+        }
+    }
+
+    private void RestoreOriginalMaterials()
+    {
+        for (int i = 0; i < allRenderers.Count && i < originalMaterials.Count; i++)
+        {
+            if (allRenderers[i] != null && originalMaterials[i] != null)
+            {
+                allRenderers[i].materials = originalMaterials[i];
+            }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        StopBlinking();
+        
+        if (blinkMaterial != null)
+        {
+            Destroy(blinkMaterial);
+        }
+
+        foreach (Material[] materials in originalMaterials)
+        {
+            if (materials != null)
+            {
+                foreach (Material mat in materials)
+                {
+                    if (mat != null)
+                    {
+                        Destroy(mat);
+                    }
+                }
+            }
+        }
     }
 }
