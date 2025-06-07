@@ -32531,7 +32531,7 @@ MonoBehaviour:
   - {fileID: 1790429187}
   - {fileID: 2096982575}
   - {fileID: 277696552}
-  flyingPartMoveSpeed: 21
+  flyingPartMoveSpeed: 18
   flyingPartRotationSpeed: 180
   flyingPartScaleDuration: 2
   flyingPartLifetimeOnPath: 8
@@ -32544,7 +32544,7 @@ MonoBehaviour:
   weakpointPartSpeedMultiplier: 0.5
   timeBetweenRandomMoves: 1
   legProjectilePrefab: {fileID: 8460287776679972660, guid: 95811fb55ac27e641bb4498ef4e36bfc, type: 3}
-  legProjectileSpeed: 21
+  legProjectileSpeed: 18
   legRegrowTime: 0.2
   legTimeBetweenLaunches: 0.4
   airborneLegs:
@@ -32564,8 +32564,8 @@ MonoBehaviour:
   energyCoreLingerTime: 2
   energyCorePhases: 4
   energyCoreProjectilePrefab: {fileID: 8460287776679972660, guid: 03003ea7cf1d16c4a99cfc28343c39f0, type: 3}
-  energyCoreProjectileSpeed: 10
-  energyCoreFirePoints: 40
+  energyCoreProjectileSpeed: 9
+  energyCoreFirePoints: 35
   energyCoreFireRadius: 1.5
   energyCoreBurstInterval: 0.2
   energyCoreAttackDuration: 8

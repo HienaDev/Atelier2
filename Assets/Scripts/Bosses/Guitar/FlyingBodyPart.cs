@@ -37,6 +37,15 @@ public class FlyingBodyPart : MonoBehaviour
     private float homingDistance;
     private float homingTravelled;
     private bool returningToPath = false;
+    private bool forceReturning = false;
+
+    public void ForceReturn()
+    {
+        forceReturning = true;
+        orbiting = false;
+        returning = true;
+        StopBlinking();
+    }
     private Vector3 pathExitPoint;
     private float returnToPathTimer = 0f;
     private float returnToPathDuration = 0f;
@@ -268,7 +277,7 @@ public class FlyingBodyPart : MonoBehaviour
                 }
             }
 
-            if (orbitTimer >= lifetimeOnPath && !inHomingPhase && !returningToPath)
+            if (orbitTimer >= lifetimeOnPath && !inHomingPhase && !returningToPath && !forceReturning)
             {
                 orbiting = false;
                 returning = true;
@@ -283,7 +292,7 @@ public class FlyingBodyPart : MonoBehaviour
             dir.x = 0f;
             dir = dir.sqrMagnitude < 0.01f ? Vector3.back : dir.normalized;
             
-            float returnSpeed = hasWeakpoint ? (moveSpeed / 0.5f) : moveSpeed;
+            float returnSpeed = forceReturning ? (hasWeakpoint ? (moveSpeed / 0.5f) : moveSpeed) : moveSpeed;
             transform.position += dir * returnSpeed * Time.deltaTime;
 
             if (Vector3.Distance(new Vector3(0f, transform.position.y, transform.position.z),

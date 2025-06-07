@@ -199,35 +199,6 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         baseEnergyCoreLingerTime = energyCoreLingerTime; 
     }
 
-    private void Update()
-    {
-        // For debug/testing
-        //if (Input.GetKeyDown(KeyCode.Alpha1))
-        //{
-        //    StartCoroutine(EncirclingAssaultSequence());
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha2))
-        //{
-        //    StartCoroutine(LegBarrageSequence());
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha3))
-        //{
-        //    StartCoroutine(EnergyCoreSequence());
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha4))
-        //{
-        //    SetDifficulty(BossDifficulty.Tutorial);
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha5))
-        //{
-        //    SetDifficulty(BossDifficulty.Easy);
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha6))
-        //{
-        //    SetDifficulty(BossDifficulty.Normal);
-        //}
-    }
-
     private void FixedUpdate()
     {
         if (isEvading)
@@ -532,7 +503,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         StartCoroutine(LaunchAndEvadeSequence());
     }
 
-        private IEnumerator LaunchAndEvadeSequence()
+    private IEnumerator LaunchAndEvadeSequence()
     {
         isAttacking = true;
         originalPosition = transform.position;
@@ -617,6 +588,19 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         phaseManager?.CurrentCamera.GetComponent<CameraShake>().ShakeCamera(0.6f, 0.5f, flyingPartLifetimeOnPath);
 
         yield return new WaitForSeconds(flyingPartLifetimeOnPath);
+        
+        foreach (GameObject part in launchedParts)
+        {
+            if (part != null)
+            {
+                FlyingBodyPart flyingScript = part.GetComponent<FlyingBodyPart>();
+                if (flyingScript != null)
+                {
+                    flyingScript.ForceReturn();
+                }
+            }
+        }
+        
         StopEvading();
 
         if (Vector3.Distance(transform.position, originalPosition) < 0.2f)
@@ -676,7 +660,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         if (player == null || parts.Count == 0) return null;
 
         GameObject farthest = null;
-        float maxDistance = float.MinValue;
+        float maxDistance = 0f;
 
         foreach (GameObject part in parts)
         {
