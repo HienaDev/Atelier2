@@ -13,6 +13,11 @@ public class DamagePlayer : MonoBehaviour
     void Start()
     {
         colliderTrigger = GetComponent<Collider>();
+
+        if(colliderTrigger == null)
+        {
+            colliderTrigger = GetComponentInChildren<Collider>();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
