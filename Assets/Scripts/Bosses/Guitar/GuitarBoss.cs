@@ -104,6 +104,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
     private Quaternion startRotation = Quaternion.identity;
     private GameObject currentCoreWeakpoint;
     private GameObject currentPartWeakpoint;
+    private List<GameObject> activeParts = new List<GameObject>();
 
     // Base value storage for difficulty scaling
     private float baseFlyingPartMoveSpeed;
@@ -142,6 +143,16 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         // Store original position and rotation
         startPosition = transform.position;
         startRotation = transform.rotation;
+    }
+
+    private void OnDisable()
+    {
+        foreach (GameObject part in activeParts)
+        {
+            if (part != null)
+                Destroy(part);
+        }
+        activeParts.Clear();
     }
 
     private void Start()
@@ -532,7 +543,6 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         for (int j = 0; j < nHoming; j++)
             homingTimes[j] = flyingPartLifetimeOnPath * ((j + 1f) / (nHoming + 1f));
 
-        // NOVO: Escolher parte aleatória para weakpoint
         int randomPartIndex = Random.Range(0, firePointSlots.Count);
 
         for (int i = 0; i < firePointSlots.Count; i++)
@@ -542,6 +552,8 @@ public class GuitarBoss : MonoBehaviour, BossInterface
 
             OvalPath chosenPath = availablePaths[Random.Range(0, availablePaths.Count)];
             GameObject part = Instantiate(bodyPartPrefab, slot.firePoint.position, Quaternion.identity);
+            part.transform.SetParent(transform);
+            activeParts.Add(part);
             clearProjectiles?.AddProjectile(part);
             FlyingBodyPart flyingScript = part.GetComponent<FlyingBodyPart>();
 
