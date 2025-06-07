@@ -550,7 +550,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
             flyingVisual.transform.localPosition = Vector3.zero;
             flyingVisual.transform.localRotation = Quaternion.identity;
             flyingVisual.transform.localScale = slot.visual.transform.localScale;
-            clearProjectiles.AddProjectile(flyingVisual);
+            //clearProjectiles.AddProjectile(flyingVisual);
 
             launchedParts.Add(part);
 
