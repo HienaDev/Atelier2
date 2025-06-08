@@ -35,8 +35,8 @@ public class PlayerShootingEverHood : MonoBehaviour
             rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotation;
 
         });
-        rightArm.DORotate(new Vector3(0f, 90f, 0f), 0.5f);
-        leftArm.DORotate(new Vector3(0f, 90f, 0f), 0.5f);
+        rightArm.DORotate(new Vector3(0f, 180f, 0f), 0.5f);
+        leftArm.DORotate(new Vector3(0f, 180f, 0f), 0.5f);
     }
 
     private void OnEnable()
@@ -49,8 +49,8 @@ public class PlayerShootingEverHood : MonoBehaviour
 
         });
 
-        rightArm.DORotate(new Vector3(0f, 90f, 0f), 0.5f);
-        leftArm.DORotate(new Vector3(0f, 90f, 0f), 0.5f);
+        rightArm.DORotate(new Vector3(0f, 180f, 0f), 0.5f);
+        leftArm.DORotate(new Vector3(0f, 180f, 0f), 0.5f);
     }
 
     // Update is called once per frame

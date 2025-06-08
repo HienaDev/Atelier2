@@ -9,6 +9,8 @@ public class PlayerMovementEverHood : MonoBehaviour
     [SerializeField] private float cellDistance = 1.0f;
     [SerializeField] private float inputBufferTime = 0.25f; // How long to buffer input for
 
+    [SerializeField] private Transform bottomHalf;
+
     public int GridSize { get { return gridSize; } }
     public float CellDistance { get { return cellDistance; } }
 
@@ -153,6 +155,22 @@ public class PlayerMovementEverHood : MonoBehaviour
             new Vector3(transform.position.x, transform.position.y, targetPosition.z),
             moveSpeed * Time.deltaTime
         );
+
+        // Rotate bottomHalf toward movement direction even after reaching the target
+        Vector3 desiredDirection = targetPosition - transform.position;
+
+        // Only proceed if the direction is not nearly zero
+        if (desiredDirection.sqrMagnitude > 0.001f)
+        {
+            Quaternion desiredRotation = Quaternion.LookRotation(desiredDirection.normalized, Vector3.up);
+            float rotationSpeedDegreesPerSecond = 1080; // adjust as needed (360 = 1 full rotation per second)
+            bottomHalf.rotation = Quaternion.RotateTowards(
+                bottomHalf.rotation,
+                desiredRotation,
+                rotationSpeedDegreesPerSecond * Time.deltaTime
+            );
+        }
+
     }
 
     private void Jump()

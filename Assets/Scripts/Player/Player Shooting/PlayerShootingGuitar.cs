@@ -26,6 +26,11 @@ public class PlayerShootingGuitar : MonoBehaviour
         playerSounds = GetComponent<PlayerSounds>();
     }
 
+    private void OnEnable()
+    {
+        topHalf.rotation = Quaternion.LookRotation(-transform.right);
+    }
+
     void Update()
     {
         AimArms();
@@ -43,16 +48,28 @@ public class PlayerShootingGuitar : MonoBehaviour
     {
         Vector3 mouseWorldPosition = GetMouseWorldPosition();
         Vector3 aimDirection = (mouseWorldPosition - transform.position).normalized;
-        aimDirection.x = 0;
-        Quaternion targetRotation = Quaternion.LookRotation(aimDirection);
-        leftArm.rotation = Quaternion.Slerp(leftArm.rotation, targetRotation, Time.deltaTime * armRotationSpeed);
-        rightArm.rotation = Quaternion.Slerp(rightArm.rotation, targetRotation, Time.deltaTime * armRotationSpeed);
+        aimDirection.x = 0; // Still project onto the YZ plane
+
+        float angle = Mathf.Atan2(aimDirection.y, aimDirection.z) * Mathf.Rad2Deg;
+
+        // Flip angle when facing left
+        if (!isFacingRight)
+        {
+            angle = 180f - angle;
+        }
+
+        Quaternion targetRotation = Quaternion.AngleAxis(-angle, Vector3.forward); // Still rotate around Z
+
+        leftArm.localRotation = Quaternion.Slerp(leftArm.localRotation, targetRotation, Time.deltaTime * armRotationSpeed);
+        rightArm.localRotation = Quaternion.Slerp(rightArm.localRotation, targetRotation, Time.deltaTime * armRotationSpeed);
     }
+
+
 
     private void FlipBodyBasedOnAim()
     {
         Vector3 mouseWorldPosition = GetMouseWorldPosition();
-        
+
         bool shouldFaceRight = mouseWorldPosition.z > transform.position.z;
         if (shouldFaceRight != isFacingRight)
         {
@@ -65,7 +82,7 @@ public class PlayerShootingGuitar : MonoBehaviour
     {
         playerSounds.PlayerShoot();
         Transform firePoint = isLeftArm ? leftArmFirePoint : rightArmFirePoint;
-        
+
         Vector3 mouseWorldPosition = GetMouseWorldPosition();
 
         Debug.DrawLine(firePoint.position, mouseWorldPosition, Color.green, 0.1f);
