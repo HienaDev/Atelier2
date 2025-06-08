@@ -8,7 +8,6 @@ using System.Linq;
 public class SettingsMenu : MonoBehaviour
 {
     [SerializeField] private TMP_Dropdown resolutionDropdown;
-    [SerializeField] private Slider sensitivitySlider;
     [SerializeField] private Slider volumeSlider;
     [SerializeField] private Toggle fullscreenToggle;
     [SerializeField] private AudioMixer audioMixer;
@@ -16,7 +15,6 @@ public class SettingsMenu : MonoBehaviour
 
     private PauseMenu pauseMenu;
     private Resolution[] resolutions;
-    private const string SensitivityKey = "CameraSensitivity";
     private const string VolumeKey = "MasterVolume";
     private const string FullscreenKey = "Fullscreen";
 
@@ -52,7 +50,6 @@ public class SettingsMenu : MonoBehaviour
         resolutionDropdown.RefreshShownValue();
         resolutionDropdown.onValueChanged.AddListener(SetResolution);
 
-        sensitivitySlider.onValueChanged.AddListener(SetSensitive);
         volumeSlider.onValueChanged.AddListener(SetVolume);
         fullscreenToggle.onValueChanged.AddListener(SetFullscreen);
 
@@ -80,12 +77,6 @@ public class SettingsMenu : MonoBehaviour
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
     }
 
-    public void SetSensitive(float sensitivity)
-    {
-        PlayerPrefs.SetFloat(SensitivityKey, sensitivity);
-        PlayerPrefs.Save();
-    }
-
     public void SetVolume(float volume)
     {
         audioMixer.SetFloat("Volume", volume);
@@ -95,12 +86,6 @@ public class SettingsMenu : MonoBehaviour
 
     private void LoadSettings()
     {
-        if (PlayerPrefs.HasKey(SensitivityKey))
-        {
-            float sensitivity = PlayerPrefs.GetFloat(SensitivityKey);
-            sensitivitySlider.value = sensitivity;
-        }
-
         if (PlayerPrefs.HasKey(VolumeKey))
         {
             float volume = PlayerPrefs.GetFloat(VolumeKey);
