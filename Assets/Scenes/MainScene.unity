@@ -13509,21 +13509,232 @@ MonoBehaviour:
   - patternName: Shot Introduction
     attacks:
     - attackType: 1
+      targetColumns: 0000000001000000
+      delay: 0
+      numberOfShots: 5
+      delayBetweenCommands: 1
+    - attackType: 1
+      targetColumns: 0200000003000000
+      delay: 0
+      numberOfShots: 5
+      delayBetweenCommands: 1
+    - attackType: 1
+      targetColumns: 0000000001000000
+      delay: 0
+      numberOfShots: 5
+      delayBetweenCommands: 1
+    - attackType: 1
+      targetColumns: 0200000003000000
+      delay: 0
+      numberOfShots: 5
+      delayBetweenCommands: 1
+    - attackType: 3
+      targetColumns: 0100000002000000
+      delay: 0
+      numberOfShots: 5
+      delayBetweenCommands: 0
+    - attackType: 1
+      targetColumns: 00000000010000000200000003000000
+      delay: 0
+      numberOfShots: 5
+      delayBetweenCommands: 2
+    - attackType: 1
+      targetColumns: 0000000003000000
+      delay: 0
+      numberOfShots: 10
+      delayBetweenCommands: 1
+    - attackType: 1
+      targetColumns: 0100000002000000
+      delay: 0
+      numberOfShots: 10
+      delayBetweenCommands: 1
+    patternDelay: 0
+    currentCommandIndex: 0
+  - patternName: Laser and Wall Introduction
+    attacks:
+    - attackType: 1
+      targetColumns: 0000000003000000
+      delay: 0
+      numberOfShots: 5
+      delayBetweenCommands: 0
+    - attackType: 3
+      targetColumns: 00000000010000000200000003000000
+      delay: 0
+      numberOfShots: 3
+      delayBetweenCommands: 2
+    - attackType: 1
+      targetColumns: 00000000010000000200000003000000
+      delay: 0
+      numberOfShots: 5
+      delayBetweenCommands: 2
+    - attackType: 3
       targetColumns: 00000000
       delay: 0
       numberOfShots: 3
-    - attackType: 1
+      delayBetweenCommands: 0
+    - attackType: 3
       targetColumns: 01000000
       delay: 0
       numberOfShots: 3
-    - attackType: 1
+      delayBetweenCommands: 0
+    - attackType: 3
+      targetColumns: 03000000
+      delay: 0
+      numberOfShots: 3
+      delayBetweenCommands: 0
+    - attackType: 3
       targetColumns: 02000000
       delay: 0
       numberOfShots: 3
+      delayBetweenCommands: 0
+    - attackType: 3
+      targetColumns: 03000000
+      delay: 0
+      numberOfShots: 3
+      delayBetweenCommands: 3
+    - attackType: 1
+      targetColumns: 0000000003000000
+      delay: 0
+      numberOfShots: 4
+      delayBetweenCommands: 0
+    - attackType: 1
+      targetColumns: 0100000002000000
+      delay: 0
+      numberOfShots: 5
+      delayBetweenCommands: 0
+    - attackType: 3
+      targetColumns: 00000000010000000200000003000000
+      delay: 0
+      numberOfShots: 3
+      delayBetweenCommands: 3
+    patternDelay: 0
+    currentCommandIndex: 0
+  - patternName: Wall Attack
+    attacks:
+    - attackType: 2
+      targetColumns: 0000000001000000
+      delay: 0
+      numberOfShots: 3
+      delayBetweenCommands: 2
+    - attackType: 2
+      targetColumns: 0200000003000000
+      delay: 0
+      numberOfShots: 3
+      delayBetweenCommands: 2
+    - attackType: 2
+      targetColumns: 00000000
+      delay: 0
+      numberOfShots: 3
+      delayBetweenCommands: 1
+    - attackType: 2
+      targetColumns: 03000000
+      delay: 0
+      numberOfShots: 3
+      delayBetweenCommands: 1
+    - attackType: 2
+      targetColumns: 01000000
+      delay: 0
+      numberOfShots: 3
+      delayBetweenCommands: 1
+    - attackType: 2
+      targetColumns: 02000000
+      delay: 0
+      numberOfShots: 9
+      delayBetweenCommands: 2
+    patternDelay: 0
+    currentCommandIndex: 0
+  - patternName: All Shots
+    attacks:
+    - attackType: 1
+      targetColumns: 0000000002000000
+      delay: 0
+      numberOfShots: 5
+      delayBetweenCommands: 1
+    - attackType: 1
+      targetColumns: 0100000003000000
+      delay: 0
+      numberOfShots: 5
+      delayBetweenCommands: 1
+    - attackType: 2
+      targetColumns: 0000000001000000
+      delay: 0
+      numberOfShots: 3
+      delayBetweenCommands: 0
+    - attackType: 3
+      targetColumns: 00000000010000000200000003000000
+      delay: 0.5
+      numberOfShots: 3
+      delayBetweenCommands: 2
+    - attackType: 2
+      targetColumns: 00000000010000000200000003000000
+      delay: 1
+      numberOfShots: 3
+      delayBetweenCommands: 4
+    - attackType: 1
+      targetColumns: 00000000
+      delay: 0
+      numberOfShots: 1
+      delayBetweenCommands: 0
+    - attackType: 1
+      targetColumns: 01000000
+      delay: 0
+      numberOfShots: 2
+      delayBetweenCommands: 0
     - attackType: 1
       targetColumns: 03000000
       delay: 0
       numberOfShots: 3
+      delayBetweenCommands: 0
+    - attackType: 1
+      targetColumns: 02000000
+      delay: 0
+      numberOfShots: 4
+      delayBetweenCommands: 0
+    - attackType: 1
+      targetColumns: 00000000
+      delay: 0
+      numberOfShots: 5
+      delayBetweenCommands: 0
+    - attackType: 1
+      targetColumns: 01000000
+      delay: 0
+      numberOfShots: 6
+      delayBetweenCommands: 0
+    - attackType: 1
+      targetColumns: 03000000
+      delay: 0
+      numberOfShots: 7
+      delayBetweenCommands: 0
+    - attackType: 1
+      targetColumns: 02000000
+      delay: 0
+      numberOfShots: 8
+      delayBetweenCommands: 0
+    - attackType: 1
+      targetColumns: 00000000
+      delay: 0
+      numberOfShots: 9
+      delayBetweenCommands: 0
+    - attackType: 1
+      targetColumns: 01000000
+      delay: 0
+      numberOfShots: 10
+      delayBetweenCommands: 2
+    - attackType: 3
+      targetColumns: 00000000
+      delay: 0.35
+      numberOfShots: 3
+      delayBetweenCommands: 0
+    - attackType: 2
+      targetColumns: 03000000
+      delay: 0
+      numberOfShots: 3
+      delayBetweenCommands: 0
+    - attackType: 3
+      targetColumns: 
+      delay: 0
+      numberOfShots: 3
+      delayBetweenCommands: 0
     patternDelay: 0
     currentCommandIndex: 0
   normalAttackPatterns: []
@@ -13568,7 +13779,7 @@ MonoBehaviour:
   doubleSlamText: {fileID: 6868331627902581311, guid: 081868e19bc9b9843bea86cf698c572b, type: 3}
   doubleSlamSpawn: {fileID: 1771538777}
   wallProjectilePrefab: {fileID: 9138236571741330086, guid: 20c26e2d7c365b34785b4c4bf15ebd51, type: 3}
-  wallProjectileSpeed: 5
+  wallProjectileSpeed: 2.5
   wallLifetime: 15
   bopsToSpawn: 20
   laserPrefab: {fileID: 8855861815516490577, guid: b3113c70b8ad54e40814124c0ceae039, type: 3}
@@ -13577,7 +13788,7 @@ MonoBehaviour:
   critPositions:
   - {fileID: 385940145}
   - {fileID: 146778509}
-  beginBopsDelay: 10
+  beginBopsDelay: 5
 --- !u!114 &480802522
 MonoBehaviour:
   m_ObjectHideFlags: 0

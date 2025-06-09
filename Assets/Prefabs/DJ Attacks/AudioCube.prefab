@@ -4946,7 +4946,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   intensitySteps: 0.2
-  lives: 2
+  lives: 1
   isTriggerWeakPoint: 0
   extrusionIntensitySteps: 0.01
   minimumExtrusion: 0.5

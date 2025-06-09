@@ -37,6 +37,8 @@ public class DJBoss : MonoBehaviour, BossInterface
         public float delay; // Delay before this specific attack
         [Range(1, 10)]
         public int numberOfShots; // Number of spike shots to fire from each column
+        [Range(0f, 5f)]
+        public float delayBetweenCommands; // New: Delay after this command before next one
     }
 
     [Serializable]
@@ -243,22 +245,22 @@ public class DJBoss : MonoBehaviour, BossInterface
             }
             else
                 if (usePatterns)
-                {
-                    if (!attackDelayHappening)
-                        StartCoroutine(ExecuteAttackPattern());
+            {
+                if (!attackDelayHappening)
+                    StartCoroutine(ExecuteAttackPattern());
 
 
-                }
-                else
+            }
+            else
+            {
+                AttackFromRandomColumn();
+                bopCounter++;
+                if (bopCounter >= bopsToSpawn)
                 {
-                    AttackFromRandomColumn();
-                    bopCounter++;
-                    if (bopCounter >= bopsToSpawn)
-                    {
-                        ExecuteWallAttack();
-                        bopCounter = 0;
-                    }
+                    ExecuteWallAttack();
+                    bopCounter = 0;
                 }
+            }
         }
 
         foreach (int i in deactivatedSpeakers)
@@ -296,9 +298,9 @@ public class DJBoss : MonoBehaviour, BossInterface
     }
 
     /// <summary>
-    /// Executes laser attacks from multiple columns
+    /// Executes laser attacks from multiple columns with sequential delay
     /// </summary>
-    public void ExecuteLaserAttacks(List<int> columnIndices)
+    public void ExecuteLaserAttacks(List<int> columnIndices, float sequentialDelay = 0f)
     {
         if (columnIndices == null || columnIndices.Count == 0) return;
 
@@ -306,10 +308,19 @@ public class DJBoss : MonoBehaviour, BossInterface
         var validColumns = columnIndices.Where(IsColumnValid).ToList();
         if (validColumns.Count == 0) return;
 
-        // Execute attack from each valid column
-        foreach (int columnIndex in validColumns)
+        // Execute attack from each valid column with sequential delay
+        StartCoroutine(ExecuteLaserAttacksSequentially(validColumns, sequentialDelay));
+    }
+
+    private IEnumerator ExecuteLaserAttacksSequentially(List<int> columnIndices, float delay)
+    {
+        for (int i = 0; i < columnIndices.Count; i++)
         {
-            ExecuteLaserAttack(columnIndex);
+            if (i > 0 && delay > 0)
+            {
+                yield return new WaitForSeconds(delay);
+            }
+            ExecuteLaserAttack(columnIndices[i]);
         }
     }
 
@@ -349,7 +360,7 @@ public class DJBoss : MonoBehaviour, BossInterface
     /// <summary>
     /// Executes column attacks from multiple columns
     /// </summary>
-    public void ExecuteColumnAttacks(List<int> columnIndices,  int numberOfShots = -1, float delay = 0f)
+    public void ExecuteColumnAttacks(List<int> columnIndices, int numberOfShots = -1, float delay = 0f)
     {
         if (columnIndices == null || columnIndices.Count == 0) return;
 
@@ -409,9 +420,9 @@ public class DJBoss : MonoBehaviour, BossInterface
     }
 
     /// <summary>
-    /// Executes wall attacks from multiple columns
+    /// Executes wall attacks from multiple columns with sequential delay
     /// </summary>
-    public void ExecuteWallAttacks(List<int> columnIndices)
+    public void ExecuteWallAttacks(List<int> columnIndices, float sequentialDelay = 0f)
     {
         if (columnIndices == null || columnIndices.Count == 0) return;
 
@@ -419,10 +430,19 @@ public class DJBoss : MonoBehaviour, BossInterface
         var validColumns = columnIndices.Where(IsColumnValid).ToList();
         if (validColumns.Count == 0) return;
 
-        // Execute attack from each valid column
-        foreach (int columnIndex in validColumns)
+        // Execute attack from each valid column with sequential delay
+        StartCoroutine(ExecuteWallAttacksSequentially(validColumns, sequentialDelay));
+    }
+
+    private IEnumerator ExecuteWallAttacksSequentially(List<int> columnIndices, float delay)
+    {
+        for (int i = 0; i < columnIndices.Count; i++)
         {
-            ExecuteWallAttack(columnIndex);
+            if (i > 0 && delay > 0)
+            {
+                yield return new WaitForSeconds(delay);
+            }
+            ExecuteWallAttack(columnIndices[i]);
         }
     }
 
@@ -446,7 +466,7 @@ public class DJBoss : MonoBehaviour, BossInterface
     /// </summary>
     public IEnumerator ExecuteAttackPattern()
     {
-        if (currentAttackPatterns == null || currentAttackPatterns.Count == 0) yield break ;
+        if (currentAttackPatterns == null || currentAttackPatterns.Count == 0) yield break;
 
         // Get current pattern
         AttackPattern currentPattern = currentAttackPatterns[currentPatternIndex];
@@ -468,6 +488,16 @@ public class DJBoss : MonoBehaviour, BossInterface
 
             // Execute the command
             ExecuteAttackCommand(command);
+
+            attackDelayHappening = true;
+
+            // Use the command's delayBetweenCommands instead of the fixed delay
+            if (command.delayBetweenCommands > 0)
+            {
+                yield return new WaitForSeconds(command.delayBetweenCommands);
+            }
+
+            attackDelayHappening = false;
 
             // Move to next command
             currentPattern.currentCommandIndex = (commandIndex + 1) % currentPattern.attacks.Count;
@@ -515,10 +545,10 @@ public class DJBoss : MonoBehaviour, BossInterface
                 ExecuteColumnAttacks(command.targetColumns, command.numberOfShots, command.delay);
                 break;
             case AttackType.WallAttack:
-                ExecuteWallAttacks(command.targetColumns);
+                ExecuteWallAttacks(command.targetColumns, command.delay);
                 break;
             case AttackType.LaserAttack:
-                ExecuteLaserAttacks(command.targetColumns);
+                ExecuteLaserAttacks(command.targetColumns, command.delay);
                 break;
             case AttackType.None:
                 // Do nothing

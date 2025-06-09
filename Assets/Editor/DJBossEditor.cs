@@ -143,11 +143,6 @@ public class DJBossEditor : Editor
 
     private void DrawAttackCommand(SerializedProperty attackCommand, int index)
     {
-        SerializedProperty attackType = attackCommand.FindPropertyRelative("attackType");
-        SerializedProperty targetColumns = attackCommand.FindPropertyRelative("targetColumns");
-        SerializedProperty delay = attackCommand.FindPropertyRelative("delay");
-        SerializedProperty numberOfShots = attackCommand.FindPropertyRelative("numberOfShots");
-
         EditorGUILayout.BeginVertical("box");
 
         EditorGUILayout.BeginHorizontal();
@@ -155,27 +150,64 @@ public class DJBossEditor : Editor
 
         if (GUILayout.Button("×", GUILayout.Width(20), GUILayout.Height(20)))
         {
-            var attacksProperty = attackCommand.serializedObject.FindProperty(attackCommand.propertyPath.Replace($".Array.data[{index}]", ""));
-            attacksProperty.DeleteArrayElementAtIndex(index);
-            return;
+            // Get the parent array property path by removing the array index part
+            string propertyPath = attackCommand.propertyPath;
+            string parentPath = propertyPath.Substring(0, propertyPath.LastIndexOf(".Array.data["));
+            SerializedProperty parentArray = serializedObject.FindProperty(parentPath);
+
+            if (parentArray != null && parentArray.isArray)
+            {
+                // Record undo before making changes
+                Undo.RecordObject(serializedObject.targetObject, "Remove Attack Command");
+
+                // Delete the array element
+                parentArray.DeleteArrayElementAtIndex(index);
+
+                // Apply changes immediately
+                serializedObject.ApplyModifiedProperties();
+
+                // End the GUI groups we started
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.EndVertical();
+
+                // Exit early since we've deleted this element
+                return;
+            }
         }
         EditorGUILayout.EndHorizontal();
 
-        // Attack type
-        EditorGUILayout.PropertyField(attackType, new GUIContent("Attack Type"));
-
-        // Only show number of shots for column attacks
-        if (attackType.enumValueIndex == (int)DJBoss.AttackType.ColumnAttack)
+        // Only try to access properties if we didn't delete this element
+        try
         {
-            EditorGUILayout.PropertyField(numberOfShots, new GUIContent("Number of Shots"));
+            SerializedProperty attackType = attackCommand.FindPropertyRelative("attackType");
+            SerializedProperty targetColumns = attackCommand.FindPropertyRelative("targetColumns");
+            SerializedProperty delay = attackCommand.FindPropertyRelative("delay");
+            SerializedProperty numberOfShots = attackCommand.FindPropertyRelative("numberOfShots");
+            SerializedProperty delayBetweenCommands = attackCommand.FindPropertyRelative("delayBetweenCommands");
+
+            // Attack type
+            EditorGUILayout.PropertyField(attackType, new GUIContent("Attack Type"));
+
+            // Only show number of shots for column attacks
+            if (attackType.enumValueIndex == (int)DJBoss.AttackType.ColumnAttack)
+            {
+                EditorGUILayout.PropertyField(numberOfShots, new GUIContent("Number of Shots"));
+            }
+
+            // Delays
+            EditorGUILayout.PropertyField(delay, new GUIContent("Initial Delay (seconds)"));
+            EditorGUILayout.PropertyField(delayBetweenCommands, new GUIContent("Delay After Command"));
+
+            // Target columns with visual toggles
+            EditorGUILayout.LabelField("Target Columns:", EditorStyles.boldLabel);
+            DrawColumnSelector(targetColumns);
         }
-
-        // Delay
-        EditorGUILayout.PropertyField(delay, new GUIContent("Delay (seconds)"));
-
-        // Target columns with visual toggles
-        EditorGUILayout.LabelField("Target Columns:", EditorStyles.boldLabel);
-        DrawColumnSelector(targetColumns);
+        catch
+        {
+            // If we get an exception, the property was probably deleted
+            EditorGUILayout.EndVertical();
+            return;
+        }
 
         EditorGUILayout.EndVertical();
         EditorGUILayout.Space(5);
@@ -266,18 +298,20 @@ public class DJBossEditor : Editor
     private void AddNewAttackCommand(SerializedProperty attacks)
     {
         int newIndex = attacks.arraySize;
-        attacks.InsertArrayElementAtIndex(newIndex);//
+        attacks.InsertArrayElementAtIndex(newIndex);
 
         SerializedProperty newAttack = attacks.GetArrayElementAtIndex(newIndex);
         SerializedProperty attackType = newAttack.FindPropertyRelative("attackType");
         SerializedProperty targetColumns = newAttack.FindPropertyRelative("targetColumns");
         SerializedProperty numberOfShots = newAttack.FindPropertyRelative("numberOfShots");
         SerializedProperty delay = newAttack.FindPropertyRelative("delay");
+        SerializedProperty delayBetweenCommands = newAttack.FindPropertyRelative("delayBetweenCommands"); // New
 
         attackType.enumValueIndex = 1; // Default to ColumnAttack
         targetColumns.ClearArray();
         numberOfShots.intValue = 3; // Default number of shots
         delay.floatValue = 0f;
+        delayBetweenCommands.floatValue = 0f; // New: Initialize to 0
     }
 }
 #endif
