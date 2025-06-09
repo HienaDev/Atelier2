@@ -12427,6 +12427,94 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 639764067571600795, guid: 560a60cb2cad1bc4b94489983edbf472, type: 3}
   m_PrefabInstance: {fileID: 1439814230}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &435234129
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 435234130}
+  - component: {fileID: 435234132}
+  - component: {fileID: 435234131}
+  - component: {fileID: 435234133}
+  m_Layer: 5
+  m_Name: Cursor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &435234130
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435234129}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1208324666}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 25, y: 25}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &435234131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435234129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: cd2255010805bf64cbd795a48e8f8dc8, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &435234132
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435234129}
+  m_CullTransparentMesh: 1
+--- !u!114 &435234133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435234129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc8030ff4ecf976479a9a6916ad978d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &437741332
 GameObject:
   m_ObjectHideFlags: 0
@@ -13547,14 +13635,14 @@ MonoBehaviour:
       targetColumns: 0100000002000000
       delay: 0
       numberOfShots: 10
-      delayBetweenCommands: 1
+      delayBetweenCommands: 2
     patternDelay: 0
     currentCommandIndex: 0
   - patternName: Laser and Wall Introduction
     attacks:
     - attackType: 1
       targetColumns: 0000000003000000
-      delay: 0
+      delay: 2
       numberOfShots: 5
       delayBetweenCommands: 0
     - attackType: 3
@@ -13732,7 +13820,46 @@ MonoBehaviour:
       delayBetweenCommands: 0
     patternDelay: 0
     currentCommandIndex: 0
-  normalAttackPatterns: []
+  normalAttackPatterns:
+  - patternName: Pattern 1
+    attacks:
+    - attackType: 1
+      targetColumns: 00000000
+      delay: 0
+      numberOfShots: 5
+      delayBetweenCommands: 0
+    - attackType: 1
+      targetColumns: 0000000001000000
+      delay: 0
+      numberOfShots: 5
+      delayBetweenCommands: 0.25
+    - attackType: 1
+      targetColumns: 000000000100000003000000
+      delay: 0
+      numberOfShots: 5
+      delayBetweenCommands: 0.5
+    - attackType: 1
+      targetColumns: 00000000010000000200000003000000
+      delay: 0
+      numberOfShots: 6
+      delayBetweenCommands: 1
+    - attackType: 1
+      targetColumns: 010000000200000003000000
+      delay: 0
+      numberOfShots: 6
+      delayBetweenCommands: 0.5
+    - attackType: 1
+      targetColumns: 0200000003000000
+      delay: 0
+      numberOfShots: 6
+      delayBetweenCommands: 0.25
+    - attackType: 1
+      targetColumns: 02000000
+      delay: 0
+      numberOfShots: 6
+      delayBetweenCommands: 0
+    patternDelay: 0
+    currentCommandIndex: 0
   currentPatternIndex: 0
   usePatterns: 1
   numberOfWeakspointsToDestroy: 2
@@ -35287,6 +35414,7 @@ RectTransform:
   - {fileID: 1766030821}
   - {fileID: 1219431220}
   - {fileID: 1871225455}
+  - {fileID: 435234130}
   m_Father: {fileID: 1658246062}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
