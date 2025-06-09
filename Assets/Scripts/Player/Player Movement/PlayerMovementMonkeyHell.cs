@@ -12,13 +12,6 @@ public class PlayerMovementMonkeyHell : MonoBehaviour
 
     private bool isGrounded;
 
-
-    private void Awake()
-    {
-        rb = GetComponent<Rigidbody>();
-        rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
-    }
-
     private void OnEnable()
     {
         rb = GetComponent<Rigidbody>();
@@ -38,7 +31,7 @@ public class PlayerMovementMonkeyHell : MonoBehaviour
         {
             //Jump();
         }
-    }//
+    }
 
     private void CheckGrounded()
     {

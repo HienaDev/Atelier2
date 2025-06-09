@@ -3683,9 +3683,9 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -13279,6 +13279,143 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb18695d3a023b41b06c0ee8093d367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackPatterns: []
+  easyAttackPatterns:
+  - patternName: Pattern 1
+    attacks:
+    - attackType: 1
+      targetColumns: 00000000
+      delay: 2
+      numberOfShots: 1
+    - attackType: 1
+      targetColumns: 01000000
+      delay: 0
+      numberOfShots: 2
+    - attackType: 1
+      targetColumns: 03000000
+      delay: 0
+      numberOfShots: 3
+    - attackType: 1
+      targetColumns: 02000000
+      delay: 0
+      numberOfShots: 4
+    - attackType: 1
+      targetColumns: 00000000
+      delay: 0
+      numberOfShots: 1
+    - attackType: 3
+      targetColumns: 00000000010000000200000003000000
+      delay: 0
+      numberOfShots: 3
+    - attackType: 1
+      targetColumns: 03000000
+      delay: 0
+      numberOfShots: 5
+    - attackType: 1
+      targetColumns: 02000000
+      delay: 0
+      numberOfShots: 7
+    - attackType: 1
+      targetColumns: 02000000
+      delay: 0
+      numberOfShots: 5
+    - attackType: 1
+      targetColumns: 03000000
+      delay: 0
+      numberOfShots: 5
+    - attackType: 1
+      targetColumns: 01000000
+      delay: 0
+      numberOfShots: 5
+    - attackType: 1
+      targetColumns: 00000000
+      delay: 0
+      numberOfShots: 5
+    - attackType: 1
+      targetColumns: 0000000003000000
+      delay: 0
+      numberOfShots: 5
+    - attackType: 1
+      targetColumns: 0100000002000000
+      delay: 0
+      numberOfShots: 3
+    - attackType: 1
+      targetColumns: 00000000010000000200000003000000
+      delay: 0
+      numberOfShots: 2
+    - attackType: 1
+      targetColumns: 
+      delay: 0
+      numberOfShots: 8
+    - attackType: 0
+      targetColumns: 
+      delay: 2
+      numberOfShots: 7
+    - attackType: 1
+      targetColumns: 0200000003000000
+      delay: 0
+      numberOfShots: 5
+    - attackType: 1
+      targetColumns: 02000000
+      delay: 0
+      numberOfShots: 5
+    - attackType: 1
+      targetColumns: 01000000
+      delay: 0
+      numberOfShots: 5
+    - attackType: 1
+      targetColumns: 0000000001000000
+      delay: 0
+      numberOfShots: 5
+    - attackType: 1
+      targetColumns: 03000000
+      delay: 0
+      numberOfShots: 5
+    - attackType: 1
+      targetColumns: 00000000
+      delay: 0
+      numberOfShots: 5
+    - attackType: 1
+      targetColumns: 00000000010000000200000003000000
+      delay: 0
+      numberOfShots: 5
+    patternDelay: 0
+    currentCommandIndex: 0
+  - patternName: Pattern 2
+    attacks:
+    - attackType: 0
+      targetColumns: 
+      delay: 2
+      numberOfShots: 2
+    - attackType: 2
+      targetColumns: 00000000
+      delay: 2
+      numberOfShots: 3
+    patternDelay: 2
+    currentCommandIndex: 0
+  normalAttackPatterns:
+  - patternName: New Pattern 1
+    attacks:
+    - attackType: 1
+      targetColumns: 00000000
+      delay: 0.05
+      numberOfShots: 3
+    - attackType: 1
+      targetColumns: 01000000
+      delay: 0.05
+      numberOfShots: 8
+    - attackType: 1
+      targetColumns: 03000000
+      delay: 0.05
+      numberOfShots: 5
+    - attackType: 1
+      targetColumns: 02000000
+      delay: 0.05
+      numberOfShots: 10
+    patternDelay: 0
+    currentCommandIndex: 0
+  currentPatternIndex: 0
+  usePatterns: 1
   numberOfWeakspointsToDestroy: 2
   collumns:
   - collumn: {fileID: 568432956}
@@ -13314,13 +13451,14 @@ MonoBehaviour:
   attackArcAngleNormal: 180
   projectileSpeedNormal: 7
   projectileScaleNormal: 0.7
-  projectileDelayNormal: 0.2
+  projectileDelayNormal: 0
   doubleSlamText: {fileID: 6868331627902581311, guid: 081868e19bc9b9843bea86cf698c572b, type: 3}
   doubleSlamSpawn: {fileID: 1771538777}
   wallProjectilePrefab: {fileID: 9138236571741330086, guid: 20c26e2d7c365b34785b4c4bf15ebd51, type: 3}
   wallProjectileSpeed: 5
   wallLifetime: 15
   bopsToSpawn: 20
+  laserPrefab: {fileID: 8855861815516490577, guid: b3113c70b8ad54e40814124c0ceae039, type: 3}
   clearProjectiles: {fileID: 790325804}
   damageBoss: {fileID: 480802522}
   critPositions:
@@ -14899,7 +15037,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &561546171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19504,7 +19642,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60.000004
+  field of view: 65
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -19530,8 +19668,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 752188152}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.17607366, y: -0.8149925, z: 0.3372964, w: 0.43705434}
-  m_LocalPosition: {x: 12.241768, y: 17.106445, z: 26.837067}
+  m_LocalRotation: {x: 0.4238017, y: 0, z: 0, w: 0.90575504}
+  m_LocalPosition: {x: 0, y: 16.12, z: 2.22}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -21154,9 +21292,9 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -34422,6 +34560,7 @@ MonoBehaviour:
   critPositions:
   - {fileID: 1244912849}
   - {fileID: 1173255028}
+  animator: {fileID: 1187527020}
 --- !u!95 &1187527020
 Animator:
   serializedVersion: 7
@@ -34430,7 +34569,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1187527017}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: dc4cd99f644b1de4fbd025b220164f9a, type: 2}
   m_CullingMode: 0
@@ -43359,9 +43498,9 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -50716,9 +50855,9 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:

@@ -77,6 +77,7 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
 
     [SerializeField] private Transform[] critPositions;
 
+    [SerializeField] private Animator animator;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -177,6 +178,7 @@ public class MouthBossAttacks : MonoBehaviour, BossInterface
     private void DealWeakPointDamage()
     {
         damageableParts[0].DealCritDamage();
+        animator.SetTrigger("Crit");
     }
 
     public void SendAttack()

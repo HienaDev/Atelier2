@@ -16,6 +16,7 @@ public class BlowCollumnUp : MonoBehaviour
 {
     [SerializeField] private Renderer[] partsRenderer;
     private int health;
+    private int maxHealth;
     [SerializeField] private GameObject weakpoint;
     [SerializeField] private DJBoss boss;
     private DamageBoss damageBoss;
@@ -63,13 +64,32 @@ public class BlowCollumnUp : MonoBehaviour
 
     private System.Action[] spawnColumnActions;
 
+    private Gradient healthGradient;
+
+    private bool immuneToDamage = false;
+
     void Awake()
     {
         originalPosition = transform.position;
         originalScale = transform.localScale;
         originalRotation = transform.rotation;
-    }
 
+        healthGradient = new Gradient();
+        healthGradient.SetKeys(
+            new GradientColorKey[] {
+            new GradientColorKey(new Color(0.15f, 0.02f, 0.02f), 1f),    // Dark red
+            new GradientColorKey(new Color(0.3f, 0.1f, 0.05f), 0.8f),    // Reddish brown
+            new GradientColorKey(new Color(0.4f, 0.4f, 0.05f), 0.6f),    // Dull olive
+            new GradientColorKey(new Color(0.4f, 0.6f, 0.1f), 0.4f),     // Yellow-green
+            new GradientColorKey(new Color(0.4f, 0.8f, 0.2f), 0.2f),     // Lime green (muted)
+            new GradientColorKey(new Color(0.5f, 1f, 0.25f), 0f)         // Bright lime green
+            },
+            new GradientAlphaKey[] {
+            new GradientAlphaKey(1f, 0f),
+            new GradientAlphaKey(1f, 1f)
+            }
+        );
+    }
 
 
     private void PlayDestructionAudio()
@@ -155,32 +175,48 @@ public class BlowCollumnUp : MonoBehaviour
         });
     }
 
-    public void Initialize(DamageBoss damageBoss, int index, int health = 50)
+    public void Initialize(DamageBoss damageBoss, int index, int health = 50, bool immuneToDamage = false)
     {
         this.health = health;
+        maxHealth = health;
         this.index = index;
         this.damageBoss = damageBoss;
+        this.immuneToDamage = immuneToDamage;
 
-        spawnColumnActions = new System.Action[]
-        {
-            () => boss.SpawnCollum0(),
-            () => boss.SpawnCollum1(),
-            () => boss.SpawnCollum2(),
-            () => boss.SpawnCollum3()
+
+
+        spawnColumnActions = new System.Action[] {
+        () => boss.SpawnCollum0ImmuneToDamage(),
+        () => boss.SpawnCollum1ImmuneToDamage(),
+        () => boss.SpawnCollum2ImmuneToDamage(),
+        () => boss.SpawnCollum3ImmuneToDamage()
         };
+
+        if(!immuneToDamage)
+            UpdateColorByHealth();
+        else
+            foreach (var renderer in partsRenderer)
+                renderer.material.SetColor("_Color", Color.black);
 
         TriggerFall();
     }
 
+
     public void DealDamage(int damage)
     {
+        if(immuneToDamage)
+            return;
+
         health -= damage;
+
+        UpdateColorByHealth();
+
         foreach (var renderer in partsRenderer)
         {
             Sequence sequence = DOTween.Sequence();
-            sequence.Append(renderer.material.DOFloat(5f, "_ColorBrightness", 0.05f).SetEase(Ease.InOutSine));
+            sequence.Append(renderer.material.DOFloat(1.5f, "_ColorBrightness", 0.05f).SetEase(Ease.InOutSine));
             sequence.Join(renderer.material.DOFloat(0.15f + damage * 0.5f, "_PulseRatio", 0.05f).SetEase(Ease.InOutSine));
-            sequence.Append(renderer.material.DOFloat(1f, "_ColorBrightness", 0.05f).SetEase(Ease.InOutSine));
+            sequence.Append(renderer.material.DOFloat(0.75f, "_ColorBrightness", 0.05f).SetEase(Ease.InOutSine));
             sequence.Join(renderer.material.DOFloat(0f, "_PulseRatio", 0.05f).SetEase(Ease.InOutSine));
             AudioManager.Instance.PlaySound(hitSound, hitSoundVolume, hitSoundPitch, true, 0f);
         }
@@ -206,6 +242,20 @@ public class BlowCollumnUp : MonoBehaviour
 
             weakpointComponent.SetTarget(damageBoss.transform);
             gameObject.SetActive(false);
+
         }
     }
+
+    private void UpdateColorByHealth()
+    {
+        float t = Mathf.Clamp01(health / 50f);
+        Color newColor = healthGradient.Evaluate(t);
+
+        foreach (var renderer in partsRenderer)
+        {
+            Material instancedMaterial = renderer.material; 
+            instancedMaterial.SetColor("_Color", newColor);
+        }
+    }
+
 }

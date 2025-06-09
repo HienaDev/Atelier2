@@ -10,6 +10,8 @@ public class DamagePlayer : MonoBehaviour
 
     public bool dealsDamage = true;
 
+    private bool blownUp = false;
+
     void Start()
     {
         colliderTrigger = GetComponent<Collider>();
@@ -82,7 +84,11 @@ public class DamagePlayer : MonoBehaviour
 
     public void BlowUp()
     {
-        if(particleSystemExplosion == null)
+        if (blownUp)
+            return;
+        blownUp = true;
+
+        if (particleSystemExplosion == null)
         {
             Debug.LogWarning("Particle system explosion is not set, cannot blow up.");
             return;
