@@ -17009,6 +17009,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86091e08c46f57240bca8794abd1039c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerHealth: {fileID: 1024517197}
   cinemachineBrainCamera: {fileID: 752188158}
   bossMorphing: {fileID: 624881817}
   phaseEverhood:

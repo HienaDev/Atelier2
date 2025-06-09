@@ -6,6 +6,8 @@ using Unity.Cinemachine;
 
 public class PhaseManager : MonoBehaviour
 {
+
+    [SerializeField] private PlayerHealth playerHealth;
     public enum Phase
     {
         MonkeyHell,
@@ -176,6 +178,8 @@ public class PhaseManager : MonoBehaviour
 
         if (lastPhase == phase)
             return;
+
+        playerHealth.DealDamage(-1); // Heal player between phases
 
         currentCamera.SetActive(false);
         currentCamera = data.camera;

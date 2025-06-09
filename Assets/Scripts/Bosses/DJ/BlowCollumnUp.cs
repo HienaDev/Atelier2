@@ -62,8 +62,6 @@ public class BlowCollumnUp : MonoBehaviour
     [SerializeField] private float hitSoundVolume = 1f;
     [SerializeField] private float hitSoundPitch = 1f;
 
-    private System.Action[] spawnColumnActions;
-
     private Gradient healthGradient;
 
     private bool immuneToDamage = false;
@@ -184,15 +182,7 @@ public class BlowCollumnUp : MonoBehaviour
         this.immuneToDamage = immuneToDamage;
 
 
-
-        spawnColumnActions = new System.Action[] {
-        () => boss.SpawnCollum0ImmuneToDamage(),
-        () => boss.SpawnCollum1ImmuneToDamage(),
-        () => boss.SpawnCollum2ImmuneToDamage(),
-        () => boss.SpawnCollum3ImmuneToDamage()
-        };
-
-        if(!immuneToDamage)
+        if (!immuneToDamage)
             UpdateColorByHealth();
         else
             foreach (var renderer in partsRenderer)
@@ -204,7 +194,7 @@ public class BlowCollumnUp : MonoBehaviour
 
     public void DealDamage(int damage)
     {
-        if(immuneToDamage)
+        if (immuneToDamage)
             return;
 
         health -= damage;
@@ -233,12 +223,11 @@ public class BlowCollumnUp : MonoBehaviour
 
             clearProjectiles.AddProjectile(weakpointClone);
 
-            if (index >= 0 && index < spawnColumnActions.Length)
-            {
-                weakpointComponent.onLifetime.AddListener(() => spawnColumnActions[index]());
-                weakpointComponent.onDeath.AddListener(() => spawnColumnActions[index]());
-                weakpointComponent.SetCritPositions(critPoints);
-            }
+
+            weakpointComponent.onLifetime.AddListener(() => boss.SpawnCollumn(index, false));
+            weakpointComponent.onDeath.AddListener(() => boss.SpawnCollumn(index, true));
+            weakpointComponent.SetCritPositions(critPoints);
+
 
             weakpointComponent.SetTarget(damageBoss.transform);
             gameObject.SetActive(false);
@@ -253,7 +242,7 @@ public class BlowCollumnUp : MonoBehaviour
 
         foreach (var renderer in partsRenderer)
         {
-            Material instancedMaterial = renderer.material; 
+            Material instancedMaterial = renderer.material;
             instancedMaterial.SetColor("_Color", newColor);
         }
     }

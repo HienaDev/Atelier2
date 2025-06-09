@@ -26,6 +26,15 @@ public class ClearProjectiles : MonoBehaviour
                 continue; // Skip if the projectile is already destroyed
             }
 
+
+            WeakPoint weakPoint = projectile.GetComponent<WeakPoint>();
+            if (weakPoint != null)
+            {
+                //Debug.Log("Clearing SpikeShot: " + projectile.name);
+                weakPoint.BlowUp();
+                continue;
+            }
+
             SpikeShot spikeShot = projectile.GetComponent<SpikeShot>();
             if (spikeShot != null)
             {

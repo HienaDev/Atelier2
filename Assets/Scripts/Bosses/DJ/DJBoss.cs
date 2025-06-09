@@ -180,7 +180,7 @@ public class DJBoss : MonoBehaviour, BossInterface
         }
     }
 
-    private void SpawnCollumn(int pos, bool immuneToDamage = true)
+    public void SpawnCollumn(int pos, bool immuneToDamage = true)
     {
         Collumn collumn = collumns[0];
         foreach (Collumn c in collumns)
