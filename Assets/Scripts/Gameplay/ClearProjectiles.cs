@@ -15,7 +15,7 @@ public class ClearProjectiles : MonoBehaviour
         projectiles.Add(projectile);
     }
 
-    public void ClearAllProjectiles(bool clearWeakpoints = false)
+    public void ClearAllProjectiles(bool clearWeakpoints = false, bool destroyWeakpoints = false)
     {
         foreach (GameObject projectile in projectiles)
         {
@@ -25,15 +25,24 @@ public class ClearProjectiles : MonoBehaviour
                 continue; // Skip if the projectile is already destroyed
             }
 
+
             WeakPoint weakPoint = projectile.GetComponent<WeakPoint>();
             if (weakPoint != null)
             {
+                Debug.Log("Clearing WeakPoint: " + projectile.name);
                 if (clearWeakpoints)
                 {
-                    //Debug.Log("Clearing WeakPoint: " + projectile.name);
+                    Debug.Log("Clearing WeakPoint: " + projectile.name);
                     weakPoint.BlowUp(false);
                 }
 
+                if(destroyWeakpoints)
+                {
+                    Debug.Log("Destroying WeakPoint: " + projectile.name);
+                    Destroy(projectile);
+                }
+
+                Debug.Log("WeakPoint not destroyed: " + projectile.name);
                 continue;
             }
 

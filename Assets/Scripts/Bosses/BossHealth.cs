@@ -84,7 +84,7 @@ public class BossHealth : MonoBehaviour
 
     public void SkipPhase()
     {
-        projectiles.ClearAllProjectiles();
+        projectiles.ClearAllProjectiles(false, true);
         if (phaseManager.GetCurrentSubPhase() == SubPhase.Tutorial)
         {
             phaseManager.ChangePhase();

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using static PhaseManager;
 using NaughtyAttributes;
+using Unity.VisualScripting;
 
 public class DJBoss : MonoBehaviour, BossInterface
 {
@@ -113,6 +114,10 @@ public class DJBoss : MonoBehaviour, BossInterface
 
     private Animator animator;
     private HashSet<int> deactivatedSpeakers = new HashSet<int>();
+
+    private bool attackDelayHappening = false;
+
+    [SerializeField] private int beginBopsDelay = 10;
 
     public void AddSpeakerToList(int layerIndex) => deactivatedSpeakers.Add(layerIndex);
     public void RemoveSpeakerFromList(int layerIndex) => deactivatedSpeakers.Remove(layerIndex);
@@ -232,20 +237,28 @@ public class DJBoss : MonoBehaviour, BossInterface
     {
         if (MoveWithMusic.Instance.bop && fightStarted)
         {
-            if (usePatterns)
+            if (beginBopsDelay > 0)
             {
-                ExecuteAttackPattern();
+                beginBopsDelay--;
             }
             else
-            {
-                AttackFromRandomColumn();
-                bopCounter++;
-                if (bopCounter >= bopsToSpawn)
+                if (usePatterns)
                 {
-                    ExecuteWallAttack();
-                    bopCounter = 0;
+                    if (!attackDelayHappening)
+                        StartCoroutine(ExecuteAttackPattern());
+
+
                 }
-            }//
+                else
+                {
+                    AttackFromRandomColumn();
+                    bopCounter++;
+                    if (bopCounter >= bopsToSpawn)
+                    {
+                        ExecuteWallAttack();
+                        bopCounter = 0;
+                    }
+                }
         }
 
         foreach (int i in deactivatedSpeakers)
@@ -303,7 +316,7 @@ public class DJBoss : MonoBehaviour, BossInterface
     /// <summary>
     /// Executes a column attack from the specified column index
     /// </summary>
-    public void ExecuteColumnAttack(int columnIndex)
+    public void ExecuteColumnAttack(int columnIndex, float delay = 0f)
     {
         if (!IsColumnValid(columnIndex)) return;
 
@@ -326,7 +339,7 @@ public class DJBoss : MonoBehaviour, BossInterface
             normalDifficulty ? projectileCountNormal[currentProjectileCountNormal] : projectileCount[currentProjectileCount],
             normalDifficulty ? attackArcAngleNormal : attackArcAngle,
             normalDifficulty ? projectileSpeedNormal : projectileSpeed,
-            normalDifficulty ? projectileDelayNormal : projectileDelay,
+            delay,
             Vector3.one * (normalDifficulty ? projectileScaleNormal : projectileScale)
         );
 
@@ -431,12 +444,21 @@ public class DJBoss : MonoBehaviour, BossInterface
     /// <summary>
     /// Executes the current attack pattern
     /// </summary>
-    public void ExecuteAttackPattern()
+    public IEnumerator ExecuteAttackPattern()
     {
-        if (currentAttackPatterns == null || currentAttackPatterns.Count == 0) return;
+        if (currentAttackPatterns == null || currentAttackPatterns.Count == 0) yield break ;
 
         // Get current pattern
         AttackPattern currentPattern = currentAttackPatterns[currentPatternIndex];
+
+        attackDelayHappening = true;
+
+        if (currentPattern.patternDelay > 0)
+        {
+            yield return new WaitForSeconds(currentPattern.patternDelay);
+        }
+
+        attackDelayHappening = false;
 
         // Execute current command
         if (currentPattern.attacks.Count > 0)

@@ -13506,139 +13506,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackPatterns: []
   easyAttackPatterns:
-  - patternName: Pattern 1
+  - patternName: Shot Introduction
     attacks:
     - attackType: 1
       targetColumns: 00000000
-      delay: 2
-      numberOfShots: 1
+      delay: 0
+      numberOfShots: 3
     - attackType: 1
       targetColumns: 01000000
-      delay: 0
-      numberOfShots: 2
-    - attackType: 1
-      targetColumns: 03000000
       delay: 0
       numberOfShots: 3
     - attackType: 1
       targetColumns: 02000000
       delay: 0
-      numberOfShots: 4
-    - attackType: 1
-      targetColumns: 00000000
-      delay: 0
-      numberOfShots: 1
-    - attackType: 3
-      targetColumns: 00000000010000000200000003000000
-      delay: 0
       numberOfShots: 3
     - attackType: 1
       targetColumns: 03000000
       delay: 0
-      numberOfShots: 5
-    - attackType: 1
-      targetColumns: 02000000
-      delay: 0
-      numberOfShots: 7
-    - attackType: 1
-      targetColumns: 02000000
-      delay: 0
-      numberOfShots: 5
-    - attackType: 1
-      targetColumns: 03000000
-      delay: 0
-      numberOfShots: 5
-    - attackType: 1
-      targetColumns: 01000000
-      delay: 0
-      numberOfShots: 5
-    - attackType: 1
-      targetColumns: 00000000
-      delay: 0
-      numberOfShots: 5
-    - attackType: 1
-      targetColumns: 0000000003000000
-      delay: 0
-      numberOfShots: 5
-    - attackType: 1
-      targetColumns: 0100000002000000
-      delay: 0
       numberOfShots: 3
-    - attackType: 1
-      targetColumns: 00000000010000000200000003000000
-      delay: 0
-      numberOfShots: 2
-    - attackType: 1
-      targetColumns: 
-      delay: 0
-      numberOfShots: 8
-    - attackType: 0
-      targetColumns: 
-      delay: 2
-      numberOfShots: 7
-    - attackType: 1
-      targetColumns: 0200000003000000
-      delay: 0
-      numberOfShots: 5
-    - attackType: 1
-      targetColumns: 02000000
-      delay: 0
-      numberOfShots: 5
-    - attackType: 1
-      targetColumns: 01000000
-      delay: 0
-      numberOfShots: 5
-    - attackType: 1
-      targetColumns: 0000000001000000
-      delay: 0
-      numberOfShots: 5
-    - attackType: 1
-      targetColumns: 03000000
-      delay: 0
-      numberOfShots: 5
-    - attackType: 1
-      targetColumns: 00000000
-      delay: 0
-      numberOfShots: 5
-    - attackType: 1
-      targetColumns: 00000000010000000200000003000000
-      delay: 0
-      numberOfShots: 5
     patternDelay: 0
     currentCommandIndex: 0
-  - patternName: Pattern 2
-    attacks:
-    - attackType: 0
-      targetColumns: 
-      delay: 2
-      numberOfShots: 2
-    - attackType: 2
-      targetColumns: 00000000
-      delay: 2
-      numberOfShots: 3
-    patternDelay: 2
-    currentCommandIndex: 0
-  normalAttackPatterns:
-  - patternName: New Pattern 1
-    attacks:
-    - attackType: 1
-      targetColumns: 00000000
-      delay: 0.05
-      numberOfShots: 3
-    - attackType: 1
-      targetColumns: 01000000
-      delay: 0.05
-      numberOfShots: 8
-    - attackType: 1
-      targetColumns: 03000000
-      delay: 0.05
-      numberOfShots: 5
-    - attackType: 1
-      targetColumns: 02000000
-      delay: 0.05
-      numberOfShots: 10
-    patternDelay: 0
-    currentCommandIndex: 0
+  normalAttackPatterns: []
   currentPatternIndex: 0
   usePatterns: 1
   numberOfWeakspointsToDestroy: 2
@@ -13689,6 +13577,7 @@ MonoBehaviour:
   critPositions:
   - {fileID: 385940145}
   - {fileID: 146778509}
+  beginBopsDelay: 10
 --- !u!114 &480802522
 MonoBehaviour:
   m_ObjectHideFlags: 0

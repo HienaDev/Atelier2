@@ -34,7 +34,7 @@ public class Debugger : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F5))
         {
-            clearProjectiles.ClearAllProjectiles();
+            clearProjectiles.ClearAllProjectiles(false, true);
         }
 
         if (Input.GetKeyDown(KeyCode.F6))
