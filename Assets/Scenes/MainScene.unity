@@ -13730,11 +13730,6 @@ MonoBehaviour:
       delay: 0
       numberOfShots: 3
       delayBetweenCommands: 0
-    - attackType: 3
-      targetColumns: 
-      delay: 0
-      numberOfShots: 3
-      delayBetweenCommands: 0
     patternDelay: 0
     currentCommandIndex: 0
   normalAttackPatterns: []
