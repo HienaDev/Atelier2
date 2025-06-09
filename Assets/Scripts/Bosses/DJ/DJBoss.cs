@@ -727,6 +727,7 @@ public class DJBoss : MonoBehaviour, BossInterface
         float delay = 0f,
         Vector3 scale = default)
     {
+        Debug.Log("projectile delay: " + delay);    
         if (delay > 0)
             yield return new WaitForSeconds(delay);
 
