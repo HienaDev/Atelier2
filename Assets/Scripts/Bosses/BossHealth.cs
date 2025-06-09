@@ -92,7 +92,7 @@ public class BossHealth : MonoBehaviour
         DealDamage((int)(lives * percentageToChangePhase) + 5); // Skip to the next phase
     }
 
-    public void DealCritDamage(Transform[] bossParts = null)
+    public void DealCritDamage(Transform[] bossParts = null, bool clearWeakpoints = false)
     {
         // Play crit audio
         PlayCritAudio();
@@ -112,7 +112,7 @@ public class BossHealth : MonoBehaviour
             duration
         );
         phaseManager?.CurrentCamera.GetComponent<CameraShake>().SmoothShakeCamera(20f, 1f);
-        projectiles.ClearAllProjectiles();
+        projectiles.ClearAllProjectiles(clearWeakpoints);
         DealDamage(((lives / phaseManager.phases.Length) / 4) + 5);
     }
 

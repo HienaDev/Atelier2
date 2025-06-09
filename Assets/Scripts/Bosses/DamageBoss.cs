@@ -23,7 +23,7 @@ public class DamageBoss : MonoBehaviour
         damageable = toggle;
     }
 
-    public void DealCritDamage()
+    public void DealCritDamage(bool clearWeakpoint = false)
     {
         Transform[] bossParts = new Transform[partsRenderer.Length];
 
@@ -32,7 +32,7 @@ public class DamageBoss : MonoBehaviour
             bossParts[i] = partsRenderer[i].transform;
         }
 
-        health.DealCritDamage();
+        health.DealCritDamage(clearWeakpoints: clearWeakpoint);
         // Only deals damage if crit is false, we put 100 to scale up the displacement
         DealDamage(100, true);
     }

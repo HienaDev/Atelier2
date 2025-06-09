@@ -218,7 +218,7 @@ public class BlowCollumnUp : MonoBehaviour
             GameObject weakpointClone = Instantiate(weakpoint, transform.position, Quaternion.identity);
             var weakpointComponent = weakpointClone.GetComponent<WeakPoint>();
 
-            weakpointComponent.onDeath.AddListener(damageBoss.DealCritDamage);
+            weakpointComponent.onDeath.AddListener(() => damageBoss.DealCritDamage(false));
             weakpointComponent.onDeath.AddListener(boss.DamageAnimation);
 
             clearProjectiles.AddProjectile(weakpointClone);

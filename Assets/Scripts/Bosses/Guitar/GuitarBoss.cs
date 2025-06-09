@@ -879,7 +879,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         wp.transform.SetParent(core.transform, worldPositionStays: true);
 
         WeakPoint wpScript = wp.GetComponent<WeakPoint>();
-        wpScript.onDeath.AddListener(health.DealCritDamage);
+        wpScript.onDeath.AddListener(() => health.DealCritDamage());
         wpScript.onDeath.AddListener(() => {
             currentCoreWeakpoint = null;
             OnWeakpointDestroyed();
@@ -909,7 +909,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         clearProjectiles.AddProjectile(wp);
 
         WeakPoint wpScript = wp.GetComponent<WeakPoint>();
-        wpScript.onDeath.AddListener(health.DealCritDamage);
+        wpScript.onDeath.AddListener(() => health.DealCritDamage());
         wpScript.onDeath.AddListener(() => {
             currentPartWeakpoint = null;
             OnWeakpointDestroyed();
@@ -990,7 +990,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         wp.transform.localScale = Vector3.one * slot.uniformScale;
 
         WeakPoint wpScript = wp.GetComponent<WeakPoint>();
-        wpScript.onDeath.AddListener(health.DealCritDamage);
+        wpScript.onDeath.AddListener(() => health.DealCritDamage());
         wpScript.onDeath.AddListener(OnWeakpointDestroyed);
         wpScript.SetCritPositions(critPositions);
 

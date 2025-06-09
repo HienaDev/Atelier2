@@ -7,33 +7,36 @@ public class ClearProjectiles : MonoBehaviour
 
     void Start()
     {
-        projectiles = new List<GameObject> ();
+        projectiles = new List<GameObject>();
     }
 
     public void AddProjectile(GameObject projectile)
     {
-        projectiles.Add (projectile);
+        projectiles.Add(projectile);
     }
 
-    public void ClearAllProjectiles()
+    public void ClearAllProjectiles(bool clearWeakpoints = false)
     {
         foreach (GameObject projectile in projectiles)
         {
-
-            if(projectile == null)
+            if (projectile == null)
             {
                 //Debug.Log("ClearAllProjectiles: Attempted to clear a null projectile.");
                 continue; // Skip if the projectile is already destroyed
             }
 
-
             WeakPoint weakPoint = projectile.GetComponent<WeakPoint>();
             if (weakPoint != null)
             {
-                //Debug.Log("Clearing SpikeShot: " + projectile.name);
-                weakPoint.BlowUp();
+                if (clearWeakpoints)
+                {
+                    //Debug.Log("Clearing WeakPoint: " + projectile.name);
+                    weakPoint.BlowUp(false);
+                }
+
                 continue;
             }
+
 
             SpikeShot spikeShot = projectile.GetComponent<SpikeShot>();
             if (spikeShot != null)
