@@ -223,7 +223,7 @@ public class BlowCollumnUp : MonoBehaviour
 
             DamagePlayer damagePlayer = weakpointClone.GetComponent<DamagePlayer>();
             if (damagePlayer != null)
-                damagePlayer.enabled = false;
+                Destroy(damagePlayer);
 
 
             clearProjectiles.AddProjectile(weakpointClone);

@@ -178,7 +178,7 @@ public class DJBoss : MonoBehaviour, BossInterface
 
             DamagePlayer damagePlayer = weakpointClone.GetComponent<DamagePlayer>();
             if (damagePlayer != null)
-                damagePlayer.enabled = false;
+                Destroy(damagePlayer);
         }
     }
 
