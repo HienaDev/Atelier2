@@ -42,6 +42,8 @@ public class BossHealth : MonoBehaviour
     float endValue;
     private Tween waveTween;
 
+    [SerializeField] private DeathScreenMethods deathScreenMethods;
+
     void Start()
     {
         currentLives = lives;
@@ -142,7 +144,7 @@ public class BossHealth : MonoBehaviour
 
     private void GameOver()
     {
-        winScreen.SetActive(true);
+        deathScreenMethods.BackToGame();
     }
 
     public void ChangePhase()

@@ -72,6 +72,8 @@ public class PhaseManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private IEnumerator Start()
     {
+        Time.timeScale = 1f;
+
         currentPhase = phases[0];
         
         // Initialize just to avoid nulls but will be replaced right after

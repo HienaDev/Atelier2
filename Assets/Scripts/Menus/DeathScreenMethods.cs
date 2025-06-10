@@ -5,7 +5,8 @@ public class DeathScreenMethods : MonoBehaviour
 {
 
     [SerializeField] private string menuScene;
-    
+    [SerializeField] private string gameScene;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -22,6 +23,12 @@ public class DeathScreenMethods : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(menuScene);
+    }
+
+    public void BackToGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(gameScene);
     }
 
 

@@ -14507,6 +14507,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuScene: MainMenu
+  gameScene: 
 --- !u!114 &497273568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15642,7 +15643,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &561546171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20248,7 +20249,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 65
+  field of view: 60.000004
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -20274,8 +20275,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 752188152}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.4238017, y: 0, z: 0, w: 0.90575504}
-  m_LocalPosition: {x: 0, y: 16.12, z: 2.22}
+  m_LocalRotation: {x: 0.17607366, y: -0.8149925, z: 0.3372964, w: 0.43705434}
+  m_LocalPosition: {x: 12.241768, y: 17.106445, z: 26.837067}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -26871,6 +26872,7 @@ GameObject:
   m_Component:
   - component: {fileID: 842874740}
   - component: {fileID: 842874741}
+  - component: {fileID: 842874742}
   m_Layer: 0
   m_Name: Bosses
   m_TagString: Untagged
@@ -26929,6 +26931,21 @@ MonoBehaviour:
   pitchVariation: 0.1
   bopWaveMaterial: {fileID: 2100000, guid: 4bc9db19f6cd7b7488bc1a1ab919d00b, type: 2}
   duration: 0.5
+  deathScreenMethods: {fileID: 842874742}
+--- !u!114 &842874742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842874739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 036d58ca42abc7a4a9665a05c9167445, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuScene: 
+  gameScene: FinalCutScene
 --- !u!1 &845297394
 GameObject:
   m_ObjectHideFlags: 0
@@ -33249,6 +33266,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuScene: MainMenu
+  gameScene: 
 --- !u!82 &1143734863
 AudioSource:
   m_ObjectHideFlags: 0
