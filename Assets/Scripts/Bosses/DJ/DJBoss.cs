@@ -175,6 +175,7 @@ public class DJBoss : MonoBehaviour, BossInterface
             weakpointClone.GetComponent<WeakPoint>().onDeath.AddListener(WeakpointTutorialDestroyed);
             weakpointClone.GetComponent<WeakPoint>().onDeath.AddListener(DamageAnimation);
             weakpointClone.GetComponent<WeakPoint>().SetTarget(damageBoss.gameObject.transform);
+            weakpointClone.GetComponent<DamagePlayer>().enabled = false; // Disable damage to player for tutorial weakpoints
         }
     }
 
