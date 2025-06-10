@@ -51,7 +51,7 @@ public class TailProjectile : MonoBehaviour
 
         CameraShake cameraShake = phaseManager.CurrentCamera.GetComponent<CameraShake>();
         if (cameraShake != null)
-            cameraShake.ShakeCamera(2f, 0.1f);
+            cameraShake.SmoothShakeCamera(2f, 0.1f);
 
         SpawnSpike();
         Destroy(gameObject);

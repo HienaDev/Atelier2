@@ -157,6 +157,7 @@ public class DJBoss : MonoBehaviour, BossInterface
                 break;
             case PhaseManager.SubPhase.Normal:
                 NormalDifficulty();
+                
                 fightStarted = true;
                 SpawnCollumn(0, false);
                 SpawnCollumn(1, false);
@@ -219,7 +220,7 @@ public class DJBoss : MonoBehaviour, BossInterface
         normalDifficulty = true;
         currentAttackPatterns = normalAttackPatterns;
         currentPatternIndex = 0; // Reset pattern index when switching difficulties
-
+        attackDelayHappening = false; // Reset attack delay state
         // Reset all pattern command indices
         for (int i = 0; i < currentAttackPatterns.Count; i++)
         {
@@ -248,8 +249,7 @@ public class DJBoss : MonoBehaviour, BossInterface
             {
                 beginBopsDelay--;
             }
-            else
-                if (usePatterns)
+            else if (usePatterns)
             {
                 if (!attackDelayHappening)
                     StartCoroutine(ExecuteAttackPattern());

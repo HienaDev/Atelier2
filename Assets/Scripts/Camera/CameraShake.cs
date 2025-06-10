@@ -44,25 +44,30 @@ public class CameraShake : MonoBehaviour
         ApplyTilt();
     }
 
-    public void ShakeCamera(float intensity, float duration)
+    private void OnEnable()
     {
-        ShakeCamera(intensity, defaultFrequencyGain, duration);
+        SmoothShakeCamera(0f, 0.1f);
     }
 
-    public void ShakeCamera(float intensity, float frequency, float duration)
-    {
-        if (noise == null) return;
+    //public void ShakeCamera(float intensity, float duration)
+    //{
+    //ShakeCamera(intensity, defaultFrequencyGain, duration);
+    //}
 
-        activeShakes.Add(new ShakeInstance
-        {
-            intensity = intensity,
-            frequency = frequency,
-            timeLeft = duration
-        });
+    //public void ShakeCamera(float intensity, float frequency, float duration)
+    //{
+    //    if (noise == null) return;
 
-        if (shakeUpdater == null)
-            shakeUpdater = StartCoroutine(UpdateShake());
-    }
+    //    activeShakes.Add(new ShakeInstance
+    //    {
+    //        intensity = intensity,
+    //        frequency = frequency,
+    //        timeLeft = duration
+    //    });
+
+    //    if (shakeUpdater == null)
+    //        shakeUpdater = StartCoroutine(UpdateShake());
+    //}
 
     public void SmoothShakeCamera(float intensity, float duration)
     {

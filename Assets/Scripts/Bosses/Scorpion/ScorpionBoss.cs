@@ -289,7 +289,7 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
         yield return StartCoroutine(RotateTowardsPlayer());
 
         animator.CrossFade("Charge", 0.1f);
-        phaseManager?.CurrentCamera.GetComponent<CameraShake>().ShakeCamera(0.5f, chargeWindupTime);
+        phaseManager?.CurrentCamera.GetComponent<CameraShake>().SmoothShakeCamera(0.5f, chargeWindupTime);
         yield return new WaitForSeconds(chargeWindupTime);
 
         Debug.Log("Scorpion Boss: **Charging forward!**");
@@ -362,7 +362,7 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
 
         Debug.Log("Scorpion Boss: **Dashing Forward!**");
 
-        phaseManager?.CurrentCamera.GetComponent<CameraShake>().ShakeCamera(0.3f, dashDuration);
+        phaseManager?.CurrentCamera.GetComponent<CameraShake>().SmoothShakeCamera(0.3f, dashDuration);
 
         // Dash windup animation
         animator.CrossFade("SmallDash", 0.1f);
@@ -639,7 +639,7 @@ public class ScorpionBoss : MonoBehaviour, BossInterface
 
     public void SmallCameraShake()
     {
-        phaseManager?.CurrentCamera.GetComponent<CameraShake>().ShakeCamera(0.5f, 0.5f);
+        phaseManager?.CurrentCamera.GetComponent<CameraShake>().SmoothShakeCamera(0.5f, 0.5f);
     }
 
     // Draw the range of the attacks in the Scene view
