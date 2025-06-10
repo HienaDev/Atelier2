@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 public class CameraShake : MonoBehaviour
 {
-
     [Header("Tilt Settings")]
     public float maxTiltAngle = 5f;
     public float tiltSpeed = 5f;
@@ -48,26 +47,6 @@ public class CameraShake : MonoBehaviour
     {
         SmoothShakeCamera(0f, 0.1f);
     }
-
-    //public void ShakeCamera(float intensity, float duration)
-    //{
-    //ShakeCamera(intensity, defaultFrequencyGain, duration);
-    //}
-
-    //public void ShakeCamera(float intensity, float frequency, float duration)
-    //{
-    //    if (noise == null) return;
-
-    //    activeShakes.Add(new ShakeInstance
-    //    {
-    //        intensity = intensity,
-    //        frequency = frequency,
-    //        timeLeft = duration
-    //    });
-
-    //    if (shakeUpdater == null)
-    //        shakeUpdater = StartCoroutine(UpdateShake());
-    //}
 
     public void SmoothShakeCamera(float intensity, float duration)
     {

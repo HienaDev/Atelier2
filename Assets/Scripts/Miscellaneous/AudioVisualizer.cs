@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class AudioVisualizer : MonoBehaviour
 {
-
     [SerializeField] private AudioSource musicAudio;
 
     public int numberOfSamples = 32;
@@ -12,7 +11,6 @@ public class AudioVisualizer : MonoBehaviour
 
     private float[] bandAverages;
     private float smoothingFactor = 0.1f; // adjust for responsiveness
-
 
     public int barOffset = 4;
 
@@ -39,8 +37,6 @@ public class AudioVisualizer : MonoBehaviour
         bandBuffer = new float[numberOfFrequencies];
         bandBufferDecrease = new float[numberOfFrequencies];
         bandMaxHistory = new float[numberOfFrequencies];
-
-
     }
 
     // Update is called once per frame
@@ -54,7 +50,6 @@ public class AudioVisualizer : MonoBehaviour
     void GetSpectrumAudioSource()
     {
         musicAudio.GetSpectrumData(samples, 0, FFTWindow.Blackman);
-
     }
 
     void MakeFrequencyBands()
@@ -65,8 +60,6 @@ public class AudioVisualizer : MonoBehaviour
         {
             int sampleCount = (int)Mathf.Pow(2, i) * 2;
             float average = 0;
-
-
 
             if (i == numberOfFrequencies - 1)
             {
@@ -114,7 +107,4 @@ public class AudioVisualizer : MonoBehaviour
             }
         }
     }
-
-
-
 }

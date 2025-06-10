@@ -3,15 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class DeathScreenMethods : MonoBehaviour
 {
-
     [SerializeField] private string menuScene;
     [SerializeField] private string gameScene;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
     private void OnEnable()
     {
@@ -38,6 +31,4 @@ public class DeathScreenMethods : MonoBehaviour
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name);
     }
-
-
 }

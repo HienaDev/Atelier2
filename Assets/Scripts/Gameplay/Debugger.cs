@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 public class Debugger : MonoBehaviour
 {
     [SerializeField] private PlayerHealth playerHealth;
@@ -12,7 +11,7 @@ public class Debugger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.F1))
+        if (Input.GetKeyDown(KeyCode.F1))
         {
             playerHealth.DealDamage(1);
         }
@@ -27,7 +26,7 @@ public class Debugger : MonoBehaviour
             playerHealth.ToggleInvulnerable();
         }
 
-        if(Input.GetKeyDown(KeyCode.F4))
+        if (Input.GetKeyDown(KeyCode.F4))
         {
             bossHealth.SkipPhase();
         }

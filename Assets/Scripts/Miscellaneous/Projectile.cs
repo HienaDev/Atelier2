@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class Projectile : MonoBehaviour
@@ -37,8 +36,6 @@ public class Projectile : MonoBehaviour
             ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         }
     }
-
-
 
     private void Update()
     {

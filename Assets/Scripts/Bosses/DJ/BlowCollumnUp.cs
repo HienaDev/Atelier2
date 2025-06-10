@@ -228,7 +228,6 @@ public class BlowCollumnUp : MonoBehaviour
 
             clearProjectiles.AddProjectile(weakpointClone);
 
-
             weakpointComponent.onLifetime.AddListener(() => boss.SpawnCollumn(index, false));
             weakpointComponent.onDeath.AddListener(() => boss.SpawnCollumn(index, true));
             weakpointComponent.SetCritPositions(critPoints);
@@ -236,7 +235,6 @@ public class BlowCollumnUp : MonoBehaviour
 
             weakpointComponent.SetTarget(damageBoss.transform);
             gameObject.SetActive(false);
-
         }
     }
 
@@ -251,5 +249,4 @@ public class BlowCollumnUp : MonoBehaviour
             instancedMaterial.SetColor("_Color", newColor);
         }
     }
-
 }

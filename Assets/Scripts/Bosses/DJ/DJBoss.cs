@@ -3,9 +3,6 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using static PhaseManager;
-using NaughtyAttributes;
-using Unity.VisualScripting;
 
 public class DJBoss : MonoBehaviour, BossInterface
 {
@@ -215,6 +212,7 @@ public class DJBoss : MonoBehaviour, BossInterface
     public void SpawnCollum1ImmuneToDamage() => SpawnCollumn(1, true);
     public void SpawnCollum2ImmuneToDamage() => SpawnCollumn(2, true);
     public void SpawnCollum3ImmuneToDamage() => SpawnCollumn(3, true);
+    
     public void NormalDifficulty()
     {
         normalDifficulty = true;
@@ -233,11 +231,6 @@ public class DJBoss : MonoBehaviour, BossInterface
     public void StartBoss(PhaseManager.SubPhase subPhase)
     {
         StartAttack(subPhase);
-    }
-
-    void Start()
-    {
-
     }
 
     void Update()
@@ -297,7 +290,6 @@ public class DJBoss : MonoBehaviour, BossInterface
         {
             animator.SetTrigger("RightArm");
         }
-
     }
 
     /// <summary>

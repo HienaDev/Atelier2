@@ -18,12 +18,6 @@ public class SpikeShot : MonoBehaviour
         spikeCollider = GetComponent<Collider>();
     }
 
-    private void Start()
-    {
-        // Default initialization with speed 5f and max distance 20f
-        //Initialize(5f, 10f);
-    }
-
     // Initialize method to set the speed and maximum travel distance
     public void Initialize(float speed, float maxDistance)
     {
