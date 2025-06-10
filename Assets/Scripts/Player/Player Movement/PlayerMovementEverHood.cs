@@ -43,6 +43,8 @@ public class PlayerMovementEverHood : MonoBehaviour
         targetPosition = startPosition;
         // Calculate current Z position (assuming middle of grid as default)
         currentZ = gridSize / 2;
+
+        rb.constraints = RigidbodyConstraints.FreezeAll;
     }
 
     void Update()

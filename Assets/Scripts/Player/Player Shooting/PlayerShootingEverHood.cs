@@ -32,7 +32,7 @@ public class PlayerShootingEverHood : MonoBehaviour
         rb.constraints = RigidbodyConstraints.None;
         topHalf.DORotateQuaternion(Quaternion.LookRotation(transform.forward), 0.5f).OnComplete(() =>
         {
-            rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotation;
+            rb.constraints = RigidbodyConstraints.FreezeAll;
 
         });
         rightArm.DORotate(new Vector3(0f, 180f, 0f), 0.5f);
@@ -45,7 +45,7 @@ public class PlayerShootingEverHood : MonoBehaviour
         rb.constraints = RigidbodyConstraints.None;
         topHalf.DORotateQuaternion(Quaternion.LookRotation(transform.forward), 0.5f).OnComplete(() =>
         {
-            rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotation;
+            rb.constraints = RigidbodyConstraints.FreezeAll;
 
         });
 
