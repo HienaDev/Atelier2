@@ -12479,7 +12479,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -13936,7 +13936,86 @@ MonoBehaviour:
       targetColumns: 01000000
       delay: 0.1
       numberOfShots: 10
+      delayBetweenCommands: 3
+    patternDelay: 0
+    currentCommandIndex: 0
+  - patternName: Pattern 4
+    attacks:
+    - attackType: 2
+      targetColumns: 0100000003000000
+      delay: 0.5
+      numberOfShots: 3
+      delayBetweenCommands: 2
+    - attackType: 1
+      targetColumns: 00000000010000000200000003000000
+      delay: 0.1
+      numberOfShots: 5
       delayBetweenCommands: 1
+    - attackType: 3
+      targetColumns: 00000000010000000200000003000000
+      delay: 0.2
+      numberOfShots: 3
+      delayBetweenCommands: 4
+    - attackType: 1
+      targetColumns: 00000000
+      delay: 0
+      numberOfShots: 5
+      delayBetweenCommands: 0
+    - attackType: 2
+      targetColumns: 00000000
+      delay: 0
+      numberOfShots: 3
+      delayBetweenCommands: 0
+    - attackType: 3
+      targetColumns: 00000000
+      delay: 0
+      numberOfShots: 3
+      delayBetweenCommands: 2
+    - attackType: 1
+      targetColumns: 01000000
+      delay: 0
+      numberOfShots: 5
+      delayBetweenCommands: 0
+    - attackType: 2
+      targetColumns: 01000000
+      delay: 0
+      numberOfShots: 3
+      delayBetweenCommands: 0
+    - attackType: 3
+      targetColumns: 01000000
+      delay: 0
+      numberOfShots: 3
+      delayBetweenCommands: 2
+    - attackType: 1
+      targetColumns: 02000000
+      delay: 0
+      numberOfShots: 5
+      delayBetweenCommands: 0
+    - attackType: 2
+      targetColumns: 02000000
+      delay: 0
+      numberOfShots: 3
+      delayBetweenCommands: 0
+    - attackType: 3
+      targetColumns: 02000000
+      delay: 0
+      numberOfShots: 3
+      delayBetweenCommands: 2
+    - attackType: 1
+      targetColumns: 03000000
+      delay: 0
+      numberOfShots: 5
+      delayBetweenCommands: 0
+    - attackType: 2
+      targetColumns: 03000000
+      delay: 0
+      numberOfShots: 3
+      delayBetweenCommands: 0
+    - attackType: 3
+      targetColumns: 03000000
+      delay: 0
+      numberOfShots: 3
+      delayBetweenCommands: 4
     patternDelay: 0
     currentCommandIndex: 0
   currentPatternIndex: 0
