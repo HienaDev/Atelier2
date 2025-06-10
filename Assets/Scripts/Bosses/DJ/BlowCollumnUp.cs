@@ -221,7 +221,10 @@ public class BlowCollumnUp : MonoBehaviour
             weakpointComponent.onDeath.AddListener(() => damageBoss.DealCritDamage(false));
             weakpointComponent.onDeath.AddListener(boss.DamageAnimation);
 
-            weakpointClone.GetComponent<DamagePlayer>().enabled = false;
+            DamagePlayer damagePlayer = weakpointClone.GetComponent<DamagePlayer>();
+            if (damagePlayer != null)
+                damagePlayer.enabled = false;
+
 
             clearProjectiles.AddProjectile(weakpointClone);
 
