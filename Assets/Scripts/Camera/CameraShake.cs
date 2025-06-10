@@ -126,6 +126,7 @@ public class CameraShake : MonoBehaviour
             noise.AmplitudeGain = Mathf.Lerp(intensity, 0f, t);
 
             elapsed += Time.deltaTime;
+            Debug.Log("camera shaking");
             yield return null;
         }
 

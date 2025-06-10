@@ -239,6 +239,7 @@ public class DJBoss : MonoBehaviour, BossInterface
     {
         if (MoveWithMusic.Instance.bop && fightStarted)
         {
+            Debug.Log("Bop happened on DJ");
             if (beginBopsDelay > 0)
             {
                 beginBopsDelay--;
@@ -248,8 +249,6 @@ public class DJBoss : MonoBehaviour, BossInterface
             {
                 if (!attackDelayHappening)
                     StartCoroutine(ExecuteAttackPattern());
-
-
             }
             else
             {
