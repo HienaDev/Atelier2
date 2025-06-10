@@ -4,7 +4,6 @@ using UnityEngine.Events;
 
 public class Destructable : MonoBehaviour
 {
-
     [SerializeField] private float intensitySteps = 0.1f;
     [SerializeField] private int lives = 20;
     [SerializeField] private bool isTriggerWeakPoint = false;
@@ -64,11 +63,6 @@ public class Destructable : MonoBehaviour
         currentIntensity = baseColor.maxColorComponent;
         justSpawned = Time.time;
     }
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void HandleHit()
     {
@@ -89,7 +83,6 @@ public class Destructable : MonoBehaviour
             sequence.Append(mat.DOFloat(0f + ((lives - currentLives) * extrusionIntensitySteps), "_PulseRatio", 0.5f).SetEase(Ease.InOutSine));
 
             AudioManager.Instance.PlaySound(audioClip, audioVolume, originalPitch + (lives / currentLives), true);
-
         }
     }
 
@@ -113,11 +106,7 @@ public class Destructable : MonoBehaviour
             Destroy(gameObject, 1f);
 
         }); ;
-
-        
     }
-
-
 
     private void OnTriggerEnter(Collider other)
     {

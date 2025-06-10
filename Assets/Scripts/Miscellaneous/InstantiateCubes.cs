@@ -1,10 +1,8 @@
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using DG.Tweening;
 
 public class InstantiateCubes : MonoBehaviour
 {
-
     private AudioVisualizer audioVisualizer;
 
     [SerializeField] private GameObject cubePrefab;
@@ -49,7 +47,6 @@ public class InstantiateCubes : MonoBehaviour
         }
     }
 
-
     void Update()
     {
         var buffer = audioVisualizer.BandBuffer;
@@ -66,7 +63,4 @@ public class InstantiateCubes : MonoBehaviour
                 cubes[i].transform.localScale = new Vector3(1, height + startingHeight, 1);
         }
     }
-
-
-
 }

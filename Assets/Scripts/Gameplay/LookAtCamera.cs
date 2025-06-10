@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class LookAwayFromCamera : MonoBehaviour
 {
-
     private void OnEnable()
     {
         Camera mainCamera = Camera.main;
@@ -17,6 +16,4 @@ public class LookAwayFromCamera : MonoBehaviour
             Debug.LogWarning("Main Camera not found in the scene.");
         }
     }
-
-    
 }

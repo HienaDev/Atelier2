@@ -6,7 +6,6 @@ using Unity.Cinemachine;
 
 public class PhaseManager : MonoBehaviour
 {
-
     [SerializeField] private PlayerHealth playerHealth;
     public enum Phase
     {
@@ -115,13 +114,6 @@ public class PhaseManager : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         ChangePhaseDictionary(phases[currentPhaseIndex], subPhaseData[phases[currentPhaseIndex]]);
-    }
-
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public void ChangePhase()
