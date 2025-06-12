@@ -59,6 +59,6 @@ Material:
     - _WaveProgression: -0.3
     m_Colors:
     - _Color: {r: 0, g: 0.5471698, b: 0.01992707, a: 0}
-    - _RingSpawnPosition: {r: 0.4990326, g: 0.8412574, b: 0, a: 0}
+    - _RingSpawnPosition: {r: 0.6455397, g: 0.32960314, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
