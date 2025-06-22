@@ -12,7 +12,9 @@ public class ButtonHoverIcon : MonoBehaviour, IPointerEnterHandler, IPointerExit
         if (hoverIcon != null)
         {
             hoverIcon.gameObject.SetActive(true);
-            hoverIcon.position = (transform as RectTransform).position + (Vector3)offset;
+            RectTransform buttonRect = transform as RectTransform;
+            hoverIcon.SetParent(buttonRect.parent); // optional, just to match local space
+            hoverIcon.anchoredPosition = buttonRect.anchoredPosition + offset;
         }
     }
 
