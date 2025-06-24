@@ -20,9 +20,18 @@ public class PlayerShootingQuark : MonoBehaviour
     private bool isLeftArm = true;
     private bool isFacingRight = true;
 
+    private void Start()
+    {
+        // Auto-assign camera if not set
+        if (mainCamera == null)
+        {
+            mainCamera = Camera.main;
+        }
+    }
+
     void Update()
     {
-        AimArms(); 
+        AimArms();
         FlipBodyBasedOnAim();
 
         if (Input.GetButton("Fire1") && Time.time - lastShotTime >= shootingCooldown)
@@ -71,7 +80,19 @@ public class PlayerShootingQuark : MonoBehaviour
 
     private Vector3 GetMouseWorldPosition()
     {
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Vector3 screenPosition;
+
+        // Use virtual cursor if available, otherwise fallback to mouse
+        if (VirtualCursor.Instance != null)
+        {
+            screenPosition = VirtualCursor.Instance.GetScreenPosition();
+        }
+        else
+        {
+            screenPosition = Input.mousePosition;
+        }
+
+        Ray ray = mainCamera.ScreenPointToRay(screenPosition);
         Plane plane = new Plane(Vector3.right, transform.position); // Plane aligned with Z-Y axis
 
         if (plane.Raycast(ray, out float distance))

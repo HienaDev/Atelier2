@@ -24,6 +24,12 @@ public class PlayerShootingGuitar : MonoBehaviour
     private void Start()
     {
         playerSounds = GetComponent<PlayerSounds>();
+
+        // Auto-assign camera if not set
+        if (mainCamera == null)
+        {
+            mainCamera = Camera.main;
+        }
     }
 
     private void OnEnable()
@@ -34,7 +40,6 @@ public class PlayerShootingGuitar : MonoBehaviour
     void Update()
     {
         AimArms();
-
         FlipBodyBasedOnAim();
 
         if (Input.GetButton("Fire1") && Time.time - lastShotTime >= shootingCooldown)
@@ -63,8 +68,6 @@ public class PlayerShootingGuitar : MonoBehaviour
         leftArm.localRotation = Quaternion.Slerp(leftArm.localRotation, targetRotation, Time.deltaTime * armRotationSpeed);
         rightArm.localRotation = Quaternion.Slerp(rightArm.localRotation, targetRotation, Time.deltaTime * armRotationSpeed);
     }
-
-
 
     private void FlipBodyBasedOnAim()
     {
@@ -96,7 +99,19 @@ public class PlayerShootingGuitar : MonoBehaviour
 
     private Vector3 GetMouseWorldPosition()
     {
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Vector3 screenPosition;
+
+        // Use virtual cursor if available, otherwise fallback to mouse
+        if (VirtualCursor.Instance != null)
+        {
+            screenPosition = VirtualCursor.Instance.GetScreenPosition();
+        }
+        else
+        {
+            screenPosition = Input.mousePosition;
+        }
+
+        Ray ray = mainCamera.ScreenPointToRay(screenPosition);
         Plane plane = new Plane(Vector3.right, transform.position);
         if (plane.Raycast(ray, out float distance))
         {
