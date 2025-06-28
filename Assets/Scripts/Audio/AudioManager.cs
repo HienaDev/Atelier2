@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -9,6 +10,9 @@ public class AudioManager : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private int _maxAudioSources = 10;
     [SerializeField] private bool _allowOneShotInterruption = true;
+
+    [Header("Main Mixer")]
+    [SerializeField] private AudioMixerGroup mainMixerGroup;
 
     private List<AudioSource> _audioSources = new List<AudioSource>();
     private Dictionary<AudioClip, AudioSource> _loopingSounds = new Dictionary<AudioClip, AudioSource>();
@@ -54,6 +58,22 @@ public class AudioManager : MonoBehaviour
 
         TrackOneShot(clip, availableSource);
         StartCoroutine(RemoveOneShotWhenComplete(clip, availableSource));
+    }
+
+    /// <summary>
+    /// Play a sound once with delay
+    /// </summary>
+    public void PlaySoundDelayed(AudioClip clip, float delay, float volume = 1f, float pitch = 1f, bool allowMultiple = false, float blend = 0f)
+    {
+        if (clip == null) return;
+
+        StartCoroutine(PlaySoundDelayedCoroutine(clip, delay, volume, pitch, allowMultiple, blend));
+    }
+
+    private IEnumerator PlaySoundDelayedCoroutine(AudioClip clip, float delay, float volume, float pitch, bool allowMultiple, float blend)
+    {
+        yield return new WaitForSeconds(delay);
+        PlaySound(clip, volume, pitch, allowMultiple, blend);
     }
 
     /// <summary>
@@ -125,6 +145,7 @@ public class AudioManager : MonoBehaviour
             var source = _loopingSounds[clip];
             source.volume = volume;
             source.pitch = pitch;
+            source.outputAudioMixerGroup = mainMixerGroup;
             if (!source.isPlaying) source.Play();
             return;
         }
@@ -181,6 +202,7 @@ public class AudioManager : MonoBehaviour
         source.pitch = Mathf.Clamp(pitch, 0.1f, 3f);
         source.loop = loop;
         source.spatialBlend = blend; // Force 2D sound
+        source.outputAudioMixerGroup = mainMixerGroup;
     }
 
     private void TrackOneShot(AudioClip clip, AudioSource source)
