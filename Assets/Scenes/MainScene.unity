@@ -33378,6 +33378,44 @@ MonoBehaviour:
   health: {fileID: 438345851}
   phaseManager: {fileID: 624881816}
   attackCooldown: 1
+  audioVolume: 0.3
+  legFireSounds:
+  - {fileID: 8300000, guid: ade5d22e086acd14b83227d32f39dd7c, type: 3}
+  - {fileID: 8300000, guid: e6a866e70a230694ca4e08b6baac30b1, type: 3}
+  - {fileID: 8300000, guid: b4416642a648b2547affdd992aa121df, type: 3}
+  - {fileID: 8300000, guid: 1ad6395cc335aea4f9be121aa18d4691, type: 3}
+  - {fileID: 8300000, guid: 788bd573bc44ad84ca58f366370ca3ff, type: 3}
+  legFireVolume: 1
+  encirclingAssaultSounds:
+  - {fileID: 8300000, guid: f0a5b66cf43487745a2af52877b4d9f7, type: 3}
+  - {fileID: 8300000, guid: 4162fbbb6788ac342905174993cce021, type: 3}
+  - {fileID: 8300000, guid: 8c0560f68b6cd004d849a477b2f1595b, type: 3}
+  - {fileID: 8300000, guid: b7cd061dc7bb94741b5f1f42809af21d, type: 3}
+  - {fileID: 8300000, guid: 598eeabd47ed3f54ea22d3dbd2b2f010, type: 3}
+  encirclingAssaultVolume: 1
+  encirclingOrbitLoopSound: {fileID: 8300000, guid: cfff9c7b695216f49af6ad075981a027, type: 3}
+  encirclingOrbitLoopVolume: 3
+  homingLoopSound: {fileID: 8300000, guid: 54fd8f10013fc14428736a0fc3b5e84d, type: 3}
+  homingLoopVolume: 3.5
+  encirclingReturnSounds:
+  - {fileID: 8300000, guid: a9a3f95a846883a4aa127b8341004e3d, type: 3}
+  - {fileID: 8300000, guid: 373cea1d68cfe56439493cbc9f5428d7, type: 3}
+  - {fileID: 8300000, guid: a774933e1a656044c9816c203c8a8b03, type: 3}
+  - {fileID: 8300000, guid: 8380df9762819c9468d208c609da47f4, type: 3}
+  - {fileID: 8300000, guid: f98a46f0c099c804d9f55fc6e1715f04, type: 3}
+  - {fileID: 8300000, guid: fd2771da4ba55e640a621b266900ec7b, type: 3}
+  - {fileID: 8300000, guid: d576c1136513f134d866378f65a686f1, type: 3}
+  - {fileID: 8300000, guid: 75bdeb2c569ec5c4ca58de822e4d52cb, type: 3}
+  encirclingReturnVolume: 1.1
+  energyCoreChargeSound: {fileID: 8300000, guid: 295dd37c749072d46afe9f33664ee2ed, type: 3}
+  energyCoreChargeVolume: 0.65
+  energyCoreFireSounds:
+  - {fileID: 8300000, guid: ffe5407606697d1409efde75a22da34f, type: 3}
+  - {fileID: 8300000, guid: d037b18fee2ce8845aa4cfef9148332b, type: 3}
+  - {fileID: 8300000, guid: 8b12cd58875d5b3459ccfab41e034acc, type: 3}
+  - {fileID: 8300000, guid: 524eda79b40524d47b28cff360a61b93, type: 3}
+  - {fileID: 8300000, guid: 563c029f272af454ebbfd055f2b16b74, type: 3}
+  energyCoreFireVolume: 2
   bodyPartPrefab: {fileID: 8460287776679972660, guid: 0a300d8c262a6c8468fb16edfb2a4a0a, type: 3}
   firePointSlots:
   - firePoint: {fileID: 488542936}

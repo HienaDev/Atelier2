@@ -25,6 +25,23 @@ public class GuitarBoss : MonoBehaviour, BossInterface
     [Header("Boss Attack Settings")]
     [SerializeField] private float attackCooldown = 3f;
 
+    [Header("Audio Settings")]
+    [SerializeField] private float audioVolume = 1f;
+    [SerializeField] private AudioClip[] legFireSounds;
+    [SerializeField] private float legFireVolume = 1f;
+    [SerializeField] private AudioClip[] encirclingAssaultSounds;
+    [SerializeField] private float encirclingAssaultVolume = 1f;
+    [SerializeField] private AudioClip encirclingOrbitLoopSound;
+    [SerializeField] private float encirclingOrbitLoopVolume = 1f;
+    [SerializeField] private AudioClip homingLoopSound;
+    [SerializeField] private float homingLoopVolume = 1f;
+    [SerializeField] private AudioClip[] encirclingReturnSounds;
+    [SerializeField] private float encirclingReturnVolume = 1f;
+    [SerializeField] private AudioClip energyCoreChargeSound;
+    [SerializeField] private float energyCoreChargeVolume = 1f;
+    [SerializeField] private AudioClip[] energyCoreFireSounds;
+    [SerializeField] private float energyCoreFireVolume = 1f;
+
     [Header("Encircling Assault")]
     [SerializeField] private GameObject bodyPartPrefab;
     [SerializeField] private List<FirePointSlot> firePointSlots;
@@ -106,6 +123,8 @@ public class GuitarBoss : MonoBehaviour, BossInterface
     private GameObject currentCoreWeakpoint;
     private GameObject currentPartWeakpoint;
     private List<GameObject> activeParts = new List<GameObject>();
+    private bool isHomingLoopPlaying = false;
+    private bool isOrbitLoopPlaying = false;
 
     // Base value storage for difficulty scaling
     private float baseFlyingPartMoveSpeed;
@@ -522,6 +541,16 @@ public class GuitarBoss : MonoBehaviour, BossInterface
             var slot = firePointSlots[i];
             if (availablePaths.Count == 0) break;
 
+            // Play sound for each individual shot
+            if (encirclingAssaultSounds.Length > 0 && AudioManager.Instance != null)
+            {
+                AudioClip randomSound = encirclingAssaultSounds[Random.Range(0, encirclingAssaultSounds.Length)];
+                if (randomSound != null)
+                {
+                    AudioManager.Instance.PlaySound(randomSound, audioVolume * encirclingAssaultVolume, 1f, true);
+                }
+            }
+
             OvalPath chosenPath = availablePaths[Random.Range(0, availablePaths.Count)];
             GameObject part = Instantiate(bodyPartPrefab, slot.firePoint.position, Quaternion.identity);
             part.transform.SetParent(transform);
@@ -557,6 +586,16 @@ public class GuitarBoss : MonoBehaviour, BossInterface
                 slot.firePoint,
                 () =>
                 {
+                    // Play return sound when part returns to guitar
+                    if (encirclingReturnSounds.Length > 0 && AudioManager.Instance != null)
+                    {
+                        AudioClip randomReturnSound = encirclingReturnSounds[Random.Range(0, encirclingReturnSounds.Length)];
+                        if (randomReturnSound != null)
+                        {
+                            AudioManager.Instance.PlaySound(randomReturnSound, audioVolume * encirclingReturnVolume, 1f, true);
+                        }
+                    }
+                    
                     if (slot.visual != null)
                         slot.visual.SetActive(true);
                     Destroy(part);
@@ -583,7 +622,15 @@ public class GuitarBoss : MonoBehaviour, BossInterface
 
         yield return new WaitForSeconds(0.5f);
 
+        // Start orbit loop sound when parts begin orbiting
+        if (encirclingOrbitLoopSound != null && AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayLoopingSound(encirclingOrbitLoopSound, audioVolume * encirclingOrbitLoopVolume, 1f);
+            isOrbitLoopPlaying = true;
+        }
+
         StartCoroutine(MonitorHomingActivation(launchedParts, homingTimes));
+        StartCoroutine(MonitorHomingPhases(launchedParts));
 
         phaseManager?.CurrentCamera.GetComponent<CameraShake>().SmoothShakeCamera(0.6f, flyingPartLifetimeOnPath);
 
@@ -599,6 +646,20 @@ public class GuitarBoss : MonoBehaviour, BossInterface
                     flyingScript.ForceReturn();
                 }
             }
+        }
+        
+        // Stop orbit loop sound when attack ends
+        if (isOrbitLoopPlaying && encirclingOrbitLoopSound != null && AudioManager.Instance != null)
+        {
+            AudioManager.Instance.StopLoopingSound(encirclingOrbitLoopSound);
+            isOrbitLoopPlaying = false;
+        }
+        
+        // Stop homing loop sound when parts are forced to return
+        if (isHomingLoopPlaying && homingLoopSound != null && AudioManager.Instance != null)
+        {
+            AudioManager.Instance.StopLoopingSound(homingLoopSound);
+            isHomingLoopPlaying = false;
         }
         
         StopEvading();
@@ -682,6 +743,83 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         return farthest;
     }
 
+    private IEnumerator MonitorHomingPhases(List<GameObject> launchedParts)
+    {
+        while (launchedParts.Count > 0)
+        {
+            bool anyPartInHoming = false;
+
+            // Check if any part is in homing phase
+            for (int i = launchedParts.Count - 1; i >= 0; i--)
+            {
+                if (launchedParts[i] == null)
+                {
+                    launchedParts.RemoveAt(i);
+                    continue;
+                }
+
+                FlyingBodyPart flyingScript = launchedParts[i].GetComponent<FlyingBodyPart>();
+                if (flyingScript != null)
+                {
+                    // Use reflection to access private inHomingPhase field
+                    var field = typeof(FlyingBodyPart).GetField("inHomingPhase", 
+                        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                    if (field != null)
+                    {
+                        bool inHomingPhase = (bool)field.GetValue(flyingScript);
+                        if (inHomingPhase)
+                        {
+                            anyPartInHoming = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // Controls sound based on whether there are parts in homing
+            if (anyPartInHoming && !isHomingLoopPlaying)
+            {
+                // Start homing loop sound
+                if (homingLoopSound != null && AudioManager.Instance != null)
+                {
+                    AudioManager.Instance.PlayLoopingSound(homingLoopSound, audioVolume * homingLoopVolume, 1f);
+                    isHomingLoopPlaying = true;
+                }
+            }
+            else if (!anyPartInHoming && isHomingLoopPlaying)
+            {
+                // Stop homing loop sound
+                if (homingLoopSound != null && AudioManager.Instance != null)
+                {
+                    AudioManager.Instance.StopLoopingSound(homingLoopSound);
+                    isHomingLoopPlaying = false;
+                }
+            }
+
+            yield return new WaitForSeconds(0.1f); // Check every 0.1 seconds
+        }
+
+        // Make sure sound stops when there are no more parts
+        if (isHomingLoopPlaying)
+        {
+            if (homingLoopSound != null && AudioManager.Instance != null)
+            {
+                AudioManager.Instance.StopLoopingSound(homingLoopSound);
+                isHomingLoopPlaying = false;
+            }
+        }
+
+        // Stop orbit loop sound when monitoring ends
+        if (isOrbitLoopPlaying)
+        {
+            if (encirclingOrbitLoopSound != null && AudioManager.Instance != null)
+            {
+                AudioManager.Instance.StopLoopingSound(encirclingOrbitLoopSound);
+                isOrbitLoopPlaying = false;
+            }
+        }
+    }
+
     private void StartEvading()
     {
         isEvading = true;
@@ -750,6 +888,16 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         isLegAttackActive = true;
         while (isLegAttackActive)
         {
+            // Play one random sound for the entire volley
+            if (legFireSounds.Length > 0 && AudioManager.Instance != null)
+            {
+                AudioClip randomLegSound = legFireSounds[Random.Range(0, legFireSounds.Length)];
+                if (randomLegSound != null)
+                {
+                    AudioManager.Instance.PlaySound(randomLegSound, audioVolume * legFireVolume, 1f, true);
+                }
+            }
+
             foreach (var leg in airborneLegs)
             {
                 if (leg.visual != null && leg.visual.activeSelf)
@@ -775,7 +923,6 @@ public class GuitarBoss : MonoBehaviour, BossInterface
         
         Quaternion rotation = Quaternion.LookRotation(forward, Vector3.up);
         
-        // Instantiate the projectile at the fire point position
         GameObject proj = Instantiate(legProjectilePrefab, leg.firePoint.position, rotation);
         clearProjectiles?.AddProjectile(proj);
         LegProjectile lp = proj.GetComponent<LegProjectile>();
@@ -817,6 +964,7 @@ public class GuitarBoss : MonoBehaviour, BossInterface
 
         if (energyCore != null)
         {
+            // Pass the charge sound and fire sounds to the Energy Core
             energyCore.Initialize(
                 energyCoreChargeTime,
                 energyCoreActiveDuration,
@@ -826,7 +974,12 @@ public class GuitarBoss : MonoBehaviour, BossInterface
                 energyCoreFirePoints,
                 energyCoreFireRadius,
                 energyCoreBurstInterval,
-                energyCoreLingerTime
+                energyCoreLingerTime,
+                energyCoreChargeSound,
+                energyCoreFireSounds,
+                audioVolume,
+                energyCoreChargeVolume,
+                energyCoreFireVolume
             );
         }
 
