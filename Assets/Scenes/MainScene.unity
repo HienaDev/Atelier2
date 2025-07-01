@@ -13750,9 +13750,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: bc953434e2c992d4ca10c0934a4233d5, type: 3}
   - {fileID: 8300000, guid: 7f0ae2f694593c84db4eec6be03479df, type: 3}
   - {fileID: 8300000, guid: 1ce2255ce0eb030478c9138db690fb16, type: 3}
-  columnAttackVolume: 1
+  columnAttackVolume: 0.5
   wallAttackSound: {fileID: 8300000, guid: 423465290f765dd42a965bf75a34af96, type: 3}
-  wallAttackVolume: 0.8
+  wallAttackVolume: 0.7
   wallAttackPitchVariation: 0.2
   laserPulseSound: {fileID: 8300000, guid: 4792a6800aead354392e6fa176ce0dce, type: 3}
   laserBaseVolume: 0.2
@@ -13762,6 +13762,9 @@ MonoBehaviour:
   doubleSlamSound: {fileID: 8300000, guid: 3d63612fbdc77384c97a9dbba22b7b6f, type: 3}
   doubleSlamVolume: 0.15
   doubleSlamPitchVariation: 0.15
+  buttonPressSound: {fileID: 8300000, guid: 2e08ec1730a7108448f518cfd976ddeb, type: 3}
+  buttonPressVolume: 0.4
+  buttonPressPitchVariation: 0.1
   speakerEffectSounds: []
   speakerEffectVolume: 1
   patternChangeSound: {fileID: 0}
@@ -14194,7 +14197,7 @@ MonoBehaviour:
     currentCommandIndex: 0
   currentPatternIndex: 0
   usePatterns: 1
-  numberOfWeakspointsToDestroy: 2
+  numberOfWeakspointsToDestroy: 1
   collumns:
   - collumn: {fileID: 568432956}
     scaleWithMusic: {fileID: 568432959}
@@ -16114,10 +16117,11 @@ MonoBehaviour:
     pitch: 1
   playAllClipsOnDestruction: 1
   pitchVariation: 0.1
-  fallSound: {fileID: 0}
-  fallSoundVolume: 1
+  fallSound: {fileID: 8300000, guid: 54fd207c18529bc4e83b7cced7a90e7f, type: 3}
+  fallSoundVolume: 0.25
   fallSoundPitch: 1
-  fallSoundPitchVariation: 0.1
+  fallSoundPitchVariation: 0.2
+  fallSoundDelay: 1.15
   hitSound: {fileID: 8300000, guid: 3b309d1739b43c94a8382f6b8482acf5, type: 3}
   hitSoundVolume: 0.4
   hitSoundPitch: 0.2
@@ -20371,10 +20375,11 @@ MonoBehaviour:
     pitch: 1
   playAllClipsOnDestruction: 1
   pitchVariation: 0.1
-  fallSound: {fileID: 0}
-  fallSoundVolume: 1
+  fallSound: {fileID: 8300000, guid: 54fd207c18529bc4e83b7cced7a90e7f, type: 3}
+  fallSoundVolume: 0.25
   fallSoundPitch: 1
-  fallSoundPitchVariation: 0.1
+  fallSoundPitchVariation: 0.2
+  fallSoundDelay: 1.15
   hitSound: {fileID: 8300000, guid: 3b309d1739b43c94a8382f6b8482acf5, type: 3}
   hitSoundVolume: 0.4
   hitSoundPitch: 0.2
@@ -21068,10 +21073,11 @@ MonoBehaviour:
     pitch: 1
   playAllClipsOnDestruction: 1
   pitchVariation: 0.1
-  fallSound: {fileID: 0}
-  fallSoundVolume: 1
+  fallSound: {fileID: 8300000, guid: 54fd207c18529bc4e83b7cced7a90e7f, type: 3}
+  fallSoundVolume: 0.25
   fallSoundPitch: 1
-  fallSoundPitchVariation: 0.1
+  fallSoundPitchVariation: 0.2
+  fallSoundDelay: 1.15
   hitSound: {fileID: 8300000, guid: 3b309d1739b43c94a8382f6b8482acf5, type: 3}
   hitSoundVolume: 0.4
   hitSoundPitch: 0.2
@@ -60065,10 +60071,11 @@ MonoBehaviour:
     pitch: 1
   playAllClipsOnDestruction: 1
   pitchVariation: 0.1
-  fallSound: {fileID: 0}
-  fallSoundVolume: 1
+  fallSound: {fileID: 8300000, guid: 54fd207c18529bc4e83b7cced7a90e7f, type: 3}
+  fallSoundVolume: 0.25
   fallSoundPitch: 1
-  fallSoundPitchVariation: 0.1
+  fallSoundPitchVariation: 0.2
+  fallSoundDelay: 1.15
   hitSound: {fileID: 8300000, guid: 3b309d1739b43c94a8382f6b8482acf5, type: 3}
   hitSoundVolume: 0.4
   hitSoundPitch: 0.2

@@ -75,6 +75,11 @@ public class DJBoss : MonoBehaviour, BossInterface
     [SerializeField] private float doubleSlamVolume = 1f;
     [SerializeField] private float doubleSlamPitchVariation = 0.2f; // Random pitch variation range
     
+    [Header("Button Sound Settings")]
+    [SerializeField] private AudioClip buttonPressSound;
+    [SerializeField] private float buttonPressVolume = 1f;
+    [SerializeField] private float buttonPressPitchVariation = 0.1f; // Random pitch variation range
+    
     [SerializeField] private AudioClip[] speakerEffectSounds;
     [SerializeField] private float speakerEffectVolume = 1f;
     [SerializeField] private AudioClip patternChangeSound;
@@ -406,6 +411,20 @@ public class DJBoss : MonoBehaviour, BossInterface
         if (patternChangeSound != null && AudioManager.Instance != null)
         {
             AudioManager.Instance.PlaySound(patternChangeSound, audioVolume * patternChangeVolume, 1f, true, 0f);
+        }
+    }
+
+    /// <summary>
+    /// Public method to play button press sound for DJ animations
+    /// Call this method from animation events
+    /// </summary>
+    public void PlayButtonPressSound()
+    {
+        if (buttonPressSound != null && AudioManager.Instance != null)
+        {
+            // Add random pitch variation within the specified range
+            float randomPitch = 1f + UnityEngine.Random.Range(-buttonPressPitchVariation, buttonPressPitchVariation);
+            AudioManager.Instance.PlaySound(buttonPressSound, audioVolume * buttonPressVolume, randomPitch, true, 0f);
         }
     }
 

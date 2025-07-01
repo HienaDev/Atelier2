@@ -1,6 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 [System.Serializable]
 public class DestructionAudioClip
@@ -59,6 +60,7 @@ public class BlowCollumnUp : MonoBehaviour
     [SerializeField] private float fallSoundVolume = 1f;
     [SerializeField] private float fallSoundPitch = 1f;
     [SerializeField] private float fallSoundPitchVariation = 0.1f; // Random pitch variation
+    [SerializeField] private float fallSoundDelay = 0f; // Delay before playing fall sound
 
     private Vector3 originalPosition;
     private Vector3 originalScale;
@@ -127,11 +129,10 @@ public class BlowCollumnUp : MonoBehaviour
 
     public void TriggerFall()
     {
-        // Play fall sound with random pitch variation
+        // Play fall sound with delay and random pitch variation
         if (fallSound != null && AudioManager.Instance != null)
         {
-            float randomPitch = fallSoundPitch + Random.Range(-fallSoundPitchVariation, fallSoundPitchVariation);
-            AudioManager.Instance.PlaySound(fallSound, fallSoundVolume, randomPitch, true, 0f);
+            StartCoroutine(PlayFallSoundWithDelay());
         }
 
         // Reset position and rotation
@@ -183,6 +184,17 @@ public class BlowCollumnUp : MonoBehaviour
         {
             boss.RemoveSpeakerFromList(index);
         });
+    }
+
+    private IEnumerator PlayFallSoundWithDelay()
+    {
+        if (fallSoundDelay > 0f)
+        {
+            yield return new WaitForSeconds(fallSoundDelay);
+        }
+
+        float randomPitch = fallSoundPitch + Random.Range(-fallSoundPitchVariation, fallSoundPitchVariation);
+        AudioManager.Instance.PlaySound(fallSound, fallSoundVolume, randomPitch, true, 0f);
     }
 
     public void Initialize(DamageBoss damageBoss, int index, int health = 50, bool immuneToDamage = false)
