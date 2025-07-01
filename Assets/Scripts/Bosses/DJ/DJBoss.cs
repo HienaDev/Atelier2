@@ -29,13 +29,13 @@ public class DJBoss : MonoBehaviour, BossInterface
     public struct AttackCommand
     {
         public AttackType attackType;
-        public List<int> targetColumns; // Which columns to attack from
+        public List<int> targetColumns;
         [Range(0f, 2f)]
-        public float delay; // Delay before this specific attack
+        public float delay;
         [Range(1, 10)]
-        public int numberOfShots; // Number of spike shots to fire from each column
+        public int numberOfShots;
         [Range(0f, 5f)]
-        public float delayBetweenCommands; // New: Delay after this command before next one
+        public float delayBetweenCommands;
     }
 
     [Serializable]
@@ -54,13 +54,39 @@ public class DJBoss : MonoBehaviour, BossInterface
         public int currentCommandIndex;
     }
 
+    [Header("Audio Settings")]
+    [SerializeField] private float audioVolume = 1f;
+    [SerializeField] private AudioClip[] columnAttackSounds;
+    [SerializeField] private float columnAttackVolume = 1f;
+    [SerializeField] private AudioClip wallAttackSound;
+    [SerializeField] private float wallAttackVolume = 1f;
+    [SerializeField] private float wallAttackPitchVariation = 0.2f; // Random pitch variation range
+    
+    // LASER SOUND SETTINGS - Procedural sound system
+    [Header("Laser Sound Settings")]
+    [SerializeField] private AudioClip laserPulseSound; // Base sound for each pulse
+    [SerializeField] private float laserBaseVolume = 0.8f;
+    [SerializeField] private float laserBasePitch = 1f;
+    [SerializeField] private float laserPitchIncrement = 0.15f; // How much pitch increases each pulse
+    [SerializeField] private float laserBasePitchVariation = 0.1f; // Random pitch variation for each new laser
+    
+    [Header("Double Slam Sound Settings")]
+    [SerializeField] private AudioClip doubleSlamSound;
+    [SerializeField] private float doubleSlamVolume = 1f;
+    [SerializeField] private float doubleSlamPitchVariation = 0.2f; // Random pitch variation range
+    
+    [SerializeField] private AudioClip[] speakerEffectSounds;
+    [SerializeField] private float speakerEffectVolume = 1f;
+    [SerializeField] private AudioClip patternChangeSound;
+    [SerializeField] private float patternChangeVolume = 1f;
+
     [Header("Attack Patterns")]
     [SerializeField] private List<AttackPattern> attackPatterns = new List<AttackPattern>();
     [SerializeField] private List<AttackPattern> easyAttackPatterns = new List<AttackPattern>();
     [SerializeField] private List<AttackPattern> normalAttackPatterns = new List<AttackPattern>();
     private List<AttackPattern> currentAttackPatterns = new List<AttackPattern>();
     [SerializeField] private int currentPatternIndex = 0;
-    [SerializeField] private bool usePatterns = false; // Toggle between pattern mode and random mode
+    [SerializeField] private bool usePatterns = false;
 
     [SerializeField] private int numberOfWeakspointsToDestroy = 2;
     private int tutorialWeakpointsDestroyed = 0;
@@ -118,6 +144,22 @@ public class DJBoss : MonoBehaviour, BossInterface
 
     [SerializeField] private int beginBopsDelay = 10;
 
+    // Dictionary to track sound parameters for each active laser
+    private Dictionary<GameObject, LaserSoundData> activeLaserSounds = new Dictionary<GameObject, LaserSoundData>();
+
+    [Serializable]
+    private class LaserSoundData
+    {
+        public float currentPitch;
+        public int pulseCount;
+        
+        public LaserSoundData(float basePitch)
+        {
+            currentPitch = basePitch;
+            pulseCount = 0;
+        }
+    }
+
     public void AddSpeakerToList(int layerIndex) => deactivatedSpeakers.Add(layerIndex);
     public void RemoveSpeakerFromList(int layerIndex) => deactivatedSpeakers.Remove(layerIndex);
 
@@ -129,7 +171,7 @@ public class DJBoss : MonoBehaviour, BossInterface
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        currentAttackPatterns = easyAttackPatterns; // Start with easy patterns
+        currentAttackPatterns = easyAttackPatterns;
     }
 
     public void PhaseEnded()
@@ -217,9 +259,12 @@ public class DJBoss : MonoBehaviour, BossInterface
     {
         normalDifficulty = true;
         currentAttackPatterns = normalAttackPatterns;
-        currentPatternIndex = 0; // Reset pattern index when switching difficulties
-        attackDelayHappening = false; // Reset attack delay state
-        // Reset all pattern command indices
+        currentPatternIndex = 0;
+        attackDelayHappening = false;
+        
+        // Play pattern change sound
+        PlayPatternChangeSound();
+        
         for (int i = 0; i < currentAttackPatterns.Count; i++)
         {
             AttackPattern pattern = currentAttackPatterns[i];
@@ -265,23 +310,120 @@ public class DJBoss : MonoBehaviour, BossInterface
         }
     }
 
-    #region Individual Attack Methods
+    #region Audio Methods
+
+    private void PlayColumnAttackSound()
+    {
+        if (columnAttackSounds.Length > 0 && AudioManager.Instance != null)
+        {
+            AudioClip randomSound = columnAttackSounds[UnityEngine.Random.Range(0, columnAttackSounds.Length)];
+            if (randomSound != null)
+            {
+                AudioManager.Instance.PlaySound(randomSound, audioVolume * columnAttackVolume, 1f, true, 0f);
+            }
+        }
+    }
+
+    private void PlayWallAttackSound()
+    {
+        if (wallAttackSound != null && AudioManager.Instance != null)
+        {
+            // Add random pitch variation within the specified range
+            float randomPitch = 1f + UnityEngine.Random.Range(-wallAttackPitchVariation, wallAttackPitchVariation);
+            AudioManager.Instance.PlaySound(wallAttackSound, audioVolume * wallAttackVolume, randomPitch, true, 0f);
+        }
+    }
+
+    // NEW LASER SOUND SYSTEM
+    /// <summary>
+    /// Method to be called by laser when it flashes.
+    /// Call this method from the laser script on each pulse/flash.
+    /// </summary>
+    public void PlayLaserPulseSound(GameObject laserObject)
+    {
+        if (laserPulseSound == null || AudioManager.Instance == null) return;
+
+        // If this is the first time this laser plays sound, initialize data
+        if (!activeLaserSounds.ContainsKey(laserObject))
+        {
+            // Add random pitch variation to the base pitch for each new laser
+            float randomBasePitch = laserBasePitch + UnityEngine.Random.Range(-laserBasePitchVariation, laserBasePitchVariation);
+            activeLaserSounds[laserObject] = new LaserSoundData(randomBasePitch);
+        }
+
+        LaserSoundData soundData = activeLaserSounds[laserObject];
+        
+        // Play sound with current pitch and base volume - force 2D sound
+        AudioManager.Instance.PlaySound(
+            laserPulseSound, 
+            audioVolume * laserBaseVolume, 
+            soundData.currentPitch, 
+            true, // Allow multiple instances to overlap
+            0f // Force 2D sound (no spatial audio)
+        );
+
+        // Increment pitch for next time
+        soundData.pulseCount++;
+        soundData.currentPitch += laserPitchIncrement;
+    }
 
     /// <summary>
-    /// Executes a laser attack from the specified column index
+    /// Clears sound data when laser is destroyed.
+    /// Call this method when the laser is destroyed.
     /// </summary>
+    public void OnLaserDestroyed(GameObject laserObject)
+    {
+        if (activeLaserSounds.ContainsKey(laserObject))
+        {
+            activeLaserSounds.Remove(laserObject);
+        }
+    }
+
+    private void PlayDoubleSlamSound()
+    {
+        if (doubleSlamSound != null && AudioManager.Instance != null)
+        {
+            // Add random pitch variation within the specified range
+            float randomPitch = 1f + UnityEngine.Random.Range(-doubleSlamPitchVariation, doubleSlamPitchVariation);
+            AudioManager.Instance.PlaySound(doubleSlamSound, audioVolume * doubleSlamVolume, randomPitch, true, 0f);
+        }
+    }
+
+    private void PlaySpeakerEffectSound()
+    {
+        if (speakerEffectSounds.Length > 0 && AudioManager.Instance != null)
+        {
+            AudioClip randomSound = speakerEffectSounds[UnityEngine.Random.Range(0, speakerEffectSounds.Length)];
+            if (randomSound != null)
+            {
+                AudioManager.Instance.PlaySound(randomSound, audioVolume * speakerEffectVolume, 1f, true, 0f);
+            }
+        }
+    }
+
+    private void PlayPatternChangeSound()
+    {
+        if (patternChangeSound != null && AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySound(patternChangeSound, audioVolume * patternChangeVolume, 1f, true, 0f);
+        }
+    }
+
+    #endregion
+
+    #region Individual Attack Methods
+
     public void ExecuteLaserAttack(int columnIndex)
     {
         if (!IsColumnValid(columnIndex)) return;
 
         Collumn column = GetColumnByIndex(columnIndex);
         column.speakerEffects.ShootEffect();
+        PlaySpeakerEffectSound();
 
-        // Spawn laser at the firepoint
         GameObject laser = Instantiate(laserPrefab, column.firePoint.position, column.firePoint.rotation);
         clearProjectiles.AddProjectile(laser);
 
-        // Set animation trigger if needed
         if (columnIndex == 0 || columnIndex == 2)
         {
             animator.SetTrigger("LeftArm");
@@ -292,18 +434,13 @@ public class DJBoss : MonoBehaviour, BossInterface
         }
     }
 
-    /// <summary>
-    /// Executes laser attacks from multiple columns with sequential delay
-    /// </summary>
     public void ExecuteLaserAttacks(List<int> columnIndices, float sequentialDelay = 0f)
     {
         if (columnIndices == null || columnIndices.Count == 0) return;
 
-        // Filter out invalid columns
         var validColumns = columnIndices.Where(IsColumnValid).ToList();
         if (validColumns.Count == 0) return;
 
-        // Execute attack from each valid column with sequential delay
         StartCoroutine(ExecuteLaserAttacksSequentially(validColumns, sequentialDelay));
     }
 
@@ -319,17 +456,14 @@ public class DJBoss : MonoBehaviour, BossInterface
         }
     }
 
-    /// <summary>
-    /// Executes a column attack from the specified column index
-    /// </summary>
     public void ExecuteColumnAttack(int columnIndex, float delay = 0f)
     {
         if (!IsColumnValid(columnIndex)) return;
 
         Collumn column = GetColumnByIndex(columnIndex);
         column.speakerEffects.ShootEffect();
+        PlaySpeakerEffectSound();
 
-        // Set animation trigger
         if (columnIndex == 0 || columnIndex == 2)
         {
             //animator.SetTrigger("LeftArm");
@@ -346,34 +480,28 @@ public class DJBoss : MonoBehaviour, BossInterface
             normalDifficulty ? attackArcAngleNormal : attackArcAngle,
             normalDifficulty ? projectileSpeedNormal : projectileSpeed,
             delay,
-            Vector3.one * (normalDifficulty ? projectileScaleNormal : projectileScale)
+            Vector3.one * (normalDifficulty ? projectileScaleNormal : projectileScale),
+            true // Play sound for single column attacks
         );
 
         IncrementProjectileCount();
     }
 
-    /// <summary>
-    /// Executes column attacks from multiple columns
-    /// </summary>
     public void ExecuteColumnAttacks(List<int> columnIndices, int numberOfShots = -1, float delay = 0f)
     {
         if (columnIndices == null || columnIndices.Count == 0) return;
 
-        // Check if this is a double slam (multiple column attacks)
         bool isDoubleSlam = columnIndices.Count > 1;
-
-        // Filter out invalid columns
         var validColumns = columnIndices.Where(IsColumnValid).ToList();
         if (validColumns.Count == 0) return;
 
-        // Show double slam UI if attacking from multiple columns
         if (isDoubleSlam && validColumns.Count > 1)
         {
             animator.SetTrigger("DoubleSlam");
             GameObject doubleSlamTextClone = Instantiate(doubleSlamText, doubleSlamSpawn.position, Quaternion.identity);
+            PlayDoubleSlamSound(); // Play double slam sound instead of column attack sound
         }
 
-        // Execute attack from each valid column
         foreach (int columnIndex in validColumns)
         {
             ColumnAttack(
@@ -383,24 +511,25 @@ public class DJBoss : MonoBehaviour, BossInterface
                 normalDifficulty ? attackArcAngleNormal : attackArcAngle,
                 normalDifficulty ? projectileSpeedNormal : projectileSpeed,
                 delay,
-                Vector3.one * (normalDifficulty ? projectileScaleNormal : projectileScale)
+                Vector3.one * (normalDifficulty ? projectileScaleNormal : projectileScale),
+                !isDoubleSlam // Don't play column sound if it's a double slam
             );
 
             GetColumnByIndex(columnIndex).speakerEffects.ShootEffect();
+            PlaySpeakerEffectSound();
         }
 
         IncrementProjectileCount();
     }
 
-    /// <summary>
-    /// Executes a wall attack from the specified column index
-    /// </summary>
     public void ExecuteWallAttack(int columnIndex)
     {
         if (!IsColumnValid(columnIndex)) return;
 
         Collumn column = GetColumnByIndex(columnIndex);
         column.speakerEffects.ShootEffect();
+        PlaySpeakerEffectSound();
+        PlayWallAttackSound();
 
         GameObject projectile = Instantiate(wallProjectilePrefab, column.firePoint.position, Quaternion.identity);
         projectile.transform.rotation = column.firePoint.rotation;
@@ -410,22 +539,15 @@ public class DJBoss : MonoBehaviour, BossInterface
         {
             projectileScript.Initialize(wallProjectileSpeed, wallLifetime);
         }
-
-        //clearProjectiles.AddProjectile(projectile);
     }
 
-    /// <summary>
-    /// Executes wall attacks from multiple columns with sequential delay
-    /// </summary>
     public void ExecuteWallAttacks(List<int> columnIndices, float sequentialDelay = 0f)
     {
         if (columnIndices == null || columnIndices.Count == 0) return;
 
-        // Filter out invalid columns
         var validColumns = columnIndices.Where(IsColumnValid).ToList();
         if (validColumns.Count == 0) return;
 
-        // Execute attack from each valid column with sequential delay
         StartCoroutine(ExecuteWallAttacksSequentially(validColumns, sequentialDelay));
     }
 
@@ -441,9 +563,6 @@ public class DJBoss : MonoBehaviour, BossInterface
         }
     }
 
-    /// <summary>
-    /// Executes a wall attack from a random valid column (for backwards compatibility)
-    /// </summary>
     public void ExecuteWallAttack()
     {
         int randomIndex = GetRandomValidColumnIndex();
@@ -456,14 +575,11 @@ public class DJBoss : MonoBehaviour, BossInterface
     #endregion
 
     #region Pattern System
-    /// <summary>
-    /// Executes the current attack pattern
-    /// </summary>
+
     public IEnumerator ExecuteAttackPattern()
     {
         if (currentAttackPatterns == null || currentAttackPatterns.Count == 0) yield break;
 
-        // Get current pattern
         AttackPattern currentPattern = currentAttackPatterns[currentPatternIndex];
 
         attackDelayHappening = true;
@@ -475,18 +591,15 @@ public class DJBoss : MonoBehaviour, BossInterface
 
         attackDelayHappening = false;
 
-        // Execute current command
         if (currentPattern.attacks.Count > 0)
         {
             int commandIndex = currentPattern.currentCommandIndex;
             AttackCommand command = currentPattern.attacks[commandIndex];
 
-            // Execute the command
             ExecuteAttackCommand(command);
 
             attackDelayHappening = true;
 
-            // Use the command's delayBetweenCommands instead of the fixed delay
             if (command.delayBetweenCommands > 0)
             {
                 yield return new WaitForSeconds(command.delayBetweenCommands);
@@ -494,33 +607,29 @@ public class DJBoss : MonoBehaviour, BossInterface
 
             attackDelayHappening = false;
 
-            // Move to next command
             currentPattern.currentCommandIndex = (commandIndex + 1) % currentPattern.attacks.Count;
-            currentAttackPatterns[currentPatternIndex] = currentPattern; // Update the struct in the list
+            currentAttackPatterns[currentPatternIndex] = currentPattern;
 
-            // If we've looped back to start, move to next pattern
             if (currentPattern.currentCommandIndex == 0)
             {
                 currentPatternIndex = (currentPatternIndex + 1) % currentAttackPatterns.Count;
+                PlayPatternChangeSound();
             }
         }
         else
         {
-            // If pattern has no commands, just move to next pattern
             currentPatternIndex = (currentPatternIndex + 1) % currentAttackPatterns.Count;
+            PlayPatternChangeSound();
         }
     }
 
     private IEnumerator ExecutePatternWithDelay(AttackPattern pattern)
     {
-
         if (pattern.patternDelay > 0)
         {
             yield return new WaitForSeconds(pattern.patternDelay);
         }
 
-
-        // Execute each attack command in the pattern
         foreach (var attackCommand in pattern.attacks)
         {
             if (attackCommand.delay > 0)
@@ -546,22 +655,15 @@ public class DJBoss : MonoBehaviour, BossInterface
                 ExecuteLaserAttacks(command.targetColumns, command.delay);
                 break;
             case AttackType.None:
-                // Do nothing
                 break;
         }
     }
 
-    /// <summary>
-    /// Sets a specific attack pattern to be executed
-    /// </summary>
     public void SetAttackPattern(AttackPattern pattern)
     {
         StartCoroutine(ExecutePatternWithDelay(pattern));
     }
 
-    /// <summary>
-    /// Toggles between pattern mode and random mode
-    /// </summary>
     public void SetPatternMode(bool usePatternMode)
     {
         usePatterns = usePatternMode;
@@ -585,14 +687,12 @@ public class DJBoss : MonoBehaviour, BossInterface
             return false;
         }
 
-        // Check difficulty-based column limits
         if (!collumns[columnIndex].collumn.activeSelf)
         {
             Debug.LogWarning($"Column {columnIndex} not active");
             return false;
         }
 
-        // Check if too many speakers are deactivated
         if (!normalDifficulty && deactivatedSpeakers.Count >= 2)
         {
             return false;
@@ -614,25 +714,23 @@ public class DJBoss : MonoBehaviour, BossInterface
                 return c;
             }
         }
-        return collumns[0]; // Fallback
+        return collumns[0];
     }
 
     private int GetRandomValidColumnIndex(int excludeColumn = -1)
     {
         int maxColumns = normalDifficulty ? collumns.Length : 2;
 
-        // Check if any columns are available
         if ((!normalDifficulty && deactivatedSpeakers.Count >= 2) ||
             (normalDifficulty && deactivatedSpeakers.Count >= 4))
         {
             return -1;
         }
 
-        // If we need to exclude a column, check if there are enough available columns
         int availableColumns = maxColumns - deactivatedSpeakers.Count;
         if (excludeColumn != -1 && !deactivatedSpeakers.Contains(excludeColumn))
         {
-            availableColumns--; // One less available since we're excluding it
+            availableColumns--;
         }
 
         if (availableColumns <= 0)
@@ -672,7 +770,7 @@ public class DJBoss : MonoBehaviour, BossInterface
 
     #endregion
 
-    #region Original Methods (for backwards compatibility)
+    #region Original Methods
 
     private void ColumnAttack(
         Transform firePoint,
@@ -681,29 +779,29 @@ public class DJBoss : MonoBehaviour, BossInterface
         float spreadAngle,
         float projectileSpeed,
         float startDelay = 0f,
-        Vector3 scale = default)
+        Vector3 scale = default,
+        bool playSound = true)
     {
-        // Use default scale if none provided
         if (scale == default) scale = Vector3.one;
 
-        // Add some fluctuation to avoid safe spots
-        float newSpreadAngle = spreadAngle + UnityEngine.Random.Range(-20, 20);
+        // Play column attack sound only if requested (not for double slam)
+        if (playSound)
+        {
+            PlayColumnAttackSound();
+        }
 
-        // Calculate angle between each projectile
+        float newSpreadAngle = spreadAngle + UnityEngine.Random.Range(-20, 20);
         float angleBetween = newSpreadAngle / Mathf.Max(1, projectileCount - 1);
         float startAngle = -newSpreadAngle / 2f;
 
         for (int i = 0; i < projectileCount; i++)
         {
-            // Calculate direction for this projectile
             float currentAngle = startAngle + (angleBetween * i);
             Vector3 direction = Quaternion.Euler(0, currentAngle, 0) * firePoint.forward;
 
-            // Flatten to X-Z plane
             direction.y = 0;
             direction = direction.normalized;
 
-            // Create projectile with parameters
             StartCoroutine(SpawnProjectileWithDelay(
                 firePoint.position,
                 direction,
@@ -713,7 +811,7 @@ public class DJBoss : MonoBehaviour, BossInterface
                 scale));
         }
     }
-    //
+
     private IEnumerator SpawnProjectileWithDelay(
         Vector3 position,
         Vector3 direction,
@@ -726,27 +824,20 @@ public class DJBoss : MonoBehaviour, BossInterface
         if (delay > 0)
             yield return new WaitForSeconds(delay);
 
-        // Use default scale if none provided
         if (scale == default) scale = Vector3.one;
 
-        // Instantiate the projectile
         GameObject projectile = Instantiate(prefab, position, Quaternion.identity);
-
         clearProjectiles.AddProjectile(projectile);
-
-        // Apply scaling
         projectile.transform.localScale = scale;
 
-        // Rotate the projectile to face the movement direction while keeping its up vector
         if (direction != Vector3.zero)
         {
             projectile.transform.rotation = Quaternion.LookRotation(direction);
             projectile.transform.rotation *= Quaternion.Euler(90f, 0, 0);
         }
 
-        // Initialize the spike shot
         SpikeShot spikeShot = projectile.GetComponent<SpikeShot>();
-        spikeShot.Initialize(speed, 30f); // 20f is the maxDistance - adjust as needed
+        spikeShot.Initialize(speed, 30f);
     }
 
     private void AttackFromRandomColumn()
@@ -762,13 +853,11 @@ public class DJBoss : MonoBehaviour, BossInterface
             doDoubleAttack = UnityEngine.Random.value <= doubleSlamChance;
         }
 
-        // Get random valid column
         int randomIndex = GetRandomValidColumnIndex();
         if (randomIndex == -1) return;
 
         if (doDoubleAttack)
         {
-            // Find a second column for double slam
             int secondColumnIndex = GetRandomValidColumnIndex(randomIndex);
             if (secondColumnIndex != -1)
             {

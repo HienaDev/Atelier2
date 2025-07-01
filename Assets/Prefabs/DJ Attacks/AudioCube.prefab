@@ -4962,13 +4962,13 @@ MonoBehaviour:
   onDeath:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7600729609745241431}
-        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
-        m_MethodName: Play
-        m_Mode: 1
+      - m_Target: {fileID: 7349721328446111314}
+        m_TargetAssemblyTypeName: Destructable, Assembly-CSharp
+        m_MethodName: PlayDeathSoundWithVariation
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 7600729609745241431}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -4982,6 +4982,9 @@ MonoBehaviour:
   audioClip: {fileID: 8300000, guid: 11b4e8da54b4e4e45aa691b0e06d717b, type: 3}
   audioVolume: 0.8
   audioPitch: 1
+  enablePitchVariation: 1
+  pitchVariationAmount: 0.2
+  audioSource: {fileID: 7600729609745241431}
 --- !u!82 &7600729609745241431
 AudioSource:
   m_ObjectHideFlags: 0

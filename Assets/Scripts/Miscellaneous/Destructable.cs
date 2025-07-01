@@ -42,9 +42,13 @@ public class Destructable : MonoBehaviour
 
     private Vector3 originalScale;
 
+    [Header("Audio Settings")]
+    [Header("Audio Settings")]
     [SerializeField] private AudioClip audioClip;
     [SerializeField] private float audioVolume = 1f;
     [SerializeField] private float audioPitch = 1f;
+    [SerializeField] private bool enablePitchVariation = false; // New option, starts false
+    [SerializeField] private float pitchVariationAmount = 0.2f; // How much the pitch can vary
 
     void Start()
     {
@@ -82,8 +86,46 @@ public class Destructable : MonoBehaviour
             sequence.Append(mat.DOFloat(minimumExtrusion + ((lives - currentLives) * extrusionIntensitySteps), "_PulseRatio", 0.05f).SetEase(Ease.InOutSine));
             sequence.Append(mat.DOFloat(0f + ((lives - currentLives) * extrusionIntensitySteps), "_PulseRatio", 0.5f).SetEase(Ease.InOutSine));
 
-            AudioManager.Instance.PlaySound(audioClip, audioVolume, originalPitch + (lives / currentLives), true);
+            // Calculate pitch based on variation setting
+            float finalPitch;
+            if (enablePitchVariation)
+            {
+                // Add random pitch variation
+                float randomVariation = Random.Range(-pitchVariationAmount, pitchVariationAmount);
+                finalPitch = originalPitch + (lives / currentLives) + randomVariation;
+            }
+            else
+            {
+                // Use original pitch calculation
+                finalPitch = originalPitch + (lives / currentLives);
+            }
+
+            // Use AudioManager for hit sounds
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySound(audioClip, audioVolume, finalPitch, true, 0f);
+            }
         }
+    }
+
+    /// <summary>
+    /// Method to be called by UnityEvent with specific AudioSource parameter
+    /// </summary>
+    public void PlayDeathSoundWithVariation(AudioSource specificAudioSource)
+    {
+        if (audioClip == null || specificAudioSource == null) return;
+
+        float deathPitch = originalPitch;
+        if (enablePitchVariation)
+        {
+            float randomVariation = Random.Range(-pitchVariationAmount, pitchVariationAmount);
+            deathPitch += randomVariation;
+        }
+
+        specificAudioSource.clip = audioClip;
+        specificAudioSource.volume = audioVolume;
+        specificAudioSource.pitch = deathPitch;
+        specificAudioSource.Play();
     }
 
     public void BlowUp()

@@ -54,6 +54,12 @@ public class BlowCollumnUp : MonoBehaviour
     [SerializeField] private bool playAllClipsOnDestruction = true; // If false, plays random clip
     [SerializeField] private float pitchVariation = 0.1f; // Random pitch variation range
 
+    [Header("Fall Audio Settings")]
+    [SerializeField] private AudioClip fallSound;
+    [SerializeField] private float fallSoundVolume = 1f;
+    [SerializeField] private float fallSoundPitch = 1f;
+    [SerializeField] private float fallSoundPitchVariation = 0.1f; // Random pitch variation
+
     private Vector3 originalPosition;
     private Vector3 originalScale;
     private Quaternion originalRotation;
@@ -89,7 +95,6 @@ public class BlowCollumnUp : MonoBehaviour
         );
     }
 
-
     private void PlayDestructionAudio()
     {
         if (destructionAudioClips.Count == 0 || AudioManager.Instance == null) return;
@@ -122,6 +127,13 @@ public class BlowCollumnUp : MonoBehaviour
 
     public void TriggerFall()
     {
+        // Play fall sound with random pitch variation
+        if (fallSound != null && AudioManager.Instance != null)
+        {
+            float randomPitch = fallSoundPitch + Random.Range(-fallSoundPitchVariation, fallSoundPitchVariation);
+            AudioManager.Instance.PlaySound(fallSound, fallSoundVolume, randomPitch, true, 0f);
+        }
+
         // Reset position and rotation
         transform.position = originalPosition + Vector3.up * fallHeight;
         transform.localScale = originalScale;
@@ -181,7 +193,6 @@ public class BlowCollumnUp : MonoBehaviour
         this.damageBoss = damageBoss;
         this.immuneToDamage = immuneToDamage;
 
-
         if (!immuneToDamage)
             UpdateColorByHealth();
         else
@@ -190,7 +201,6 @@ public class BlowCollumnUp : MonoBehaviour
 
         TriggerFall();
     }
-
 
     public void DealDamage(int damage)
     {
@@ -225,13 +235,11 @@ public class BlowCollumnUp : MonoBehaviour
             if (damagePlayer != null)
                 Destroy(damagePlayer);
 
-
             clearProjectiles.AddProjectile(weakpointClone);
 
             weakpointComponent.onLifetime.AddListener(() => boss.SpawnCollumn(index, false));
             weakpointComponent.onDeath.AddListener(() => boss.SpawnCollumn(index, true));
             weakpointComponent.SetCritPositions(critPoints);
-
 
             weakpointComponent.SetTarget(damageBoss.transform);
             gameObject.SetActive(false);

@@ -23,8 +23,8 @@ public class FlashAndScale : MonoBehaviour
 
     private Material indicatorMaterial;
     private Color originalColor;
-
     private Transform playerTransform;
+    private DJBoss djBoss; // Reference to DJBoss for sound system
 
     void Start()
     {
@@ -54,7 +54,23 @@ public class FlashAndScale : MonoBehaviour
             Debug.LogWarning("PlayerHealth component not found in scene.");
         }
 
+        // Find DJBoss for sound system
+        djBoss = FindAnyObjectByType<DJBoss>();
+        if (djBoss == null)
+        {
+            Debug.LogWarning("DJBoss not found in scene. Laser sound system will not work.");
+        }
+
         StartCoroutine(FlashCoroutine());
+    }
+
+    void OnDestroy()
+    {
+        // Important: Clear sound data when laser is destroyed
+        if (djBoss != null)
+        {
+            djBoss.OnLaserDestroyed(gameObject);
+        }
     }
 
     void RotateTowardsPlayer()
@@ -82,6 +98,13 @@ public class FlashAndScale : MonoBehaviour
         {
             // Flash on
             indicatorMaterial.SetColor("_Color", flashColor);
+            
+            // PLAY LASER SOUND ON EACH FLASH
+            if (djBoss != null)
+            {
+                djBoss.PlayLaserPulseSound(gameObject);
+            }
+            
             yield return new WaitForSeconds(currentInterval / 2f);
 
             // Flash off
@@ -121,6 +144,14 @@ public class FlashAndScale : MonoBehaviour
 
         targetObject.transform.DOScale(targetScale, scaleDuration)
             .SetEase(Ease.OutBack)
-            .OnComplete(() => { targetObject.GetComponent<DamagePlayer>().BlowUp(); });
+            .OnComplete(() => { 
+                targetObject.GetComponent<DamagePlayer>().BlowUp(); 
+                
+                // Clear sound data when laser finishes
+                if (djBoss != null)
+                {
+                    djBoss.OnLaserDestroyed(gameObject);
+                }
+            });
     }
 }
