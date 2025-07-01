@@ -14194,7 +14194,7 @@ MonoBehaviour:
     currentCommandIndex: 0
   currentPatternIndex: 0
   usePatterns: 1
-  numberOfWeakspointsToDestroy: 1
+  numberOfWeakspointsToDestroy: 2
   collumns:
   - collumn: {fileID: 568432956}
     scaleWithMusic: {fileID: 568432959}
