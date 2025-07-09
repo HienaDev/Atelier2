@@ -1304,7 +1304,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursor: {fileID: 589602768}
-  speed: 750
+  speed: 700
   hideSystemCursor: 1
   mouseThreshold: 0
   joystickThreshold: 0
