@@ -8,12 +8,11 @@ public class VirtualCursor : MonoBehaviour
 
     [Header("Integration")]
     public bool hideSystemCursor = true;
-    public bool enableMouseInput = true;
-    public float mouseThreshold = 5f; // Minimum mouse movement to register
 
-    [Header("Joystick Override Settings")]
-    public float joystickThreshold = 0.2f;     // Minimum input to consider joystick active
-    public float joystickTimeout = 0.3f;       // Seconds before mouse can resume after joystick
+    [Header("Input Detection")]
+    public float mouseThreshold = 5f; // Minimum mouse movement to register
+    public float joystickThreshold = 0.2f; // Minimum input to consider joystick active
+    public float inputSwitchDelay = 0.3f; // Delay before switching input types
 
     Vector2 virtualCursorPos;
     Canvas parentCanvas;
@@ -21,8 +20,11 @@ public class VirtualCursor : MonoBehaviour
 
     public static VirtualCursor Instance { get; private set; }
 
-    private bool joystickRecentlyUsed = false;
-    private float joystickTimer = 0f;
+    // Input state tracking
+    private bool isUsingMouse = false;
+    private bool isUsingController = false;
+    private float inputSwitchTimer = 0f;
+    private Vector2 lastMousePosition;
 
     void Awake()
     {
@@ -32,7 +34,6 @@ public class VirtualCursor : MonoBehaviour
     void Start()
     {
         virtualCursorPos = cursor.anchoredPosition;
-
         parentCanvas = cursor.GetComponentInParent<Canvas>();
         uiCamera = parentCanvas.worldCamera;
 
@@ -40,14 +41,26 @@ public class VirtualCursor : MonoBehaviour
         {
             Cursor.visible = false;
         }
-
         Cursor.lockState = CursorLockMode.Confined;
+
+        // Initialize last mouse position
+        lastMousePosition = Input.mousePosition;
     }
 
     void Update()
     {
-        HandleJoystickInput();
-        HandleMouseInput();
+
+        Debug.Log("Test joystick: " + Input.GetAxis("LeftTrigger") + Input.GetAxis("RightTrigger"));
+        DetectInputType();
+
+        if (isUsingController)
+        {
+            HandleJoystickInput();
+        }
+        else if (isUsingMouse)
+        {
+            HandleMouseInput();
+        }
 
         // Clamp to screen bounds
         RectTransform canvasRect = parentCanvas.GetComponent<RectTransform>();
@@ -60,37 +73,71 @@ public class VirtualCursor : MonoBehaviour
         cursor.anchoredPosition = virtualCursorPos;
     }
 
+    private void DetectInputType()
+    {
+        // Check for controller input (both keyboard IJKL and actual controller joystick)
+        float moveX = Input.GetAxis("HorizontalRightJoystick") + Input.GetAxis("HorizontalRightJoystickController");
+        float moveY = Input.GetAxis("VerticalRightJoystick") + Input.GetAxis("VerticalRightJoystickController");
+        Vector2 joystickInput = new Vector2(moveX, moveY);
+
+        // Check for mouse movement
+        Vector2 currentMousePosition = Input.mousePosition;
+        Vector2 mouseDelta = currentMousePosition - lastMousePosition;
+
+        // Update timer
+        if (inputSwitchTimer > 0f)
+        {
+            inputSwitchTimer -= Time.deltaTime;
+        }
+
+        // Detect controller input
+        if (joystickInput.magnitude > joystickThreshold)
+        {
+            if (!isUsingController && inputSwitchTimer <= 0f)
+            {
+                isUsingController = true;
+                isUsingMouse = false;
+                inputSwitchTimer = inputSwitchDelay;
+                Debug.Log("Switched to Controller input");
+            }
+        }
+
+        // Detect mouse input
+        if (mouseDelta.magnitude > mouseThreshold)
+        {
+            if (!isUsingMouse && inputSwitchTimer <= 0f)
+            {
+                isUsingMouse = true;
+                isUsingController = false;
+                inputSwitchTimer = inputSwitchDelay;
+                Debug.Log("Switched to Mouse input");
+            }
+        }
+
+        // If no input detected for a while, allow switching
+        if (joystickInput.magnitude <= joystickThreshold && mouseDelta.magnitude <= mouseThreshold)
+        {
+            // Keep current input type but allow switching if timer expires
+        }
+
+        lastMousePosition = currentMousePosition;
+    }
+
     private void HandleJoystickInput()
     {
-        float moveX = Input.GetAxis("HorizontalRightJoystick");
-        float moveY = Input.GetAxis("VerticalRightJoystick");
-
+        // Combine both keyboard (IJKL) and controller joystick input
+        float moveX = Input.GetAxis("HorizontalRightJoystick") + Input.GetAxis("HorizontalRightJoystickController");
+        float moveY = Input.GetAxis("VerticalRightJoystick") + Input.GetAxis("VerticalRightJoystickController");
         Vector2 input = new Vector2(moveX, moveY);
 
         if (input.magnitude > 0.01f)
         {
-            joystickRecentlyUsed = true;
-            joystickTimer = joystickTimeout;
             virtualCursorPos += input * speed * Time.deltaTime;
-        }
-        else
-        {
-            if (joystickTimer > 0f)
-            {
-                joystickTimer -= Time.deltaTime;
-            }
-            else
-            {
-                joystickRecentlyUsed = false;
-            }
         }
     }
 
     private void HandleMouseInput()
     {
-        if (!enableMouseInput || joystickRecentlyUsed)
-            return;
-
         Vector2 mouseScreenPos = Input.mousePosition;
 
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -99,11 +146,7 @@ public class VirtualCursor : MonoBehaviour
             uiCamera,
             out Vector2 mouseCanvasPos))
         {
-            Vector2 mouseDelta = mouseCanvasPos - virtualCursorPos;
-            if (mouseDelta.magnitude > mouseThreshold)
-            {
-                virtualCursorPos = mouseCanvasPos;
-            }
+            virtualCursorPos = mouseCanvasPos;
         }
     }
 
@@ -118,6 +161,10 @@ public class VirtualCursor : MonoBehaviour
         Vector3 screenPos = GetScreenPosition();
         return camera.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, distance));
     }
+
+    // Public getters for input state (useful for UI feedback)
+    public bool IsUsingMouse => isUsingMouse;
+    public bool IsUsingController => isUsingController;
 
     void OnDestroy()
     {

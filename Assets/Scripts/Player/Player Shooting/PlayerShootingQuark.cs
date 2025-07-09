@@ -34,7 +34,7 @@ public class PlayerShootingQuark : MonoBehaviour
         AimArms();
         FlipBodyBasedOnAim();
 
-        if (Input.GetButton("Fire1") && Time.time - lastShotTime >= shootingCooldown)
+        if ((Input.GetButton("Fire1") || Input.GetAxis("LeftTrigger") == 1 || Input.GetAxis("RightTrigger") == 1) && Time.time - lastShotTime >= shootingCooldown)
         {
             Shoot();
             lastShotTime = Time.time;

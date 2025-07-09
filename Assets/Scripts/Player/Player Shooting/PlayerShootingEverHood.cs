@@ -56,7 +56,7 @@ public class PlayerShootingEverHood : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButton("Fire1") && Time.time - justShot >= shootingCooldown)
+        if ((Input.GetButton("Fire1") || Input.GetAxis("LeftTrigger") == 1 || Input.GetAxis("RightTrigger") == 1) && Time.time - justShot >= shootingCooldown)
         {
             Shoot();
             justShot = Time.time;
