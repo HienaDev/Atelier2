@@ -12,6 +12,14 @@ public class DeathScreenMethods : MonoBehaviour
         Time.timeScale = 0f;
     }
 
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.U))
+        {
+            //RestartGame();
+        }
+    }
+
     public void BackToMenu()
     {
         Time.timeScale = 1f;
