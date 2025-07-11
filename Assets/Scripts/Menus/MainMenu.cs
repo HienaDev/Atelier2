@@ -48,6 +48,11 @@ public class MainMenu : MonoBehaviour
                 ExitGame();
             }
         }
+        
+        if(Input.GetKeyDown(KeyCode.U))
+        {
+            PlayGame();
+        }
     }
 
     public void PlayGame()

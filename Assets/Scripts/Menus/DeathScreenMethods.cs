@@ -6,6 +6,8 @@ public class DeathScreenMethods : MonoBehaviour
     [SerializeField] private string menuScene;
     [SerializeField] private string gameScene;
 
+    [SerializeField] private bool restartWithKey = false;
+
     private void OnEnable()
     {
         // Pause the game when the death screen is enabled
@@ -14,9 +16,9 @@ public class DeathScreenMethods : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.U))
+        if(Input.GetKeyDown(KeyCode.U) && restartWithKey)
         {
-            //RestartGame();
+            RestartGame();
         }
     }
 

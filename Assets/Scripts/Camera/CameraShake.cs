@@ -131,8 +131,8 @@ public class CameraShake : MonoBehaviour
 
     private void ApplyTilt()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        float vertical = Input.GetAxisRaw("Vertical");
 
         // Invert values for camera-tilt style motion
         float tiltX = -vertical * maxTiltAngle;

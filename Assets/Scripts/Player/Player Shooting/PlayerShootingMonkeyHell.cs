@@ -49,7 +49,7 @@ public class PlayerShootingMonkeyHell : MonoBehaviour
             topHalf.transform.rotation = Quaternion.Slerp(topHalf.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }
 
-        if ((Input.GetButton("Fire1") || Input.GetAxis("LeftTrigger") == 1 || Input.GetAxis("RightTrigger") == 1) && Time.time - justShot >= shootingCooldown)
+        if ((Input.GetButton("Fire1") || Input.GetAxisRaw("LeftTrigger") == 1 || Input.GetAxisRaw("RightTrigger") == 1) && Time.time - justShot >= shootingCooldown)
         {
             Shoot();
             justShot = Time.time;

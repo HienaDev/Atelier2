@@ -1304,7 +1304,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursor: {fileID: 589602768}
-  speed: 700
+  speed: 400
   hideSystemCursor: 1
   mouseThreshold: 0
   joystickThreshold: 0
@@ -14841,6 +14841,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuScene: MainMenu
   gameScene: 
+  restartWithKey: 1
 --- !u!114 &497273568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27482,6 +27483,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuScene: 
   gameScene: FinalCutScene
+  restartWithKey: 0
 --- !u!1 &845297394
 GameObject:
   m_ObjectHideFlags: 0
@@ -34073,6 +34075,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuScene: MainMenu
   gameScene: 
+  restartWithKey: 1
 --- !u!82 &1143734863
 AudioSource:
   m_ObjectHideFlags: 0

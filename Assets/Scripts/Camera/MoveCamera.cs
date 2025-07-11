@@ -81,8 +81,8 @@ public class MoveCamera : MonoBehaviour
 
             Vector3 rotation = cam.localEulerAngles;
    
-            rotation.x -= Input.GetAxis("Mouse Y") * verticalMouseSensitivity;
-            rotation.y += Input.GetAxis("Mouse X") * horizontalMouseSensitivity;
+            rotation.x -= Input.GetAxisRaw("Mouse Y") * verticalMouseSensitivity;
+            rotation.y += Input.GetAxisRaw("Mouse X") * horizontalMouseSensitivity;
 
             cam.localEulerAngles = rotation;
         }

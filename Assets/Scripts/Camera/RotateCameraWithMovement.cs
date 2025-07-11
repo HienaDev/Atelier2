@@ -24,8 +24,8 @@ public class RotateCameraOnMovement : MonoBehaviour
     private void LateUpdate()
     {
         // Get input from Unity's input system
-        float horizontalInput = Input.GetAxis("Horizontal"); // A/D keys or left/right arrows by default
-        float verticalInput = -Input.GetAxis("Vertical");     // W/S keys or up/down arrows by default
+        float horizontalInput = Input.GetAxisRaw("Horizontal"); // A/D keys or left/right arrows by default
+        float verticalInput = -Input.GetAxisRaw("Vertical");     // W/S keys or up/down arrows by default
 
         // Check if input exceeds the threshold
         bool hasSignificantInput = Mathf.Abs(horizontalInput) > inputThreshold ||

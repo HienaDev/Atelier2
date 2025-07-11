@@ -50,7 +50,7 @@ public class VirtualCursor : MonoBehaviour
     void Update()
     {
 
-        Debug.Log("Test joystick: " + Input.GetAxis("LeftTrigger") + Input.GetAxis("RightTrigger"));
+        Debug.Log("Test joystick: " + Input.GetAxisRaw("LeftTrigger") + Input.GetAxisRaw("RightTrigger"));
         DetectInputType();
 
         if (isUsingController)
@@ -76,8 +76,8 @@ public class VirtualCursor : MonoBehaviour
     private void DetectInputType()
     {
         // Check for controller input (both keyboard IJKL and actual controller joystick)
-        float moveX = Input.GetAxis("HorizontalRightJoystick") + Input.GetAxis("HorizontalRightJoystickController");
-        float moveY = Input.GetAxis("VerticalRightJoystick") + Input.GetAxis("VerticalRightJoystickController");
+        float moveX = Input.GetAxisRaw("HorizontalRightJoystick") + Input.GetAxisRaw("HorizontalRightJoystickController");
+        float moveY = Input.GetAxisRaw("VerticalRightJoystick") + Input.GetAxisRaw("VerticalRightJoystickController");
         Vector2 joystickInput = new Vector2(moveX, moveY);
 
         // Check for mouse movement
@@ -87,7 +87,7 @@ public class VirtualCursor : MonoBehaviour
         // Update timer
         if (inputSwitchTimer > 0f)
         {
-            inputSwitchTimer -= Time.deltaTime;
+            inputSwitchTimer -= Time.unscaledDeltaTime;
         }
 
         // Detect controller input
@@ -126,13 +126,13 @@ public class VirtualCursor : MonoBehaviour
     private void HandleJoystickInput()
     {
         // Combine both keyboard (IJKL) and controller joystick input
-        float moveX = Input.GetAxis("HorizontalRightJoystick") + Input.GetAxis("HorizontalRightJoystickController");
-        float moveY = Input.GetAxis("VerticalRightJoystick") + Input.GetAxis("VerticalRightJoystickController");
+        float moveX = Input.GetAxisRaw("HorizontalRightJoystick") + Input.GetAxisRaw("HorizontalRightJoystickController");
+        float moveY = Input.GetAxisRaw("VerticalRightJoystick") + Input.GetAxisRaw("VerticalRightJoystickController");
         Vector2 input = new Vector2(moveX, moveY);
 
         if (input.magnitude > 0.01f)
         {
-            virtualCursorPos += input * speed * Time.deltaTime;
+            virtualCursorPos += input * speed * Time.unscaledDeltaTime;
         }
     }
 
